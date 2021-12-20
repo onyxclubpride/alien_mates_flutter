@@ -28,7 +28,7 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
         title: Constants.appTitle,
         navigatorKey: Global.navKey,
-        initialRoute: AppRoutes.home,
+        initialRoute: AppRoutes.homeRoute,
         theme: MainTheme.mainThemeDark,
         routes: AppRoutes.getRoutes(),
         navigatorObservers: [AppRouterObserver()],
