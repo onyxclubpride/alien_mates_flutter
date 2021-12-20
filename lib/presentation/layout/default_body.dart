@@ -7,6 +7,7 @@ class DefaultBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: DefaultHeader(),
       body: SafeArea(child: child),
     );
   }

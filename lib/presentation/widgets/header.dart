@@ -6,7 +6,9 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppBar();
+    return AppBar(
+      title: SizedText(text: 'Alien Mates'),
+    );
   }
 
   @override
