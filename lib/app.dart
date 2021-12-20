@@ -29,6 +29,7 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
         title: Constants.appTitle,
         navigatorKey: Global.navKey,
         initialRoute: AppRoutes.home,
+        theme: MainTheme.mainThemeDark,
         routes: AppRoutes.getRoutes(),
         navigatorObservers: [AppRouterObserver()],
         localizationsDelegates: const [

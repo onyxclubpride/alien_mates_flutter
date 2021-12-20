@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
 class MainTheme {
-  static ThemeData get mainThemeBlue {
+  static ThemeData get mainThemeDark {
     return ThemeData(
         scaffoldBackgroundColor: ThemeColors.bgBasic,
         appBarTheme: _appBarTheme(),
@@ -10,6 +10,16 @@ class MainTheme {
         primaryTextTheme: _primaryTextTheme(),
         bottomSheetTheme:
             BottomSheetThemeData(backgroundColor: Colors.transparent));
+  }
+
+  static ThemeData get mainThemeLight {
+    return ThemeData(
+        scaffoldBackgroundColor: ThemeColors.bgBasic,
+        appBarTheme: _appBarTheme(),
+        bottomNavigationBarTheme: _bottomNavTheme(),
+        primaryTextTheme: _primaryTextTheme(),
+        bottomSheetTheme:
+        BottomSheetThemeData(backgroundColor: Colors.transparent));
   }
 }
 
