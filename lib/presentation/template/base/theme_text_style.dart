@@ -5,7 +5,7 @@ class ThemeTextRegular {
   String lang = AppLocalizations.languageCode.toString();
   static const fontWeight = FontWeight.w400;
   static const fontFamily = "NotoSansRegular";
-  static const color = ThemeColors.black;
+  static const color = ThemeColors.fontDark;
 
   static const notoR10 = TextStyle(
     fontWeight: fontWeight,
@@ -68,7 +68,7 @@ class ThemeTextMedium {
   String lang = AppLocalizations.languageCode.toString();
   static const fontWeight = FontWeight.w600;
   static const fontFamily = "NotoSansMedium";
-  static const color = ThemeColors.black;
+  static const color = ThemeColors.fontDark;
 
   static const notoM12 = TextStyle(
       fontWeight: fontWeight,
@@ -124,7 +124,7 @@ class ThemeTextBold {
   String lang = AppLocalizations.languageCode.toString();
   static const fontWeight = FontWeight.w700;
   static const fontFamily = "NotoSansBold";
-  static const color = ThemeColors.black;
+  static const color = ThemeColors.fontDark;
 
   static const notoB14 = TextStyle(
       fontWeight: fontWeight,
