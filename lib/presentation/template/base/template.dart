@@ -20,3 +20,4 @@ export '../../pages/home_page.dart';
 //Widgets
 export "../../widgets/sized_text.dart";
 export "../../widgets/header.dart";
+export "../../widgets/banner.dart";

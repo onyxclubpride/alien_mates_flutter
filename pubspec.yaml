@@ -2,7 +2,7 @@ name: smart_house_flutter
 description: A new Flutter project.
 
 # Prevent accidental publishing to pub.dev.
-publish_to: 'none'
+publish_to: "none"
 
 version: 1.0.0+1
 
@@ -19,7 +19,6 @@ dependencies:
   intl: ^0.17.0
   auto_size_text: ^3.0.0
   flutter_screenutil: ^5.0.0+2
-  flutter_redux_navigation: ^0.7.0
 
 dev_dependencies:
   flutter_test:
