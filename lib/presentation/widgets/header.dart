@@ -26,7 +26,10 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       children: [
         if (titleIcon != null) titleIcon!,
         if (titleIcon != null) SizedBox(width: 24.w),
-        SizedText(text: 'Alien Mates'),
+        const SizedText(
+          text: 'Alien Mates',
+          textStyle: futuraB45,
+        ),
       ],
     );
     return _container;
