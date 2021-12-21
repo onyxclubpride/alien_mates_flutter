@@ -21,3 +21,4 @@ export '../../pages/home_page.dart';
 export "../../widgets/sized_text.dart";
 export "../../widgets/header.dart";
 export "../../widgets/banner.dart";
+export '../../widgets/post_button.dart';

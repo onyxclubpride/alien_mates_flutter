@@ -6,11 +6,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultBody(child: Column(
+    return DefaultBody(
+        child: Column(
       children: [
-
-        ],
-        )
-      );
+        PostButtton(
+          leftChild: SizedText(text: 'Left'),
+        ),
+      ],
+    ));
   }
 }

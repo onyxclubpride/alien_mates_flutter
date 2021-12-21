@@ -23,6 +23,7 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
     return ScreenUtilInit(
       designSize: const Size(360, 640),
       builder: () => MaterialApp(
+        debugShowCheckedModeBanner: false,
         builder: (context, child) => MediaQuery(
             child: child!,
             data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
