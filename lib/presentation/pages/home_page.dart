@@ -8,9 +8,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return DefaultBody(child: Column(
       children: [
-        DefaultBanner(child: Container(
-          color: Colors.red,
-        ),)
+
         ],
         )
       );
