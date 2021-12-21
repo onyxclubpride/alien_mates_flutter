@@ -1,17 +1,25 @@
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
 class DefaultBanner extends StatelessWidget {
-  const DefaultBanner({ Key? key }) : super(key: key);
 
+  Widget? child;
+  DefaultBanner({ this.child});
+  
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(10.0),
-        color: Colors.amber[600],
-        width: 48.w,
-        height: 48.h,
+    return Container(
+      child: Center(child: child),
+        decoration: BoxDecoration(
+        borderRadius:BorderRadius.circular(10.r), 
+        color: ThemeColors.componentBgDark,
+        border: Border.all(
+          color: ThemeColors.borderDark
+        )
       ),
+      
+      margin: const EdgeInsets.all(10.0),
+      width: 360.w,
+      height: 48.h,
     );
   }
 }
