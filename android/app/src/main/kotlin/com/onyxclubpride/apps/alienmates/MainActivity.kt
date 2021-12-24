@@ -1,4 +1,4 @@
-package com.example.smart_house_flutter
+package com.onyxclubpride.apps.alienmates
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -1,3 +1,3 @@
 class Constants {
-  static const appTitle = 'Smart House';
+  static const appTitle = 'Alien Matest';
 }

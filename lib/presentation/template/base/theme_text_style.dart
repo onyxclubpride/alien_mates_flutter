@@ -1,61 +1,52 @@
 import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-const fontFamilyLato = "Lato";
-const fontFamilyFutura = "Futura";
-
-const futuraR14 = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
+//TODO: THERE IS NO FUTURA
+final futuraR14 = GoogleFonts.lato(
+  fontWeight: FontWeight.w400,
   fontSize: 14.0,
-  // fontStyle:FontStyle.normal
 );
 
-const futuraM16 = TextStyle(
+//TODO: THERE IS NO FUTURA
+final futuraM16 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
   fontSize: 16.0,
-  // fontStyle:FontStyle.normal
 );
 
-const futuraM20 = TextStyle(
+//TODO: THERE IS NO FUTURA
+final futuraM20 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
   fontSize: 20.0,
-  // fontStyle:FontStyle.normal
 );
 
-const futuraB45 = TextStyle(
-  fontWeight: FontWeight.w900,
-  fontFamily: fontFamilyFutura,
+//TODO: THERE IS NO FUTURA
+final futuraB45 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
   fontSize: 45.0,
-  // fontStyle:FontStyle.normal
 );
 
-const latoR14 = TextStyle(
-  fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
+final latoR14 = GoogleFonts.lato(
+  fontWeight: FontWeight.w400,
   fontSize: 14.0,
-  // fontStyle:FontStyle.normal
 );
 
-const latoM16 = TextStyle(
+final latoM16 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
   fontSize: 16.0,
-  // fontStyle:FontStyle.normal
 );
 
-const latoM20 = TextStyle(
+final latoM20 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
-  fontFamily: fontFamilyFutura,
   fontSize: 20.0,
-  // fontStyle:FontStyle.normal
 );
 
-const latoB45 = TextStyle(
-  fontWeight: FontWeight.w900,
-  fontFamily: fontFamilyFutura,
+final latoB45 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
   fontSize: 45.0,
-  // fontStyle:FontStyle.normal
+);
+
+final latoM36 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 36.0,
 );

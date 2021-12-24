@@ -43,8 +43,8 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.smart_house_flutter"
-        minSdkVersion 16
+        applicationId "com.onyxclubpride.apps.alienmates"
+        minSdkVersion 21
         targetSdkVersion 30
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
@@ -65,4 +65,11 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    // Import the BoM for the Firebase platform
+    implementation platform('com.google.firebase:firebase-bom:28.3.1')
+    // Declare the dependency for the Firebase Authentication library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation 'com.google.firebase:firebase-auth'
 }
+
+apply plugin: 'com.google.gms.google-services'

@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.smart_house_flutter">
+    package="com.onyxclubpride.apps.alienmates">
    <application
-        android:label="smart_house_flutter"
+        android:label="Alien Mates"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

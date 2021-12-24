@@ -8,15 +8,13 @@ class AppRoutes {
   static const profileRoute = "/profile";
   static const settingRoute = "/setting";
   static const helpRoute = "/help";
-  
+
   static const eventDetailsRoute = "/eventDetails";
   static const helpDetailsRoute = "/helpDetails";
-  
-
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
-      AppRoutes.homeRoute: (BuildContext context) => const HomePage(),
+      AppRoutes.homeRoute: (BuildContext context) => HomePage(),
       // AppRoutes.loginRoute: (BuildContext context) => const LoginPage(),
       // AppRoutes.eventRoute: (BuildContext context) => const EventPage(),
       // AppRoutes.helpRoute: (BuildContext context) => const HelpPage(),
@@ -25,7 +23,6 @@ class AppRoutes {
 
       // AppRoutes.eventDetailsRoute: (BuildContext context) => const EventDetilsPage(),
       // AppRoutes.helpDetailsRoute: (BuildContext context) => const helpDetilsPage(),
-      
     };
 
     return base;

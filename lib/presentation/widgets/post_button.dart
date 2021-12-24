@@ -1,10 +1,10 @@
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
-class PostButtton extends StatelessWidget {
+class PostButton extends StatelessWidget {
   Widget leftChild;
   Widget? rightChild;
   //if only one child needed, then pass leftChild only;
-  PostButtton({required this.leftChild, this.rightChild});
+  PostButton({required this.leftChild, this.rightChild});
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,8 @@ class PostButtton extends StatelessWidget {
               decoration: BoxDecoration(
                 color: ThemeColors.yellow,
                 borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5.r),
-                    bottomRight: Radius.circular(5.r)),
+                    bottomLeft: Radius.circular(10.r),
+                    bottomRight: Radius.circular(10.r)),
               )),
         ),
       ],
@@ -28,16 +28,16 @@ class PostButtton extends StatelessWidget {
 
   Widget _buildChild() {
     if (rightChild != null) {
-      return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Expanded(child: leftChild!),
+      return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
+        leftChild,
         Container(
             height: 25.h,
-            width: 3.w,
+            width: 2.w,
             decoration: BoxDecoration(
               color: ThemeColors.bgDark,
               borderRadius: BorderRadius.circular(10000),
             )),
-        Expanded(child: leftChild)
+        rightChild!,
       ]);
     } else {
       return leftChild;

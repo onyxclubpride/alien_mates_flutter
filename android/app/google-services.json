@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "849882501725",
+    "project_id": "alien-mates",
+    "storage_bucket": "alien-mates.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849882501725:android:1c95aa7bca1bdc664b33b4",
+        "android_client_info": {
+          "package_name": "com.onyxclubpride.apps.alienmates"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849882501725-49g5kf7q2r4pbdcsii6nuhh3pa9e3e47.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCItaGZhRxo8SMvLm8EsPO01Bp92nQnvD8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849882501725-49g5kf7q2r4pbdcsii6nuhh3pa9e3e47.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
