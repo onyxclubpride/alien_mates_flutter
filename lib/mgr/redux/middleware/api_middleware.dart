@@ -23,17 +23,27 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
 
 Future<void> _getPostsAction(
     AppState state, GetPostsAction action, NextDispatcher next) async {
-  List<PostModelRes> postsList = await _getPostsList();
-
-  print(postsList.first.name);
+  List<ListPostModelRes> postsList = await _getPostsList();
+  next(UpdateApiStateAction(posts: postsList));
 }
 
-Future<List<PostModelRes>> _getPostsList() async {
+Future<List<ListPostModelRes>> _getPostsList() async {
   QuerySnapshot _querySnapshot = await firebaseKit.postsCollection.get();
   List _snapshotList = _querySnapshot.docs;
-  List<PostModelRes> _posts = [];
+  List<ListPostModelRes> _posts = [];
   for (int i = 0; i < _snapshotList.length; i++) {
-    PostModelRes postModelRes = PostModelRes(name: _snapshotList[i]['name']);
+    var item = _snapshotList[i];
+    ListPostModelRes postModelRes = ListPostModelRes(
+      isEvent: item['isEvent'],
+      isNotice: item['isNotice'],
+      isPost: item['isPost'],
+      postId: item['postId'],
+      imageUrl: item['imageUrl'],
+      description: item['description'],
+      numberOfJoins: item['numberOfJoins'],
+      numberOfLikes: item['numberOfLikes'],
+      title: item['title'],
+    );
     _posts.add(postModelRes);
   }
   return _posts;

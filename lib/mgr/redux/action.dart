@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
 
 ///----------------- Navigation -----------------
 class NavigateToAction {
@@ -59,7 +60,7 @@ class DismissPopupAction {
 class GetPostsAction {}
 
 class UpdateApiStateAction {
-  List? posts;
+  List<ListPostModelRes>? posts;
 
   UpdateApiStateAction({this.posts});
 }

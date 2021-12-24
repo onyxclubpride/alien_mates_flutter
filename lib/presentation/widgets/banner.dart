@@ -49,8 +49,7 @@ class BodyNavigationBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _getNavText(ThemeColors.bgLight, 'Posts', () {
-            appStore.dispatch(GetPostsAction());
-            // print('onPostsTap');
+            print('onPostsTap');
           }),
           _getNavText(ThemeColors.borderDark, 'Events', () {
             print('onEventsTap');
@@ -78,7 +77,12 @@ class PostItemBanner extends StatelessWidget {
   double height;
   Widget? leftWidget;
   Widget? rightWidget;
-  PostItemBanner({this.height = 145, this.leftWidget, this.rightWidget});
+  Widget child;
+  PostItemBanner(
+      {required this.child,
+      this.height = 145,
+      this.leftWidget,
+      this.rightWidget});
 
   @override
   Widget build(BuildContext context) {
@@ -88,6 +92,7 @@ class PostItemBanner extends StatelessWidget {
             withBorder: false,
             withBottomLeftRadius: leftWidget == null,
             withBottomRightRadius: leftWidget == null,
+            child: child,
             height: 145),
         if (leftWidget != null || rightWidget != null)
           PostButton(

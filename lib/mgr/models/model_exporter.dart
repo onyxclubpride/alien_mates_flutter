@@ -1,1 +1,1 @@
-export './post_model/post_model.dart';
+export './post_model/list_post_model.dart';
