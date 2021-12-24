@@ -1,12 +1,14 @@
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
+import 'package:smart_house_flutter/mgr/redux/states/api_state.dart';
 import './app_state.dart';
 import 'dart:developer' as developer;
 
 AppState appReducer(AppState state, dynamic action) {
   var newState = state.copyWith(
     navigationState: _navReducer(state.navigationState, action),
+    apiState: _apiReducer(state.apiState, action),
   );
 
   return newState;
@@ -58,4 +60,15 @@ NavigationState _updateNavigationState(
   }
 
   return state.copyWith(history: history);
+}
+
+///
+/// ApiState Reducer
+///
+final _apiReducer = combineReducers<ApiState>([
+  TypedReducer<ApiState, UpdateApiStateAction>(_updateApiState),
+]);
+
+ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
+  return state.copyWith(posts: action.posts ?? state.posts);
 }

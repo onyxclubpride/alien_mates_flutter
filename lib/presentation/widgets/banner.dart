@@ -1,3 +1,6 @@
+import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
+import 'package:smart_house_flutter/mgr/redux/action.dart';
+import 'package:smart_house_flutter/mgr/redux/app_state.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
 class DefaultBanner extends StatelessWidget {
@@ -46,7 +49,8 @@ class BodyNavigationBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           _getNavText(ThemeColors.bgLight, 'Posts', () {
-            print('onPostsTap');
+            appStore.dispatch(GetPostsAction());
+            // print('onPostsTap');
           }),
           _getNavText(ThemeColors.borderDark, 'Events', () {
             print('onEventsTap');

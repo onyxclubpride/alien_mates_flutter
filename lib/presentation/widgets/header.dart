@@ -34,7 +34,6 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
     if (centerTitle! || leftButton != null) {
       mainAxisAlignment = MainAxisAlignment.center;
     }
-    print(mainAxisAlignment);
     Widget _container = Container();
     _container = Row(
       mainAxisAlignment: mainAxisAlignment,

@@ -12,11 +12,11 @@ class NavigateToAction {
 
   NavigateToAction(
       {this.to,
-        this.replace = false,
-        this.arguments,
-        // this.page,
-        this.reload = false,
-        this.isStayPopup = false});
+      this.replace = false,
+      this.arguments,
+      // this.page,
+      this.reload = false,
+      this.isStayPopup = false});
 }
 
 class NavigateToOrderAction {}
@@ -52,4 +52,14 @@ class DismissPopupAction {
   final dynamic result;
 
   DismissPopupAction({this.all = false, this.result});
+}
+
+///----------------- API -----------------
+
+class GetPostsAction {}
+
+class UpdateApiStateAction {
+  List? posts;
+
+  UpdateApiStateAction({this.posts});
 }
