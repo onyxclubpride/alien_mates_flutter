@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-import 'package:smart_house_flutter/mgr/redux/middleware/api_middleware.dart';
-import 'package:smart_house_flutter/mgr/redux/middleware/init_middleware.dart';
-import 'package:smart_house_flutter/mgr/redux/reducer.dart';
-import 'package:smart_house_flutter/mgr/redux/states/api_state.dart';
-import 'package:smart_house_flutter/mgr/redux/states/init_state.dart';
-import 'package:smart_house_flutter/mgr/redux/states/nav_state.dart';
+import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
+import 'package:alien_mates/mgr/redux/middleware/init_middleware.dart';
+import 'package:alien_mates/mgr/redux/reducer.dart';
+import 'package:alien_mates/mgr/redux/states/api_state.dart';
+import 'package:alien_mates/mgr/redux/states/init_state.dart';
+import 'package:alien_mates/mgr/redux/states/nav_state.dart';
 import 'middleware/navigation_middleware.dart';
 
 export './states/nav_state.dart';

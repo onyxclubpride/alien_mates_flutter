@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
 export "./app_state.dart";
 
 ///----------------- Navigation -----------------
@@ -120,10 +120,15 @@ class GetCreateUserAction {
       required this.name});
 }
 
-class GetUserMeAction {
+class GetUserIdExistAction {
+  String userId;
+  GetUserIdExistAction(this.userId);
+}
+
+class GetLoginAction {
   String phoneNumber;
   String password;
-  GetUserMeAction({required this.phoneNumber, required this.password});
+  GetLoginAction({required this.phoneNumber, required this.password});
 }
 
 class GetAllUsersAction {}
@@ -137,6 +142,8 @@ class SetLocalUserIdAction {
 
   SetLocalUserIdAction(this.userId);
 }
+
+class RemoveLocalUserIdAction {}
 
 class UpdateInitStateAction {
   String? userId;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/utils/localization/localizations.dart';
+import 'package:alien_mates/utils/localization/localizations.dart';
 
 class GlobalWidgets {
   static final GlobalWidgets _singleton = GlobalWidgets._internal();

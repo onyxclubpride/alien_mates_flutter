@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
 
 ///
 /// ApiState

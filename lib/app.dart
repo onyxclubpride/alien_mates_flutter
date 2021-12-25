@@ -1,13 +1,13 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/constants.dart';
-import 'package:smart_house_flutter/utils/common/global_widgets.dart';
-import 'package:smart_house_flutter/utils/localization/localizations.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/constants.dart';
+import 'package:alien_mates/utils/common/global_widgets.dart';
+import 'package:alien_mates/utils/localization/localizations.dart';
 
 class AlienMatesApp extends StatefulWidget {
   const AlienMatesApp({Key? key}) : super(key: key);

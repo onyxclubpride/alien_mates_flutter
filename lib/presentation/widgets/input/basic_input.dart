@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/constants.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/constants.dart';
 
 class BasicInput extends StatelessWidget {
   String? hintText;
@@ -61,20 +61,20 @@ class BasicInput extends StatelessWidget {
               EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.r)),
-              borderSide: BorderSide(width: 1, color: ThemeColors.gray1)),
+              borderSide: BorderSide(width: 1.w, color: ThemeColors.gray1)),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.r)),
-              borderSide: BorderSide(width: 1, color: ThemeColors.red)),
+              borderSide: BorderSide(width: 1.w, color: ThemeColors.red)),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(5.r)),
-              borderSide: BorderSide(width: 1, color: ThemeColors.red)),
+              borderSide: BorderSide(width: 1.w, color: ThemeColors.red)),
           focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              borderRadius: BorderRadius.all(Radius.circular(5.r)),
               borderSide: BorderSide(
-                  width: 1,
+                  width: 1.w,
                   color: !isFocusBorderEnabled!
                       ? ThemeColors.gray1
-                      : Colors.black)),
+                      : ThemeColors.yellow)),
           constraints: BoxConstraints(maxWidth: 324.w),
         ));
   }

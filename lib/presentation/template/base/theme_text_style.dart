@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 //TODO: THERE IS NO FUTURA
@@ -53,6 +53,11 @@ final latoB34 = GoogleFonts.lato(
 
 final latoM25 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
+  fontSize: 25.0,
+);
+
+final latoB25 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
   fontSize: 25.0,
 );
 

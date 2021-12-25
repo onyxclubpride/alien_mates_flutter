@@ -1,4 +1,4 @@
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 class ExpandedButton extends StatelessWidget {
   String text;
@@ -17,7 +17,8 @@ class ExpandedButton extends StatelessWidget {
               : expandedButtonTheme().backgroundColor),
       onPressed: onPressed,
       child: SizedText(
-          text: text, textStyle: latoB34.copyWith(color: Colors.black)),
+          text: text,
+          textStyle: latoB25.copyWith(color: ThemeColors.fontLight)),
     );
   }
 }

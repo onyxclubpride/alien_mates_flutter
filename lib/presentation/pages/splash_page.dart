@@ -1,8 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/scheduler.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -25,9 +25,14 @@ class _SplashPageState extends State<SplashPage> {
       withNavigationBar: false,
       withTopBanner: false,
       child: Center(
-        child: SizedText(
-            text: 'Splash Screen is Fetching Data',
-            textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
+        child: InkWell(
+          onTap: () {
+            appStore.dispatch(RemoveLocalUserIdAction());
+          },
+          child: SizedText(
+              text: 'Splash Screen is Fetching Data',
+              textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
+        ),
       ),
     );
   }

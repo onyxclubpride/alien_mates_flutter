@@ -1,8 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:redux/redux.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/states/api_state.dart';
-import 'package:smart_house_flutter/mgr/redux/states/init_state.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/states/api_state.dart';
+import 'package:alien_mates/mgr/redux/states/init_state.dart';
 import './app_state.dart';
 import 'dart:developer' as developer;
 

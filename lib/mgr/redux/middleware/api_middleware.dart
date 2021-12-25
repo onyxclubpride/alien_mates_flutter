@@ -1,12 +1,13 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redux/redux.dart';
-import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/global_widgets.dart';
-import 'package:smart_house_flutter/utils/common/log_tester.dart';
+import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/global_widgets.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:uuid/uuid.dart';
 
 FirebaseKit firebaseKit = FirebaseKit();
@@ -23,7 +24,7 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
   call(Store<AppState> store, action, next) {
     switch (action.runtimeType) {
       case GetAllKindPostsAction:
-        return _GetAllKindPostsAction(store.state, action, next);
+        return _getAllKindPostsAction(store.state, action, next);
       case GetCreatePostAction:
         return _getCreatePostAction(store.state, action, next);
       case GetCreateEventAction:
@@ -36,15 +37,17 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getCreateUserAction(store.state, action, next);
       case GetAllUsersAction:
         return _getAllUsersAction(store.state, action, next);
-      case GetUserMeAction:
-        return _getUserMeAction(store.state, action, next);
+      case GetUserIdExistAction:
+        return _getUserIdExistAction(store.state, action, next);
+      case GetLoginAction:
+        return _getLoginAction(store.state, action, next);
       default:
-        next(action);
+        return next(action);
     }
   }
 }
 
-Future<bool> _GetAllKindPostsAction(
+Future<bool> _getAllKindPostsAction(
     AppState state, GetAllKindPostsAction action, NextDispatcher next) async {
   List<ListPostModelRes> postsList = await _getPostsList();
   next(UpdateApiStateAction(posts: postsList));
@@ -268,17 +271,40 @@ Future<List<UserModelRes>> _getUsersList() async {
   }
 }
 
-Future<UserModelRes?> _getUserMeAction(
-    AppState state, GetUserMeAction action, NextDispatcher next) async {
+Future<void> _getUserIdExistAction(
+    AppState state, GetUserIdExistAction action, NextDispatcher next) async {
+  final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
+  if (postsFetched) {
+    for (int i = 0; i < state.apiState.users.length; i++) {
+      UserModelRes? _userInst = state.apiState.users[i];
+      if (_userInst.userId == action.userId) {
+        next(UpdateApiStateAction(userMe: _userInst));
+        next(UpdateInitStateAction(userId: _userInst.userId));
+      }
+    }
+    appStore
+        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+  }
+}
+
+Future<bool> _getLoginAction(
+    AppState state, GetLoginAction action, NextDispatcher next) async {
+  showLoading();
+  bool _matched = false;
   for (int i = 0; i < state.apiState.users.length; i++) {
     UserModelRes? _userInst = state.apiState.users[i];
-    if (_userInst.phoneNumber == action.phoneNumber &&
-        _userInst.password == action.password) {
+    bool _matched = _userInst.phoneNumber == action.phoneNumber &&
+        _userInst.password == action.password;
+    if (_matched) {
       next(UpdateApiStateAction(userMe: _userInst));
       next(UpdateInitStateAction(userId: _userInst.userId));
-      return _userInst;
+      await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
+      await appStore.dispatch(GetAllKindPostsAction());
+      appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
     }
   }
+  closeLoading();
+  return _matched;
 }
 
 // Future<bool> _getCreatePostAction(

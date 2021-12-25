@@ -1,4 +1,4 @@
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 class DefaultBody extends StatelessWidget {
   Widget child;
@@ -32,6 +32,7 @@ class DefaultBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: showAppBar
           ? DefaultHeader(
               centerTitle: centerTitle,

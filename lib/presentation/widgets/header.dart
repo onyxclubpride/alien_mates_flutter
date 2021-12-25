@@ -1,7 +1,7 @@
 import 'package:ionicons/ionicons.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
   bool? centerTitle;

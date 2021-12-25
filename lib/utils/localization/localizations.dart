@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart' show SynchronousFuture;
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/utils/localization/languages/en.dart';
-import 'package:smart_house_flutter/utils/localization/languages/kr.dart';
+import 'package:alien_mates/utils/localization/languages/en.dart';
+import 'package:alien_mates/utils/localization/languages/kr.dart';
 
 class AppLocalizations {
   static bool? showCode = false;

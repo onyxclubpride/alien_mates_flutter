@@ -1,9 +1,9 @@
-import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/log_tester.dart';
+import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 
 class DefaultBanner extends StatelessWidget {
   Widget? child;

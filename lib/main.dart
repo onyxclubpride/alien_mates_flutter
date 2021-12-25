@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
-import 'package:smart_house_flutter/app.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/app.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

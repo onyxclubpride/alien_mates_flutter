@@ -1,4 +1,4 @@
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 class SpacedColumn extends StatelessWidget {
   //Do not add screenUtil, Just pass double value

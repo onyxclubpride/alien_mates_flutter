@@ -7,7 +7,7 @@ export 'package:flutter/material.dart';
 export '../theme/theme_data.dart';
 
 //Utils
-export 'package:smart_house_flutter/utils/localization/localizations.dart';
+export 'package:alien_mates/utils/localization/localizations.dart';
 export 'package:flutter_screenutil/flutter_screenutil.dart';
 export 'package:auto_size_text/auto_size_text.dart';
 

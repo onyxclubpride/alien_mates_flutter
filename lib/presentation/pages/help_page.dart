@@ -1,11 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/log_tester.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 
 class HelpPage extends StatelessWidget {
   final ScrollController _controller = ScrollController();
@@ -56,7 +56,7 @@ class HelpPage extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,
       maxLines: 5,
-      text:listPostModelRes.description,
+      text: listPostModelRes.description,
       textStyle: latoM16.copyWith(color: ThemeColors.fontDark),
     ));
     return SpacedColumn(

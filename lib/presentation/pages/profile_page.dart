@@ -2,13 +2,13 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/mgr/redux/states/api_state.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
-import 'package:smart_house_flutter/utils/common/log_tester.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/mgr/redux/states/api_state.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 
 class ProfilePage extends StatelessWidget {
   final ScrollController _controller = ScrollController();
@@ -35,7 +35,7 @@ class ProfilePage extends StatelessWidget {
                     textStyle: latoM25.copyWith(color: ThemeColors.fontDark)),
                 SizedBox(height: 10.h),
                 SizedBox(
-                  height: 325.h,
+                  height: 290.h,
                   child: ListView(
                     shrinkWrap: true,
                     controller: _controller,
@@ -47,9 +47,9 @@ class ProfilePage extends StatelessWidget {
   }
 
   Widget _buildUserInfoWidget(ApiState state) {
-    UserModelRes userModelRes = state.users.first;
+    UserModelRes userModelRes = state.userMe;
     return DefaultBanner(
-      height: 110.h,
+      height: 140.h,
       child: Padding(
         padding: EdgeInsets.all(15.w),
         child: SpacedColumn(

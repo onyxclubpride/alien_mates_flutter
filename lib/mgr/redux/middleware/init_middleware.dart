@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
-import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/utils/common/constants.dart';
-import 'package:smart_house_flutter/utils/common/log_tester.dart';
+import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
+import 'package:alien_mates/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/utils/common/constants.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 
 class InitMiddleware extends MiddlewareClass<AppState> {
   @override
@@ -19,20 +19,25 @@ class InitMiddleware extends MiddlewareClass<AppState> {
         return _getLocalUserIdAction(store.state, action, next);
       case SetLocalUserIdAction:
         return _setLocalUserIdAction(store.state, action, next);
+      case RemoveLocalUserIdAction:
+        return _removeLocalUserIdAction(store.state, action, next);
       default:
-        next(action);
+        return next(action);
     }
   }
 }
 
 Future<void> _getStateInitAction(
     AppState state, GetStateInitAction action, NextDispatcher next) async {
-  final postsFetched = await next(GetAllKindPostsAction());
-  final usersFetched = await next(GetAllUsersAction());
-
-  if (postsFetched && usersFetched) {
-    appStore
-        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+  final usersFetched = await appStore.dispatch(GetAllUsersAction());
+  String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
+  if (usersFetched) {
+    if (_localUserId != null) {
+      next(GetUserIdExistAction(_localUserId));
+    } else {
+      appStore.dispatch(
+          NavigateToAction(to: AppRoutes.loginPageRoute, replace: true));
+    }
   }
 }
 
@@ -48,5 +53,12 @@ Future<bool> _setLocalUserIdAction(
   SharedPreferences _prefs = await SharedPreferences.getInstance();
   bool? success =
       await _prefs.setString(Constants.localUserIdKey, action.userId);
+  return success;
+}
+
+Future<bool> _removeLocalUserIdAction(
+    AppState state, RemoveLocalUserIdAction action, NextDispatcher next) async {
+  SharedPreferences _prefs = await SharedPreferences.getInstance();
+  bool? success = await _prefs.remove(Constants.localUserIdKey);
   return success;
 }

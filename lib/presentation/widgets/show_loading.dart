@@ -1,4 +1,4 @@
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/template/base/template.dart';
 
 Future showLoadingDialog(BuildContext context,
     {bool? barrierDismissible = false}) {

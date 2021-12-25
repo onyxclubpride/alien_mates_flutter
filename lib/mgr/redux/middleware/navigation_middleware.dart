@@ -1,11 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
-import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
-import 'package:smart_house_flutter/mgr/redux/action.dart';
-import 'package:smart_house_flutter/mgr/redux/app_state.dart';
-import 'package:smart_house_flutter/mgr/redux/states/nav_state.dart';
-import 'package:smart_house_flutter/utils/common/global_widgets.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/app_state.dart';
+import 'package:alien_mates/mgr/redux/states/nav_state.dart';
+import 'package:alien_mates/utils/common/global_widgets.dart';
 
 class NavigationMiddleware extends MiddlewareClass<AppState> {
   @override

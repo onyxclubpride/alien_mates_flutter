@@ -1,5 +1,5 @@
+import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
 class MainTheme {
   static ThemeData get mainThemeDark {
@@ -37,8 +37,9 @@ ButtonStyle expandedButtonTheme() {
     padding: MaterialStateProperty.all(EdgeInsets.zero),
     textStyle: MaterialStateProperty.resolveWith<TextStyle>(
         (Set<MaterialState> states) {
-      if (states.contains(MaterialState.disabled))
+      if (states.contains(MaterialState.disabled)) {
         return latoM20.copyWith(color: ThemeColors.gray1);
+      }
       return latoM16.copyWith(color: ThemeColors.fontLight);
     }),
     backgroundColor: MaterialStateProperty.resolveWith<Color>(
@@ -47,8 +48,8 @@ ButtonStyle expandedButtonTheme() {
         return ThemeColors.yellow;
       },
     ),
-    maximumSize: MaterialStateProperty.all(Size(double.infinity, 50.h)),
-    minimumSize: MaterialStateProperty.all(Size(double.infinity, 50.h)),
+    maximumSize: MaterialStateProperty.all(Size(double.infinity, 45.h)),
+    minimumSize: MaterialStateProperty.all(Size(double.infinity, 45.h)),
     shape: MaterialStateProperty.all(
       RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
