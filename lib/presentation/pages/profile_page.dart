@@ -6,6 +6,7 @@ import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
 import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';
+import 'package:smart_house_flutter/mgr/redux/states/api_state.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 import 'package:smart_house_flutter/utils/common/log_tester.dart';
 
@@ -25,7 +26,7 @@ class ProfilePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                _buildUserInfoWidget(),
+                _buildUserInfoWidget(state.apiState),
                 SizedBox(height: 20.h),
                 Divider(thickness: 1.w, color: ThemeColors.borderDark),
                 SizedBox(height: 10.h),
@@ -45,7 +46,8 @@ class ProfilePage extends StatelessWidget {
             )));
   }
 
-  Widget _buildUserInfoWidget() {
+  Widget _buildUserInfoWidget(ApiState state) {
+    UserModelRes userModelRes = state.users.first;
     return DefaultBanner(
       height: 110.h,
       child: Padding(
@@ -53,9 +55,11 @@ class ProfilePage extends StatelessWidget {
         child: SpacedColumn(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
-            _buildUserInfoItem(),
-            _buildUserInfoItem(icon: Ionicons.chatbox, valueText: 'Issuer'),
-            _buildUserInfoItem(icon: Ionicons.call, valueText: '01064634085'),
+            _buildUserInfoItem(valueText: userModelRes.name),
+            _buildUserInfoItem(
+                icon: Ionicons.chatbox, valueText: userModelRes.uniName),
+            _buildUserInfoItem(
+                icon: Ionicons.call, valueText: userModelRes.phoneNumber),
           ],
         ),
       ),
@@ -92,7 +96,7 @@ class ProfilePage extends StatelessWidget {
             ),
           ),
           rightWidget: InkWell(
-            onTap: _onEditPress,
+            onTap: _onEditPostPress,
             child: const SizedText(
               text: 'Edit',
             ),
@@ -117,7 +121,11 @@ class ProfilePage extends StatelessWidget {
     );
   }
 
-  _onEditPress() {}
+  _onEditPress() {
+    appStore.dispatch(NavigateToAction(to: AppRoutes.loginPageRoute));
+  }
+
+  _onEditPostPress() {}
 
   _onDeletePress() {}
 }

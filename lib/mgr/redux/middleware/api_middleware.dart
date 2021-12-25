@@ -34,6 +34,10 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getCreateHelpAction(store.state, action, next);
       case GetCreateUserAction:
         return _getCreateUserAction(store.state, action, next);
+      case GetAllUsersAction:
+        return _getAllUsersAction(store.state, action, next);
+      case GetUserMeAction:
+        return _getUserMeAction(store.state, action, next);
       default:
         next(action);
     }
@@ -229,6 +233,51 @@ Future<bool> _getCreateUserAction(
     closeLoading();
     logger(e.toString(), hint: 'GET Create USER CATCH ERROR');
     return false;
+  }
+}
+
+Future<bool> _getAllUsersAction(
+    AppState state, GetAllUsersAction action, NextDispatcher next) async {
+  List<UserModelRes> usersList = await _getUsersList();
+  next(UpdateApiStateAction(users: usersList));
+  return usersList.isNotEmpty;
+}
+
+Future<List<UserModelRes>> _getUsersList() async {
+  try {
+    QuerySnapshot _querySnapshot = await usersCollection.get();
+    List _snapshotList = _querySnapshot.docs;
+    List<UserModelRes> _users = [];
+    for (int i = 0; i < _snapshotList.length; i++) {
+      var item = _snapshotList[i];
+      UserModelRes userModelRes = UserModelRes(
+        createdDate: item['createdDate'],
+        userId: item['userId'],
+        phoneNumber: item['phoneNumber'],
+        name: item['name'],
+        password: item['password'],
+        uniName: item['uniName'],
+        postIds: item['postIds'],
+      );
+      _users.add(userModelRes);
+    }
+    return _users;
+  } catch (e) {
+    logger(e.toString(), hint: 'GET USERS LIST CATCH ERROR');
+    return [];
+  }
+}
+
+Future<UserModelRes?> _getUserMeAction(
+    AppState state, GetUserMeAction action, NextDispatcher next) async {
+  for (int i = 0; i < state.apiState.users.length; i++) {
+    UserModelRes? _userInst = state.apiState.users[i];
+    if (_userInst.phoneNumber == action.phoneNumber &&
+        _userInst.password == action.password) {
+      next(UpdateApiStateAction(userMe: _userInst));
+      next(UpdateInitStateAction(userId: _userInst.userId));
+      return _userInst;
+    }
   }
 }
 

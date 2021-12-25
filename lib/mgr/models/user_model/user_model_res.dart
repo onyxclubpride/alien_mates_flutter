@@ -5,7 +5,7 @@ class UserModelRes {
   String password;
   String uniName;
   String createdDate;
-  List<String>? postIds;
+  List? postIds;
 
   UserModelRes({
     required this.userId,

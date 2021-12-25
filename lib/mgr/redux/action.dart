@@ -63,8 +63,10 @@ class GetAllKindPostsAction {}
 class UpdateApiStateAction {
   List<ListPostModelRes>? posts;
   List<PostOnlyModel>? postOnly;
+  List<UserModelRes>? users;
+  UserModelRes? userMe;
 
-  UpdateApiStateAction({this.posts, this.postOnly});
+  UpdateApiStateAction({this.posts, this.postOnly, this.users, this.userMe});
 }
 
 class GetStateInitAction {}
@@ -118,6 +120,25 @@ class GetCreateUserAction {
       required this.name});
 }
 
-class GetUserMeAction {}
+class GetUserMeAction {
+  String phoneNumber;
+  String password;
+  GetUserMeAction({required this.phoneNumber, required this.password});
+}
 
-class UpdateInitStateAction {}
+class GetAllUsersAction {}
+
+///----------------- Init -----------------
+
+class GetLocalUserIdAction {}
+
+class SetLocalUserIdAction {
+  String userId;
+
+  SetLocalUserIdAction(this.userId);
+}
+
+class UpdateInitStateAction {
+  String? userId;
+  UpdateInitStateAction({this.userId});
+}

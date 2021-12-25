@@ -75,6 +75,8 @@ ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
   return state.copyWith(
     posts: action.posts ?? state.posts,
     postOnly: action.postOnly ?? state.postOnly,
+    users: action.users ?? state.users,
+    userMe: action.userMe ?? state.userMe,
   );
 }
 
@@ -86,5 +88,5 @@ final _initReducer = combineReducers<InitState>([
 ]);
 
 InitState _updateInitState(InitState state, UpdateInitStateAction action) {
-  return state.copyWith();
+  return state.copyWith(userId: action.userId ?? state.userId);
 }
