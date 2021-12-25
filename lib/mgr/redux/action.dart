@@ -150,6 +150,18 @@ class GetDeletePostAction {
   GetDeletePostAction(this.postId);
 }
 
+class GetSelectImageAction {
+  bool multipleImages;
+  bool withCamera;
+  GetSelectImageAction({this.multipleImages = false, this.withCamera = false});
+}
+
+class GetImageDownloadLinkAction {
+  String imagePath;
+  String? postType;
+  GetImageDownloadLinkAction(this.imagePath, {this.postType});
+}
+
 class GetUpdatePostAction {
   String? imageUrl;
   int? numberOfLikes;

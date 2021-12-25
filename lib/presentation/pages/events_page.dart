@@ -1,4 +1,5 @@
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -40,7 +41,7 @@ class _EventsPageState extends State<EventsPage> {
             ),
             rightWidget: InkWell(
               onTap: () {
-                _onJoinTap(_item.postId, _item.joinedUserIds!,
+                _onJoinTap(_item.postId, _item.joinedUserIds!, _item.joinLimit!,
                     "USER_2021.12.25_f547d420-657f-11ec-8de4-a59789f4ac63");
               },
               child: const SizedText(
@@ -56,12 +57,18 @@ class _EventsPageState extends State<EventsPage> {
     return _list;
   }
 
-  _onJoinTap(String postId, List userIds, userId) {
-    if (!userIds.contains(userId)) {
-      appStore.dispatch(GetUpdatePostAction(
-          postId: postId, joinedUserIds: [...userIds, userId]));
+  _onJoinTap(String postId, List userIds, int joinLimit, userId) {
+    logger(joinLimit);
+    logger(userIds);
+    if (joinLimit > userIds.length) {
+      if (!userIds.contains(userId)) {
+        appStore.dispatch(GetUpdatePostAction(
+            postId: postId, joinedUserIds: [...userIds, userId]));
+      } else {
+        showAlertDialog(context, text: "You have already joined!");
+      }
     } else {
-      showAlertDialog(context, text: "You have already joined!");
+      showAlertDialog(context, text: "Guests limit is full!");
     }
     // appStore.dispatch(GetDeletePostAction(postId));
     // appStore.dispatch(GetPostByIdAction(

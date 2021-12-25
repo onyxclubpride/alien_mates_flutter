@@ -1,7 +1,10 @@
+import 'dart:io';
+
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/input/input_label.dart';
 import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
+import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -11,6 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class CreateEventPage extends StatefulWidget {
@@ -26,7 +30,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController maxPplController = TextEditingController();
   TextEditingController locationController = TextEditingController();
-  String errorText = "";
+
+  File? postImage;
 
   @override
   void dispose() {
@@ -117,13 +122,15 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     ),
                     SizedBox(height: 20.h),
                     DefaultBanner(
-                      onTap: () {},
+                      onTap: _onChooseImage,
                       height: 200.h,
-                      child: const FittedBox(
-                          child: Icon(
-                        Ionicons.add,
-                        color: ThemeColors.borderDark,
-                      )),
+                      child: FittedBox(
+                          child: postImage == null
+                              ? const Icon(
+                                  Ionicons.add,
+                                  color: ThemeColors.borderDark,
+                                )
+                              : Image.file(postImage!)),
                     ),
                     SizedBox(height: 20.h),
                     ExpandedButton(text: 'Post', onPressed: _onPostEvent),
@@ -136,14 +143,31 @@ class _CreateEventPageState extends State<CreateEventPage> {
         });
   }
 
+  _onChooseImage() async {
+    String? xImagePath = await appStore.dispatch(GetSelectImageAction());
+    if (xImagePath != null) {
+      setState(() {
+        postImage = File(xImagePath);
+      });
+    }
+  }
+
   _onPostEvent() async {
     if (_formKeyCreateEventPage.currentState!.validate()) {
       bool created = await appStore.dispatch(GetCreateEventAction(
           title: titleController.text,
           description: descriptionController.text,
           eventLocation: locationController.text,
-          joinLimit: int.parse(maxPplController.text)));
-      if (!created) {}
+          joinLimit: int.parse(maxPplController.text),
+          imagePath: postImage?.path));
+
+      if (!created) {
+        showAlertDialog(context,
+            text:
+                'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
+      }
     }
   }
 

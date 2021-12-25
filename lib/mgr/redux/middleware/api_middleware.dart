@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/utils/common/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -49,6 +54,10 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getUpdatePostAction(store.state, action, next);
       case GetDeletePostAction:
         return _getDeletePostAction(store.state, action, next);
+      case GetSelectImageAction:
+        return _getSelectImageAction(store.state, action, next);
+      case GetImageDownloadLinkAction:
+        return _getImageDownloadLinkAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -81,6 +90,7 @@ Future<List<ListPostModelRes>> _getPostsList() async {
         joinedUserIds: item['joinedUserIds'],
         numberOfLikes: item['numberOfLikes'],
         title: item['title'],
+        joinLimit: item['joinLimit'],
       );
       _posts.add(postModelRes);
     }
@@ -163,13 +173,17 @@ Future<bool> _getCreateEventAction(
     showLoading();
     String _postUid = _generatePostUuid(type: 'EVENT_POST');
     String _userUid = _generateUserUuid();
+    String? downUrl;
+    if (action.imagePath != null) {
+      downUrl = await appStore
+          .dispatch(GetImageDownloadLinkAction(action.imagePath!));
+    }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,
       "title": action.title,
       "description": action.description,
       "eventLocation": action.eventLocation,
-      "imageUrl":
-          'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+      "imageUrl": downUrl,
       "userId": _userUid,
       "isPost": false,
       "isEvent": true,
@@ -417,6 +431,22 @@ Future<void> _getDeletePostAction(
   }
 }
 
+Future<String?> _getImageDownloadLinkAction(AppState state,
+    GetImageDownloadLinkAction action, NextDispatcher next) async {
+  try {
+    File _file = File(action.imagePath);
+    String _postUid = _generatePostUuid(type: action.postType);
+
+    TaskSnapshot taskSnapshot = await FirebaseStorage.instance
+        .ref("/${Constants.firebaseStorageImagesFolderName}/$_postUid")
+        .putFile(_file);
+    String downUrl = await taskSnapshot.ref.getDownloadURL();
+    return downUrl;
+  } catch (e) {
+    logger(e.toString(), hint: 'GET IMAGE DOWNLOAD LINK POST CATCH ERROR');
+  }
+}
+
 Future<void> _getUserByIdAction(
     AppState state, GetUserByIdAction action, NextDispatcher next) async {
   // final _test = await usersCollection
@@ -455,9 +485,9 @@ Future<void> _getUserByIdAction(
 //   }
 // }
 
-String _generatePostUuid({String type = "POST_POST"}) {
+String _generatePostUuid({String? type}) {
   final uid = uuid.v1();
-  String postIdFormat = "${type}_${currentDate}_$uid";
+  String postIdFormat = "${type ?? "POST_POST"}_${currentDate}_$uid";
   return postIdFormat;
 }
 
@@ -473,4 +503,20 @@ showLoading() {
 
 closeLoading() {
   appStore.dispatch(DismissPopupAction(all: true));
+}
+
+Future<String?> _getSelectImageAction(
+    AppState state, GetSelectImageAction action, NextDispatcher next) async {
+  try {
+    final ImagePicker _picker = ImagePicker();
+    XFile? xImage;
+    xImage = await _picker.pickImage(
+        source: action.withCamera ? ImageSource.camera : ImageSource.gallery);
+
+    if (xImage != null) {
+      return xImage.path;
+    }
+  } catch (e) {
+    logger(e.toString(), hint: 'GET SELECT IMAGE CATCH ERROR');
+  }
 }

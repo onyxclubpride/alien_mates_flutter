@@ -2,6 +2,7 @@ class ListPostModelRes {
   bool success;
   String? imageUrl;
   int? numberOfLikes;
+  int? joinLimit;
   List? joinedUserIds;
   String? title;
   String? description;
@@ -18,6 +19,7 @@ class ListPostModelRes {
       this.joinedUserIds,
       this.description,
       this.title,
+      this.joinLimit,
       required this.postId,
       this.success = false,
       required this.isHelp,
