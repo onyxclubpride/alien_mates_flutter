@@ -68,4 +68,9 @@ class UpdateApiStateAction {
 
 class GetStateInitAction {}
 
+class GetCreatePostAction {
+  PostModelReq postModelReq;
+  GetCreatePostAction({required this.postModelReq});
+}
+
 class UpdateInitStateAction {}

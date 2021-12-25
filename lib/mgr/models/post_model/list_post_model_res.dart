@@ -1,6 +1,5 @@
 class ListPostModelRes {
   bool success;
-  String postId;
   String? imageUrl;
   int? numberOfLikes;
   int? numberOfJoins;
@@ -9,16 +8,19 @@ class ListPostModelRes {
   bool isPost;
   bool isEvent;
   bool isNotice;
+  String postId;
+  String createdDate;
 
   ListPostModelRes(
-      {required this.postId,
-      this.imageUrl,
+      {this.imageUrl,
       this.numberOfLikes,
       this.numberOfJoins,
       this.description,
       this.title,
+      required this.postId,
       this.success = false,
       required this.isEvent,
       required this.isNotice,
-      required this.isPost});
+      required this.isPost,
+      required this.createdDate});
 }

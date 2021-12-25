@@ -1,5 +1,4 @@
 class PostModelRes {
-  String postId;
   String? imageUrl;
   int? numberOfLikes;
   int? numberOfJoins;
@@ -10,11 +9,13 @@ class PostModelRes {
   bool isNotice;
   String userId;
   int? joinLimit;
+  String postId;
+  String createdDate;
 
   PostModelRes(
-      {required this.postId,
-      this.imageUrl,
+      {this.imageUrl,
       this.numberOfLikes,
+      required this.postId,
       this.numberOfJoins,
       this.description,
       this.title,
@@ -22,5 +23,6 @@ class PostModelRes {
       required this.userId,
       required this.isEvent,
       required this.isNotice,
-      required this.isPost});
+      required this.isPost,
+      required this.createdDate});
 }

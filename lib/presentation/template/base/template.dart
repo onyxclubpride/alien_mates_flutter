@@ -25,3 +25,6 @@ export "../../widgets/sized_text.dart";
 export "../../widgets/header.dart";
 export "../../widgets/banner.dart";
 export '../../widgets/post_button.dart';
+export '../../widgets/spaced_column.dart';
+export '../../widgets/spaced_row.dart';
+export '../../widgets/show_loading.dart';

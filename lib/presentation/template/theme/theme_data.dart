@@ -18,7 +18,6 @@ class MainTheme {
 AppBarTheme _appBarDarkTheme() {
   return AppBarTheme(
     elevation: 0,
-    toolbarHeight: 90.h,
     backgroundColor: ThemeColors.transparent,
     foregroundColor: ThemeColors.fontDark,
   );

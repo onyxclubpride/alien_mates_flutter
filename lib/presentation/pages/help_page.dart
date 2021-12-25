@@ -31,6 +31,7 @@ class HelpPage extends StatelessWidget {
     for (int i = 0; i < postsList.length; i++) {
       _list.add(PostItemBanner(
           withBorder: true,
+          height: 150,
           bgColor: ThemeColors.black,
           child: Padding(
             padding: EdgeInsets.all(8.w),
@@ -50,10 +51,7 @@ class HelpPage extends StatelessWidget {
         textStyle: latoM20.copyWith(color: ThemeColors.fontDark),
       ),
     ));
-    list.add(Padding(
-      padding: EdgeInsets.symmetric(vertical: 8.h),
-      child: Divider(thickness: 1.w, color: ThemeColors.borderDark),
-    ));
+    list.add(Divider(thickness: 1.w, color: ThemeColors.borderDark));
     list.add(SizedText(
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,
@@ -62,7 +60,10 @@ class HelpPage extends StatelessWidget {
           'Hello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give my Kakas Id . Please contact there.',
       textStyle: latoM16.copyWith(color: ThemeColors.fontDark),
     ));
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: list);
+    return SpacedColumn(
+        verticalSpace: 8,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: list);
   }
 
   _onJoinTap() {
