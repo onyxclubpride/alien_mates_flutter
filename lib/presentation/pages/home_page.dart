@@ -29,11 +29,14 @@ class HomePage extends StatelessWidget {
     List<ListPostModelRes> postsList = state.apiState.posts;
 
     for (int i = 0; i < postsList.length; i++) {
-      _list.add(PostItemBanner(
-          child: CachedNetworkImage(
-        imageUrl: state.apiState.posts[i].imageUrl!,
-        fit: BoxFit.cover,
-      )));
+      ListPostModelRes _item = postsList[i];
+      if (_item.isPost) {
+        _list.add(PostItemBanner(
+            child: CachedNetworkImage(
+          imageUrl: state.apiState.posts[i].imageUrl!,
+          fit: BoxFit.cover,
+        )));
+      }
     }
     return _list;
   }

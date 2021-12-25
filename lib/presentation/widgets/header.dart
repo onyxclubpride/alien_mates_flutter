@@ -43,7 +43,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       mainAxisAlignment: mainAxisAlignment,
       children: [
         if (titleIcon != null) titleIcon!,
-        if (titleIcon != null) SizedBox(width: 24.w),
+        if (titleIcon != null) SizedBox(width: 10.w),
         SizedText(
           text: 'Alien Mates',
           textStyle: latoM36,
@@ -63,8 +63,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Ionicons.person, color: ThemeColors.bgLight),
           iconSize: 30.h,
           onPressed: () {
-            print('On Profile icon press');
-            appStore.dispatch(NavigateToAction(to: AppRoutes.loginPageRoute));
+            appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
           },
         ),
       ));

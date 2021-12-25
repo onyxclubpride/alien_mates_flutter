@@ -19,6 +19,8 @@ export '../../pages/home_page.dart';
 export '../../pages/splash_page.dart';
 export '../../pages/events_page.dart';
 export '../../pages/help_page.dart';
+export '../../pages/login_page.dart';
+export '../../pages/profile_page.dart';
 
 //Widgets
 export "../../widgets/sized_text.dart";

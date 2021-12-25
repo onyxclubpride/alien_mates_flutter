@@ -4,6 +4,7 @@ class PostModelRes {
   int? numberOfJoins;
   String? title;
   String? description;
+  String? eventLocation;
   bool isPost;
   bool isEvent;
   bool isHelp;
@@ -21,6 +22,7 @@ class PostModelRes {
       this.description,
       this.title,
       this.joinLimit,
+      this.eventLocation,
       required this.userId,
       required this.isEvent,
       required this.isNotice,

@@ -58,7 +58,7 @@ class DismissPopupAction {
 
 ///----------------- API -----------------
 
-class GetPostsAction {}
+class GetAllKindPostsAction {}
 
 class UpdateApiStateAction {
   List<ListPostModelRes>? posts;
@@ -75,6 +75,49 @@ class GetCreatePostAction {
   GetCreatePostAction({this.description, this.imagePath});
 }
 
-class GetCreateNoticeAction {}
+class GetCreateNoticeAction {
+  String? imagePath;
+  String title;
+  String description;
+  GetCreateNoticeAction(
+      {required this.title, this.imagePath, required this.description});
+}
+
+class GetCreateEventAction {
+  String? imagePath;
+  String title;
+  String description;
+  int? joinLimit;
+  String eventLocation;
+  GetCreateEventAction(
+      {required this.title,
+      required this.description,
+      this.imagePath,
+      this.joinLimit,
+      required this.eventLocation});
+}
+
+class GetCreateHelpAction {
+  String title;
+  String description;
+  String? imagePath;
+  GetCreateHelpAction(
+      {required this.title, required this.description, this.imagePath});
+}
+
+class GetCreateUserAction {
+  String phoneNumber;
+  String name;
+  String password;
+  String uniName;
+
+  GetCreateUserAction(
+      {required this.phoneNumber,
+      required this.uniName,
+      required this.password,
+      required this.name});
+}
+
+class GetUserMeAction {}
 
 class UpdateInitStateAction {}

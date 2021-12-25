@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:smart_house_flutter/presentation/pages/splash_page.dart';
-import 'package:smart_house_flutter/presentation/pages/login_page.dart';
 import '../../presentation/template/base/template.dart';
 
 class AppRoutes {
@@ -23,7 +21,7 @@ class AppRoutes {
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
       AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
-      // AppRoutes.profileRoute: (BuildContext context) => const ProfilePage(),
+      AppRoutes.profilePageRoute: (BuildContext context) => ProfilePage(),
       // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
 
       // AppRoutes.eventDetailsRoute: (BuildContext context) => const EventDetilsPage(),

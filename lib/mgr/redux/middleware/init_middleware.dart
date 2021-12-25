@@ -21,7 +21,7 @@ class InitMiddleware extends MiddlewareClass<AppState> {
 
 Future<void> _getStateInitAction(
     AppState state, GetStateInitAction action, NextDispatcher next) async {
-  final postsFetched = await next(GetPostsAction());
+  final postsFetched = await next(GetAllKindPostsAction());
   if (postsFetched) {
     appStore
         .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));

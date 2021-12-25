@@ -26,25 +26,28 @@ class HelpPage extends StatelessWidget {
     List<ListPostModelRes> postsList = state.apiState.posts;
 
     for (int i = 0; i < postsList.length; i++) {
-      _list.add(PostItemBanner(
-          withBorder: true,
-          height: 150,
-          bgColor: ThemeColors.black,
-          child: Padding(
-            padding: EdgeInsets.all(8.w),
-            child: _buildSupportTextsWidget(),
-          )));
+      ListPostModelRes _item = postsList[i];
+      if (_item.isHelp) {
+        _list.add(PostItemBanner(
+            withBorder: true,
+            height: 160,
+            bgColor: ThemeColors.black,
+            child: Padding(
+              padding: EdgeInsets.all(8.w),
+              child: _buildSupportTextsWidget(_item),
+            )));
+      }
     }
     return _list;
   }
 
-  Widget _buildSupportTextsWidget() {
+  Widget _buildSupportTextsWidget(ListPostModelRes listPostModelRes) {
     List<Widget> list = [];
     list.add(Padding(
       padding: EdgeInsets.only(left: 8.w),
       child: SizedText(
         textAlign: TextAlign.left,
-        text: 'RoomMate needed',
+        text: listPostModelRes.title,
         textStyle: latoM20.copyWith(color: ThemeColors.fontDark),
       ),
     ));
@@ -53,8 +56,7 @@ class HelpPage extends StatelessWidget {
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,
       maxLines: 5,
-      text:
-          'Hello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give my Kakas Id . Please contact there.',
+      text:listPostModelRes.description,
       textStyle: latoM16.copyWith(color: ThemeColors.fontDark),
     ));
     return SpacedColumn(

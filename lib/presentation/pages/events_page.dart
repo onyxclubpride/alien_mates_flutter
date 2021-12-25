@@ -26,21 +26,24 @@ class EventsPage extends StatelessWidget {
     List<ListPostModelRes> postsList = state.apiState.posts;
 
     for (int i = 0; i < postsList.length; i++) {
-      _list.add(PostItemBanner(
-          height: 180.h,
-          leftWidget: const SizedText(
-            text: 'Joined 17',
-          ),
-          rightWidget: InkWell(
-            onTap: _onJoinTap,
-            child: const SizedText(
-              text: 'JOIN',
+      ListPostModelRes _item = postsList[i];
+      if (_item.isEvent) {
+        _list.add(PostItemBanner(
+            height: 180.h,
+            leftWidget: const SizedText(
+              text: 'Joined 17',
             ),
-          ),
-          child: CachedNetworkImage(
-            imageUrl: state.apiState.posts[i].imageUrl!,
-            fit: BoxFit.cover,
-          )));
+            rightWidget: InkWell(
+              onTap: _onJoinTap,
+              child: const SizedText(
+                text: 'JOIN',
+              ),
+            ),
+            child: CachedNetworkImage(
+              imageUrl: state.apiState.posts[i].imageUrl!,
+              fit: BoxFit.cover,
+            )));
+      }
     }
     return _list;
   }

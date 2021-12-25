@@ -51,6 +51,11 @@ final latoB34 = GoogleFonts.lato(
   fontSize: 34.0,
 );
 
+final latoM25 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 25.0,
+);
+
 final latoB45 = GoogleFonts.lato(
   fontWeight: FontWeight.w700,
   fontSize: 45.0,
