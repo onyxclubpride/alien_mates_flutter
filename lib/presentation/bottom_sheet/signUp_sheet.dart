@@ -2,6 +2,7 @@ import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -37,6 +38,18 @@ class _SignUpState extends State<SignUp> {
     otpController.dispose();
     super.dispose();
   }
+
+  _fireBaseAuth() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '+44 7123 123 456',
+      verificationCompleted: (PhoneAuthCredential credential) {},
+      verificationFailed: (FirebaseAuthException e) {},
+      codeSent: (String verificationId, int? resendToken) {},
+      codeAutoRetrievalTimeout: (String verificationId) {},
+    );
+  }
+
+  FirebaseAuth auth = FirebaseAuth.instance;
 
   // backgroundColor: Color.fromRGBO(r, g, b, 0)
   @override
@@ -110,7 +123,13 @@ class _SignUpState extends State<SignUp> {
                             ),
                           ExpandedButton(
                             text: 'LOGIN',
-                            onPressed: () {},
+                            onPressed: () {
+                              print(nameController);
+                              print(passController);
+                              print(confirmPassController);
+                              print(phoneNumberController);
+                              print(otpController);
+                            },
                           ),
                         ]),
                       ],

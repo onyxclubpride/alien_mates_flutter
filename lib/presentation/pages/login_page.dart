@@ -138,7 +138,7 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return NoticeDetail();
+          return SignUp();
         });
   }
 }
