@@ -8,6 +8,7 @@ import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';
+import 'package:smart_house_flutter/presentation/widgets/button/expanded_btn.dart';
 import 'package:smart_house_flutter/presentation/widgets/input/basic_input.dart';
 import 'package:smart_house_flutter/presentation/widgets/input/input_label.dart';
 import 'package:smart_house_flutter/utils/common/validators.dart';
@@ -60,7 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: SpacedColumn(
                     verticalSpace: 21,
                     children: [
-                      SizedText(text: 'login', textStyle: latoB45),
+                      SizedText(text: 'Alien Mates', textStyle: latoB45),
                       SpacedColumn(verticalSpace: 25, children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,7 +94,13 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 19.h,
                 ),
-                CircularProgressIndicator(),
+                if (!isLoading)
+                  ExpandedButton(
+                    text: 'login',
+                    isGray: false,
+                  )
+                else
+                  CircularProgressIndicator(),
                 SizedBox(height: 10.h),
                 SizedBox(
                   height: 39.h,
