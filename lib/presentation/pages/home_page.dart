@@ -17,11 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   ScrollController _controller = ScrollController();
-  @override
-  void initState() {
-    super.initState();
-    SchedulerBinding.instance!.addPostFrameCallback(_load);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,45 +29,16 @@ class _HomePageState extends State<HomePage> {
                 controller: _controller,
                 children: [
                   DefaultBanner(
-                      child: Container(
-                    child: InkWell(
-                      child: Container(),
-                      onTap: () {
-                        print(_controller.position);
-                      },
-                    ),
+                      child: InkWell(
+                    onTap: () {
+                      print(_controller.position);
+                    },
+                    child: Container(),
                   )),
                   SizedBox(height: 40.h),
                   BodyNavigationBar(),
                   SizedBox(height: 25.h),
-                  PostItemBanner(
-                      child: CachedNetworkImage(
-                    imageUrl: state.apiState.posts.first.imageUrl!,
-                    fit: BoxFit.cover,
-                  )),
-                  PostItemBanner(
-                      child: CachedNetworkImage(
-                    imageUrl: state.apiState.posts.first.imageUrl!,
-                    fit: BoxFit.cover,
-                  )),
-                  PostItemBanner(
-                      child: CachedNetworkImage(
-                    imageUrl: state.apiState.posts.first.imageUrl!,
-                    fit: BoxFit.cover,
-                  )),
-
-                  PostItemBanner(
-                      child: CachedNetworkImage(
-                    imageUrl: state.apiState.posts.first.imageUrl!,
-                    fit: BoxFit.cover,
-                  )),
-                  PostItemBanner(
-                      child: CachedNetworkImage(
-                    imageUrl: state.apiState.posts.first.imageUrl!,
-                    fit: BoxFit.cover,
-                  )),
-                  // if (state.apiState.posts.isNotEmpty)
-                  // ..._buildPostsWidgetList(state)
+                  ..._buildPostsWidgetList(state)
                 ],
               ))),
     );
@@ -90,9 +56,5 @@ class _HomePageState extends State<HomePage> {
       )));
     }
     return _list;
-  }
-
-  Future<void> _load(Duration timeStamp) async {
-    appStore.dispatch(GetPostsAction());
   }
 }

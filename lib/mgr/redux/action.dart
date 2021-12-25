@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
+export "./app_state.dart";
 
 ///----------------- Navigation -----------------
 class NavigateToAction {
@@ -64,3 +65,7 @@ class UpdateApiStateAction {
 
   UpdateApiStateAction({this.posts});
 }
+
+class GetStateInitAction {}
+
+class UpdateInitStateAction {}

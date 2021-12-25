@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redux/redux.dart';
 import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
@@ -13,22 +15,22 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
     switch (action.runtimeType) {
       case GetPostsAction:
         return _getPostsAction(store.state, action, next);
-
-      ///DO SOMETHING
       default:
         next(action);
     }
   }
 }
 
-Future<void> _getPostsAction(
+Future<bool> _getPostsAction(
     AppState state, GetPostsAction action, NextDispatcher next) async {
   List<ListPostModelRes> postsList = await _getPostsList();
   next(UpdateApiStateAction(posts: postsList));
+  return postsList.isNotEmpty;
 }
 
 Future<List<ListPostModelRes>> _getPostsList() async {
-  QuerySnapshot _querySnapshot = await firebaseKit.postsCollection.get();
+  QuerySnapshot _querySnapshot =
+      await firebaseKit.postsCollection.limit(10).get();
   List _snapshotList = _querySnapshot.docs;
   List<ListPostModelRes> _posts = [];
   for (int i = 0; i < _snapshotList.length; i++) {

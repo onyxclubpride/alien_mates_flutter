@@ -10,9 +10,11 @@ class DefaultBody extends StatelessWidget {
   double? horizontalPadding;
   double? bottomPadding;
   double? topPadding;
+  bool showAppBar;
 
   DefaultBody(
       {this.centerTitle = false,
+      this.showAppBar = true,
       this.titleIcon,
       this.leftButton,
       required this.child,
@@ -25,13 +27,15 @@ class DefaultBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: DefaultHeader(
-        centerTitle: centerTitle,
-        leftButton: leftButton,
-        titleIcon: titleIcon,
-        onRightButtonClick: onRightButtonClick,
-        rightIcon: rightIcon,
-      ),
+      appBar: showAppBar
+          ? DefaultHeader(
+              centerTitle: centerTitle,
+              leftButton: leftButton,
+              titleIcon: titleIcon,
+              onRightButtonClick: onRightButtonClick,
+              rightIcon: rightIcon,
+            )
+          : null,
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.only(

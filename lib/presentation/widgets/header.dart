@@ -21,6 +21,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: centerTitle,
       title: _buildTitle(),
       leading: leftButton,
+      automaticallyImplyLeading: false,
       titleSpacing: 20.h,
       actions: _buildActions(),
     );
