@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/scheduler.dart';
 import 'dart:io';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
 // import 'package:smart_house_flutter/navigation/routes.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
@@ -100,7 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                   ExpandedButton(
                     text: 'LOGIN',
                     isGray: false,
-                    onPressed: () {},
+                    onPressed: () {
+                      appStore.dispatch(NavigateToAction(
+                          to: AppRoutes.homePageRoute, replace: true));
+                    },
                   )
                 else
                   const CircularProgressIndicator(),
