@@ -57,7 +57,12 @@ class DefaultBody extends StatelessWidget {
                   margin: EdgeInsets.symmetric(vertical: 25.h),
                   child: BodyNavigationBar()),
             SizedBox(
-                height: MediaQuery.of(context).size.height - 282.h,
+                height: MediaQuery.of(context).size.height -
+                    30.h -
+                    50.h -
+                    90.h -
+                    90.h -
+                    MediaQuery.of(context).padding.top,
                 child: child),
           ],
         ),

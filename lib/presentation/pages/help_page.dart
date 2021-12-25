@@ -30,22 +30,39 @@ class HelpPage extends StatelessWidget {
 
     for (int i = 0; i < postsList.length; i++) {
       _list.add(PostItemBanner(
-          height: 180.h,
-          leftWidget: const SizedText(
-            text: 'Joined 17',
-          ),
-          rightWidget: InkWell(
-            onTap: _onJoinTap,
-            child: const SizedText(
-              text: 'JOIN',
-            ),
-          ),
-          child: CachedNetworkImage(
-            imageUrl: state.apiState.posts[i].imageUrl!,
-            fit: BoxFit.cover,
+          withBorder: true,
+          bgColor: ThemeColors.black,
+          child: Padding(
+            padding: EdgeInsets.all(8.w),
+            child: _buildSupportTextsWidget(),
           )));
     }
     return _list;
+  }
+
+  Widget _buildSupportTextsWidget() {
+    List<Widget> list = [];
+    list.add(Padding(
+      padding: EdgeInsets.only(left: 8.w),
+      child: SizedText(
+        textAlign: TextAlign.left,
+        text: 'RoomMate needed',
+        textStyle: latoM20.copyWith(color: ThemeColors.fontDark),
+      ),
+    ));
+    list.add(Padding(
+      padding: EdgeInsets.symmetric(vertical: 8.h),
+      child: Divider(thickness: 1.w, color: ThemeColors.borderDark),
+    ));
+    list.add(SizedText(
+      overflow: TextOverflow.ellipsis,
+      textAlign: TextAlign.left,
+      maxLines: 5,
+      text:
+          'Hello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give myHello guys, currently I am living in a home for a While and it is really expensive so if anyone of you Want to share please let me know. Here I give my Kakas Id . Please contact there.',
+      textStyle: latoM16.copyWith(color: ThemeColors.fontDark),
+    ));
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: list);
   }
 
   _onJoinTap() {
