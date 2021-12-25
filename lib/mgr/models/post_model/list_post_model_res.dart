@@ -8,6 +8,7 @@ class ListPostModelRes {
   bool isPost;
   bool isEvent;
   bool isNotice;
+  bool isHelp;
   String postId;
   String createdDate;
 
@@ -19,6 +20,7 @@ class ListPostModelRes {
       this.title,
       required this.postId,
       this.success = false,
+      required this.isHelp,
       required this.isEvent,
       required this.isNotice,
       required this.isPost,

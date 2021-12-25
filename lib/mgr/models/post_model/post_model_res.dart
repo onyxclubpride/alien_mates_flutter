@@ -6,6 +6,7 @@ class PostModelRes {
   String? description;
   bool isPost;
   bool isEvent;
+  bool isHelp;
   bool isNotice;
   String userId;
   int? joinLimit;
@@ -23,6 +24,7 @@ class PostModelRes {
       required this.userId,
       required this.isEvent,
       required this.isNotice,
+      required this.isHelp,
       required this.isPost,
       required this.createdDate});
 }

@@ -12,16 +12,13 @@ class HelpPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StoreProvider(
-      store: appStore,
-      child: StoreConnector<AppState, AppState>(
-          converter: (store) => store.state,
-          builder: (context, state) => DefaultBody(
-                  child: ListView(
-                controller: _controller,
-                children: [..._buildPostsWidgetList(state)],
-              ))),
-    );
+    return StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, state) => DefaultBody(
+                child: ListView(
+              controller: _controller,
+              children: [..._buildPostsWidgetList(state)],
+            )));
   }
 
   List<Widget> _buildPostsWidgetList(AppState state) {

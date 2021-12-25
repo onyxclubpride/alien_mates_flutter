@@ -70,8 +70,11 @@ class UpdateApiStateAction {
 class GetStateInitAction {}
 
 class GetCreatePostAction {
-  PostModelReq postModelReq;
-  GetCreatePostAction({required this.postModelReq});
+  String? description;
+  String? imagePath;
+  GetCreatePostAction({this.description, this.imagePath});
 }
+
+class GetCreateNoticeAction {}
 
 class UpdateInitStateAction {}
