@@ -77,6 +77,7 @@ ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
     postOnly: action.postOnly ?? state.postOnly,
     users: action.users ?? state.users,
     userMe: action.userMe ?? state.userMe,
+    postDetail: action.postDetail ?? state.postDetail,
   );
 }
 

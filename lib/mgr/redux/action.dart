@@ -65,8 +65,10 @@ class UpdateApiStateAction {
   List<PostOnlyModel>? postOnly;
   List<UserModelRes>? users;
   UserModelRes? userMe;
+  PostModelRes? postDetail;
 
-  UpdateApiStateAction({this.posts, this.postOnly, this.users, this.userMe});
+  UpdateApiStateAction(
+      {this.posts, this.postOnly, this.users, this.userMe, this.postDetail});
 }
 
 class GetStateInitAction {}
@@ -131,7 +133,55 @@ class GetLoginAction {
   GetLoginAction({required this.phoneNumber, required this.password});
 }
 
+class GetPostByIdAction {
+  String postId;
+  GetPostByIdAction(this.postId);
+}
+
+class GetUserByIdAction {
+  String userId;
+  GetUserByIdAction(this.userId);
+}
+
 class GetAllUsersAction {}
+
+class GetDeletePostAction {
+  String postId;
+  GetDeletePostAction(this.postId);
+}
+
+class GetUpdatePostAction {
+  String? imageUrl;
+  int? numberOfLikes;
+  List? joinedUserIds;
+  String? title;
+  String? description;
+  String? eventLocation;
+  bool? isPost;
+  bool? isEvent;
+  bool? isHelp;
+  bool? isNotice;
+  String? userId;
+  int? joinLimit;
+  String postId;
+  String? createdDate;
+
+  GetUpdatePostAction(
+      {this.imageUrl,
+      this.numberOfLikes,
+      required this.postId,
+      this.joinedUserIds,
+      this.description,
+      this.title,
+      this.joinLimit,
+      this.eventLocation,
+      this.userId,
+      this.isEvent,
+      this.isNotice,
+      this.isHelp,
+      this.isPost,
+      this.createdDate});
+}
 
 ///----------------- Init -----------------
 

@@ -7,47 +7,54 @@ import 'package:alien_mates/utils/common/log_tester.dart';
 
 class DefaultBanner extends StatelessWidget {
   Widget? child;
-  double height;
+  double? height;
   bool withBottomLeftRadius;
   bool withBottomRightRadius;
   bool withBorder;
   Color bgColor;
+  VoidCallback? onTap;
 
   DefaultBanner({
     this.child,
-    this.height = 90,
+    this.height,
     this.bgColor = ThemeColors.componentBgDark,
     this.withBottomLeftRadius = true,
     this.withBottomRightRadius = true,
     this.withBorder = true,
+    this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.only(
-          bottomLeft:
-              withBottomLeftRadius ? Radius.circular(10.r) : Radius.zero,
-          bottomRight:
-              withBottomRightRadius ? Radius.circular(10.r) : Radius.zero,
-          topLeft: Radius.circular(10.r),
-          topRight: Radius.circular(10.r)),
-      child: Container(
-        child: child,
-        decoration: BoxDecoration(
-            color: bgColor,
-            borderRadius: BorderRadius.only(
-                bottomLeft:
-                    withBottomLeftRadius ? Radius.circular(10.r) : Radius.zero,
-                bottomRight:
-                    withBottomRightRadius ? Radius.circular(10.r) : Radius.zero,
-                topLeft: Radius.circular(10.r),
-                topRight: Radius.circular(10.r)),
-            border: withBorder
-                ? Border.all(width: 1.w, color: ThemeColors.borderDark)
-                : Border.all(width: 0)),
-        height: height.h,
-        width: double.infinity,
+    return InkWell(
+      onTap: onTap,
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+            bottomLeft:
+                withBottomLeftRadius ? Radius.circular(10.r) : Radius.zero,
+            bottomRight:
+                withBottomRightRadius ? Radius.circular(10.r) : Radius.zero,
+            topLeft: Radius.circular(10.r),
+            topRight: Radius.circular(10.r)),
+        child: Container(
+          child: child,
+          decoration: BoxDecoration(
+              color: bgColor,
+              borderRadius: BorderRadius.only(
+                  bottomLeft: withBottomLeftRadius
+                      ? Radius.circular(10.r)
+                      : Radius.zero,
+                  bottomRight: withBottomRightRadius
+                      ? Radius.circular(10.r)
+                      : Radius.zero,
+                  topLeft: Radius.circular(10.r),
+                  topRight: Radius.circular(10.r)),
+              border: withBorder
+                  ? Border.all(width: 1.w, color: ThemeColors.borderDark)
+                  : Border.all(width: 0)),
+          height: height,
+          width: double.infinity,
+        ),
       ),
     );
   }

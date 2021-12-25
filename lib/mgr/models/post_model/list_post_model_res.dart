@@ -2,7 +2,7 @@ class ListPostModelRes {
   bool success;
   String? imageUrl;
   int? numberOfLikes;
-  int? numberOfJoins;
+  List? joinedUserIds;
   String? title;
   String? description;
   bool isPost;
@@ -15,7 +15,7 @@ class ListPostModelRes {
   ListPostModelRes(
       {this.imageUrl,
       this.numberOfLikes,
-      this.numberOfJoins,
+      this.joinedUserIds,
       this.description,
       this.title,
       required this.postId,

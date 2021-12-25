@@ -24,14 +24,18 @@ class _SplashPageState extends State<SplashPage> {
       showAppBar: false,
       withNavigationBar: false,
       withTopBanner: false,
-      child: Center(
-        child: InkWell(
-          onTap: () {
-            appStore.dispatch(RemoveLocalUserIdAction());
-          },
-          child: SizedText(
-              text: 'Splash Screen is Fetching Data',
-              textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
+      child: InkWell(
+        onTap: () {
+          appStore.dispatch(RemoveLocalUserIdAction());
+        },
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedText(
+                text: 'Splash Screen is Fetching Data',
+                textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
+            CircularProgressIndicator(),
+          ],
         ),
       ),
     );

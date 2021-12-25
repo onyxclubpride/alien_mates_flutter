@@ -1,7 +1,7 @@
 class PostModelRes {
   String? imageUrl;
   int? numberOfLikes;
-  int? numberOfJoins;
+  List? joinedUserIds;
   String? title;
   String? description;
   String? eventLocation;
@@ -18,7 +18,7 @@ class PostModelRes {
       {this.imageUrl,
       this.numberOfLikes,
       required this.postId,
-      this.numberOfJoins,
+      this.joinedUserIds,
       this.description,
       this.title,
       this.joinLimit,

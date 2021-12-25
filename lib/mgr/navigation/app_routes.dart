@@ -1,3 +1,4 @@
+import 'package:alien_mates/presentation/pages/create_event_page.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/template/base/template.dart';
 
@@ -13,7 +14,7 @@ class AppRoutes {
   static const eventDetailsPageRoute = "/eventDetails";
   static const helpDetailsPageRoute = "/helpDetails";
 
-  // static const signUpBottomSheet = "/signUpbottomSheet";
+  static const createEventPageRoute = "/createEvent";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -30,6 +31,9 @@ class AppRoutes {
       // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
       // AppRoutes.eventDetailsRoute: (BuildContext context) => const EventDetilsPage(),
       // AppRoutes.helpDetailsRoute: (BuildContext context) => const helpDetilsPage(),
+
+      AppRoutes.createEventPageRoute: (BuildContext context) =>
+          CreateEventPage(),
     };
 
     return base;

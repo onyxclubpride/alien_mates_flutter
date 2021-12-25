@@ -31,6 +31,16 @@ final latoR14 = GoogleFonts.lato(
   fontSize: 14.0,
 );
 
+final latoM12 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 12.0,
+);
+
+final latoR16 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 16.0,
+);
+
 final latoB14 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
   fontSize: 14.0,

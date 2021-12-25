@@ -41,6 +41,14 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getUserIdExistAction(store.state, action, next);
       case GetLoginAction:
         return _getLoginAction(store.state, action, next);
+      case GetPostByIdAction:
+        return _getPostByIdAction(store.state, action, next);
+      case GetUserByIdAction:
+        return _getUserByIdAction(store.state, action, next);
+      case GetUpdatePostAction:
+        return _getUpdatePostAction(store.state, action, next);
+      case GetDeletePostAction:
+        return _getDeletePostAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -70,7 +78,7 @@ Future<List<ListPostModelRes>> _getPostsList() async {
         isHelp: item['isHelp'],
         imageUrl: item['imageUrl'],
         description: item['description'],
-        numberOfJoins: item['numberOfJoins'],
+        joinedUserIds: item['joinedUserIds'],
         numberOfLikes: item['numberOfLikes'],
         title: item['title'],
       );
@@ -102,7 +110,7 @@ Future<bool> _getCreatePostAction(
       "isNotice": false,
       "isHelp": false,
       "numberOfLikes": 0,
-      "numberOfJoins": null,
+      "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
@@ -135,7 +143,7 @@ Future<bool> _getCreateNoticeAction(
       "isNotice": true,
       "isHelp": false,
       "numberOfLikes": null,
-      "numberOfJoins": null,
+      "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
@@ -168,8 +176,8 @@ Future<bool> _getCreateEventAction(
       "isNotice": false,
       "isHelp": false,
       "numberOfLikes": null,
-      "numberOfJoins": null,
-      "joinLimit": null,
+      "joinedUserIds": [],
+      "joinLimit": action.joinLimit,
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetAllKindPostsAction());
@@ -201,7 +209,7 @@ Future<bool> _getCreateHelpAction(
       "isNotice": false,
       "isHelp": true,
       "numberOfLikes": null,
-      "numberOfJoins": null,
+      "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
@@ -239,11 +247,11 @@ Future<bool> _getCreateUserAction(
   }
 }
 
-Future<bool> _getAllUsersAction(
+Future<List<UserModelRes>> _getAllUsersAction(
     AppState state, GetAllUsersAction action, NextDispatcher next) async {
   List<UserModelRes> usersList = await _getUsersList();
   next(UpdateApiStateAction(users: usersList));
-  return usersList.isNotEmpty;
+  return usersList;
 }
 
 Future<List<UserModelRes>> _getUsersList() async {
@@ -273,38 +281,149 @@ Future<List<UserModelRes>> _getUsersList() async {
 
 Future<void> _getUserIdExistAction(
     AppState state, GetUserIdExistAction action, NextDispatcher next) async {
-  final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
-  if (postsFetched) {
-    for (int i = 0; i < state.apiState.users.length; i++) {
-      UserModelRes? _userInst = state.apiState.users[i];
-      if (_userInst.userId == action.userId) {
-        next(UpdateApiStateAction(userMe: _userInst));
-        next(UpdateInitStateAction(userId: _userInst.userId));
+  try {
+    final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
+    if (postsFetched) {
+      for (int i = 0; i < state.apiState.users.length; i++) {
+        UserModelRes? _userInst = state.apiState.users[i];
+        if (_userInst.userId == action.userId) {
+          next(UpdateApiStateAction(userMe: _userInst));
+          next(UpdateInitStateAction(userId: _userInst.userId));
+        }
       }
+      appStore.dispatch(
+          NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
     }
-    appStore
-        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+  } catch (e) {
+    logger(e.toString(), hint: 'GET USER ID CATCH ERROR');
   }
 }
 
 Future<bool> _getLoginAction(
     AppState state, GetLoginAction action, NextDispatcher next) async {
-  showLoading();
-  bool _matched = false;
-  for (int i = 0; i < state.apiState.users.length; i++) {
-    UserModelRes? _userInst = state.apiState.users[i];
-    bool _matched = _userInst.phoneNumber == action.phoneNumber &&
-        _userInst.password == action.password;
-    if (_matched) {
-      next(UpdateApiStateAction(userMe: _userInst));
-      next(UpdateInitStateAction(userId: _userInst.userId));
-      await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
-      await appStore.dispatch(GetAllKindPostsAction());
-      appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+  try {
+    bool _matched = false;
+    showLoading();
+    List<UserModelRes> users = await appStore.dispatch(GetAllUsersAction());
+    if (users.isNotEmpty) {
+      for (int i = 0; i < users.length; i++) {
+        UserModelRes? _userInst = users[i];
+        bool _matched = _userInst.phoneNumber == action.phoneNumber &&
+            _userInst.password == action.password;
+        if (_matched) {
+          next(UpdateApiStateAction(userMe: _userInst));
+          next(UpdateInitStateAction(userId: _userInst.userId));
+          await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
+          await appStore.dispatch(GetAllKindPostsAction());
+          appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+        }
+      }
     }
+    closeLoading();
+    return _matched;
+  } catch (e) {
+    logger(e.toString(), hint: 'GET LOGIN CATCH ERROR');
+    return false;
   }
-  closeLoading();
-  return _matched;
+}
+
+Future<PostModelRes?> _getPostByIdAction(
+    AppState state, GetPostByIdAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    final _postDetail = await postsCollection.doc(action.postId).get();
+    PostModelRes _postModelRes = PostModelRes(
+      createdDate: _postDetail['createdDate'],
+      postId: _postDetail['postId'],
+      isNotice: _postDetail['isNotice'],
+      isPost: _postDetail['isPost'],
+      userId: _postDetail['userId'],
+      isEvent: _postDetail['isEvent'],
+      isHelp: _postDetail['isHelp'],
+      numberOfLikes: _postDetail['numberOfLikes'],
+      joinedUserIds: _postDetail['joinedUserIds'],
+      description: _postDetail['description'],
+      title: _postDetail['title'],
+      joinLimit: _postDetail['joinLimit'],
+      imageUrl: _postDetail['imageUrl'],
+    );
+    next(UpdateApiStateAction(postDetail: _postModelRes));
+    closeLoading();
+    return _postModelRes;
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET 1 POST CATCH ERROR');
+  }
+}
+
+Future<bool> _getUpdatePostAction(
+    AppState state, GetUpdatePostAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    PostModelRes? _postById =
+        await appStore.dispatch(GetPostByIdAction(action.postId));
+    if (_postById != null) {
+      PostModelRes _postModelRes = PostModelRes(
+        createdDate: action.createdDate ?? _postById.createdDate,
+        postId: action.postId,
+        isNotice: action.isNotice ?? _postById.isNotice,
+        isPost: action.isPost ?? _postById.isPost,
+        userId: action.userId ?? _postById.userId,
+        isEvent: action.isEvent ?? _postById.isEvent,
+        isHelp: action.isHelp ?? _postById.isHelp,
+        numberOfLikes: action.numberOfLikes ?? _postById.numberOfLikes,
+        joinedUserIds: action.joinedUserIds ?? _postById.joinedUserIds,
+        description: action.description ?? _postById.description,
+        title: action.title ?? _postById.title,
+        joinLimit: action.joinLimit ?? _postById.joinLimit,
+        imageUrl: action.imageUrl ?? _postById.imageUrl,
+      );
+      await postsCollection.doc(action.postId).update({
+        "createdDate": _postModelRes.createdDate,
+        "postId": _postModelRes.postId,
+        "isNotice": _postModelRes.isNotice,
+        "isPost": _postModelRes.isPost,
+        "userId": _postModelRes.userId,
+        "isEvent": _postModelRes.isEvent,
+        "isHelp": _postModelRes.isHelp,
+        "numberOfLikes": _postModelRes.numberOfLikes,
+        "joinedUserIds": _postModelRes.joinedUserIds,
+        "description": _postModelRes.description,
+        "title": _postModelRes.title,
+        "joinLimit": _postModelRes.joinLimit,
+        "imageUrl": _postModelRes.imageUrl,
+      });
+      next(UpdateApiStateAction(postDetail: _postModelRes));
+      await appStore.dispatch(GetAllKindPostsAction());
+      closeLoading();
+    }
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET UPDATE POST CATCH ERROR');
+  }
+  return true;
+}
+
+Future<void> _getDeletePostAction(
+    AppState state, GetDeletePostAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    await postsCollection.doc(action.postId).delete();
+    await appStore.dispatch(GetAllKindPostsAction());
+    closeLoading();
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET DELETE POST CATCH ERROR');
+  }
+}
+
+Future<void> _getUserByIdAction(
+    AppState state, GetUserByIdAction action, NextDispatcher next) async {
+  // final _test = await usersCollection
+  //     //'USER_2021.12.25_f547d420-657f-11ec-8de4-a59789f4ac63'
+  //     .doc(action.userId)
+  //     .get();
+  // logger(_test, hint: '1 USER');
 }
 
 // Future<bool> _getCreatePostAction(
@@ -322,7 +441,7 @@ Future<bool> _getLoginAction(
 //       "isEvent": false,
 //       "isNotice": false,
 //       "numberOfLikes": 0,
-//       "numberOfJoins": null,
+//       "joinedUserIds": null,
 //       "joinLimit": null,
 //       "createdDate": currentDateAndTime
 //     });

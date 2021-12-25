@@ -9,12 +9,16 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
   Widget? leftButton;
   IconData? rightIcon;
   VoidCallback? onRightButtonClick;
+  SizedText? titleText;
+  bool withAction;
 
   DefaultHeader(
       {this.centerTitle = false,
+      this.withAction = false,
       this.titleIcon,
       this.leftButton,
       this.onRightButtonClick,
+      this.titleText,
       this.rightIcon});
 
   @override
@@ -26,7 +30,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       automaticallyImplyLeading: false,
       titleSpacing: 20.h,
       toolbarHeight: 70.h,
-      actions: _buildActions(),
+      actions: withAction ? _buildActions() : null,
     );
   }
 
@@ -44,10 +48,11 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       children: [
         if (titleIcon != null) titleIcon!,
         if (titleIcon != null) SizedBox(width: 10.w),
-        SizedText(
-          text: 'Alien Mates',
-          textStyle: latoM36,
-        ),
+        titleText ??
+            SizedText(
+              text: 'Alien Mates',
+              textStyle: latoM36,
+            ),
       ],
     );
     return _container;
@@ -63,7 +68,13 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
           icon: const Icon(Ionicons.person, color: ThemeColors.bgLight),
           iconSize: 30.h,
           onPressed: () {
-            appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
+            // appStore.dispatch(GetCreateEventAction(
+            //     eventLocation: 'Seoul',
+            //     title: "Cool event",
+            //     description: "Cool event desc",
+            //     joinLimit: 10,
+            //     imagePath: ''));
+            // appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
           },
         ),
       ));

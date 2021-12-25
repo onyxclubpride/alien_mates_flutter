@@ -28,7 +28,7 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
         builder: () => MaterialApp(
           debugShowCheckedModeBanner: false,
           builder: (context, child) => MediaQuery(
-              child: child!,
+              child: ScrollConfiguration(behavior: MyBehavior(), child: child!),
               data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
           title: Constants.appTitle,
           navigatorKey: Global.navKey,
@@ -49,6 +49,14 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
         ),
       ),
     );
+  }
+}
+
+class MyBehavior extends ScrollBehavior {
+  @override
+  Widget buildViewportChrome(
+      BuildContext context, Widget child, AxisDirection axisDirection) {
+    return child;
   }
 }
 
