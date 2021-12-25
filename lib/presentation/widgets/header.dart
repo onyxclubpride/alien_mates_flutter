@@ -1,4 +1,6 @@
 import 'package:ionicons/ionicons.dart';
+import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
+import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 
 class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
@@ -61,6 +63,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
           iconSize: 30.h,
           onPressed: () {
             print('On Profile icon press');
+            appStore.dispatch(NavigateToAction(to: AppRoutes.loginPageRoute));
           },
         ),
       ));

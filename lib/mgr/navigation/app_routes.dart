@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/presentation/pages/splash_page.dart';
+import 'package:smart_house_flutter/presentation/pages/login_page.dart';
 import '../../presentation/template/base/template.dart';
 
 class AppRoutes {
@@ -17,7 +18,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
-      // AppRoutes.loginRoute: (BuildContext context) => const LoginPage(),
+      AppRoutes.loginPageRoute: (BuildContext context) => const LoginPage(),
 
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
