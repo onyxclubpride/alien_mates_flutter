@@ -13,17 +13,21 @@ class AppRoutes {
   static const eventDetailsPageRoute = "/eventDetails";
   static const helpDetailsPageRoute = "/helpDetails";
 
+  // static const signUpBottomSheet = "/signUpbottomSheet";
+
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
       AppRoutes.loginPageRoute: (BuildContext context) => LoginPage(),
+
+      // AppRoutes.signUpBottomSheet: (BuildContext context) =>
+      //     SignUpBottomSheet(),
 
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
       AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
       AppRoutes.profilePageRoute: (BuildContext context) => ProfilePage(),
       // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
-
       // AppRoutes.eventDetailsRoute: (BuildContext context) => const EventDetilsPage(),
       // AppRoutes.helpDetailsRoute: (BuildContext context) => const helpDetilsPage(),
     };

@@ -1,5 +1,7 @@
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/presentation/bottom_sheet/notice_detail_sheet.dart';
+import 'package:alien_mates/presentation/bottom_sheet/signUp_sheet.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -86,15 +88,25 @@ class _LoginPageState extends State<LoginPage> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
-                        SizedText(
-                          text: 'Forgot Password?',
-                          textStyle:
-                              latoB14.apply(color: ThemeColors.fontWhite),
+                        InkWell(
+                          child: SizedText(
+                            text: 'Forget Password',
+                            textStyle:
+                                latoB14.apply(color: ThemeColors.fontWhite),
+                          ),
+                          onTap: () {
+                            print("value of your text");
+                          },
                         ),
-                        SizedText(
-                          text: 'Sign Up',
-                          textStyle:
-                              latoB14.apply(color: ThemeColors.fontWhite),
+                        InkWell(
+                          child: SizedText(
+                            text: 'Sign Up',
+                            textStyle:
+                                latoB14.apply(color: ThemeColors.fontWhite),
+                          ),
+                          onTap: () {
+                            _signUp(context);
+                          },
                         ),
                       ]),
                 )
@@ -117,5 +129,16 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     }
+  }
+
+  _signUp(context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        enableDrag: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return NoticeDetail();
+        });
   }
 }
