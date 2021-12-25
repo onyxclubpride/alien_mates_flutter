@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
                           text: 'Alien Mates',
                           textStyle: latoB45.copyWith(color: Colors.white)),
                       SizedBox(
-                        height: 5.h,
+                        height: 25.h,
                       ),
                       SpacedColumn(verticalSpace: 25, children: [
                         Column(
@@ -98,11 +98,12 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 if (!isLoading)
                   ExpandedButton(
-                    text: 'login',
+                    text: 'LOGIN',
                     isGray: false,
+                    onPressed: () {},
                   )
                 else
-                  CircularProgressIndicator(),
+                  const CircularProgressIndicator(),
                 SizedBox(height: 10.h),
                 Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -112,12 +113,12 @@ class _LoginPageState extends State<LoginPage> {
                         SizedText(
                           text: 'Forgot Password?',
                           textStyle:
-                              latoR14.apply(color: ThemeColors.fontWhite),
+                              latoB14.apply(color: ThemeColors.fontWhite),
                         ),
                         SizedText(
                           text: 'Sign Up',
                           textStyle:
-                              latoR14.apply(color: ThemeColors.fontWhite),
+                              latoB14.apply(color: ThemeColors.fontWhite),
                         ),
                       ]),
                 )

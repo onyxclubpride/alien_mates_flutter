@@ -27,6 +27,7 @@ class ThemeColors {
   static const fontLight = Color(0xFF222222);
 
   static const fontWhite = Color(0xFFFFFFFF);
+  static const fontBlack = Color(0XFF000000);
 
   static const red = Color(0xFFDC000C);
   static const gray1 = Color(0xFF89929F);

@@ -16,7 +16,8 @@ class ExpandedButton extends StatelessWidget {
                 )
               : expandedButtonTheme().backgroundColor),
       onPressed: onPressed,
-      child: SizedText(text: text),
+      child: SizedText(
+          text: text, textStyle: latoB34.copyWith(color: Colors.black)),
     );
   }
 }
