@@ -5,8 +5,9 @@ import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:smart_house_flutter/utils/common/log_tester.dart';
 
-class HomePage extends StatelessWidget {
+class EventsPage extends StatelessWidget {
   final ScrollController _controller = ScrollController();
 
   @override
@@ -16,12 +17,9 @@ class HomePage extends StatelessWidget {
       child: StoreConnector<AppState, AppState>(
           converter: (store) => store.state,
           builder: (context, state) => DefaultBody(
-                  child: SizedBox(
-                height: 200.h,
-                child: ListView(
-                  controller: _controller,
-                  children: [..._buildPostsWidgetList(state)],
-                ),
+                  child: ListView(
+                controller: _controller,
+                children: [..._buildPostsWidgetList(state)],
               ))),
     );
   }
@@ -32,11 +30,25 @@ class HomePage extends StatelessWidget {
 
     for (int i = 0; i < postsList.length; i++) {
       _list.add(PostItemBanner(
+          height: 180.h,
+          leftWidget: const SizedText(
+            text: 'Joined 17',
+          ),
+          rightWidget: InkWell(
+            onTap: _onJoinTap,
+            child: const SizedText(
+              text: 'JOIN',
+            ),
+          ),
           child: CachedNetworkImage(
-        imageUrl: state.apiState.posts[i].imageUrl!,
-        fit: BoxFit.cover,
-      )));
+            imageUrl: state.apiState.posts[i].imageUrl!,
+            fit: BoxFit.cover,
+          )));
     }
     return _list;
+  }
+
+  _onJoinTap() {
+    logger('on join tap');
   }
 }

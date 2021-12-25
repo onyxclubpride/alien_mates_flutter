@@ -23,6 +23,7 @@ Future<void> _getStateInitAction(
     AppState state, GetStateInitAction action, NextDispatcher next) async {
   final postsFetched = await next(GetPostsAction());
   if (postsFetched) {
-    appStore.dispatch(NavigateToAction(to: AppRoutes.homeRoute, replace: true));
+    appStore
+        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
   }
 }

@@ -22,13 +22,12 @@ class _SplashPageState extends State<SplashPage> {
   Widget build(BuildContext context) {
     return DefaultBody(
       showAppBar: false,
-      child: Container(
-        color: ThemeColors.bgDark,
-        child: Center(
-          child: SizedText(
-              text: 'Splash Screen is Fetching Data',
-              textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
-        ),
+      withNavigationBar: false,
+      withTopBanner: false,
+      child: Center(
+        child: SizedText(
+            text: 'Splash Screen is Fetching Data',
+            textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
       ),
     );
   }

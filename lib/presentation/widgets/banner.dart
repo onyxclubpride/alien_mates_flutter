@@ -1,7 +1,9 @@
 import 'package:smart_house_flutter/mgr/firebase/firebase_kit.dart';
+import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
+import 'package:smart_house_flutter/utils/common/log_tester.dart';
 
 class DefaultBanner extends StatelessWidget {
   Widget? child;
@@ -9,12 +11,14 @@ class DefaultBanner extends StatelessWidget {
   bool withBottomLeftRadius;
   bool withBottomRightRadius;
   bool withBorder;
-  DefaultBanner(
-      {this.child,
-      this.height = 90,
-      this.withBottomLeftRadius = true,
-      this.withBottomRightRadius = true,
-      this.withBorder = true});
+
+  DefaultBanner({
+    this.child,
+    this.height = 90,
+    this.withBottomLeftRadius = true,
+    this.withBottomRightRadius = true,
+    this.withBorder = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +45,7 @@ class DefaultBanner extends StatelessWidget {
 }
 
 class BodyNavigationBar extends StatelessWidget {
+  String currentRoute = appStore.state.navigationState.current!;
   @override
   Widget build(BuildContext context) {
     return DefaultBanner(
@@ -48,14 +53,26 @@ class BodyNavigationBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          _getNavText(ThemeColors.bgLight, 'Posts', () {
-            print('onPostsTap');
+          _getNavText(
+              currentRoute == AppRoutes.homePageRoute
+                  ? ThemeColors.bgLight
+                  : ThemeColors.borderDark,
+              'Posts', () {
+            appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
           }),
-          _getNavText(ThemeColors.borderDark, 'Events', () {
-            print('onEventsTap');
+          _getNavText(
+              currentRoute == AppRoutes.eventsPageRoute
+                  ? ThemeColors.bgLight
+                  : ThemeColors.borderDark,
+              'Events', () {
+            appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
           }),
-          _getNavText(ThemeColors.borderDark, 'Help', () {
-            print('onHelpTap');
+          _getNavText(
+              currentRoute == AppRoutes.helpPageRoute
+                  ? ThemeColors.bgLight
+                  : ThemeColors.borderDark,
+              'Support', () {
+            appStore.dispatch(NavigateToAction(to: AppRoutes.helpPageRoute));
           }),
         ],
       ),
@@ -93,7 +110,7 @@ class PostItemBanner extends StatelessWidget {
             withBottomLeftRadius: leftWidget == null,
             withBottomRightRadius: leftWidget == null,
             child: child,
-            height: 145),
+            height: height),
         if (leftWidget != null || rightWidget != null)
           PostButton(
             leftChild: leftWidget!,

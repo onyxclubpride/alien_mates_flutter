@@ -11,18 +11,23 @@ class DefaultBody extends StatelessWidget {
   double? bottomPadding;
   double? topPadding;
   bool showAppBar;
+  bool withTopBanner;
+  bool withNavigationBar;
 
-  DefaultBody(
-      {this.centerTitle = false,
-      this.showAppBar = true,
-      this.titleIcon,
-      this.leftButton,
-      required this.child,
-      this.onRightButtonClick,
-      this.bottomPadding = 0,
-      this.horizontalPadding = 20,
-      this.topPadding = 0,
-      this.rightIcon});
+  DefaultBody({
+    this.centerTitle = false,
+    this.showAppBar = true,
+    this.titleIcon,
+    this.leftButton,
+    required this.child,
+    this.onRightButtonClick,
+    this.bottomPadding = 0,
+    this.horizontalPadding = 20,
+    this.topPadding = 0,
+    this.rightIcon,
+    this.withNavigationBar = true,
+    this.withTopBanner = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +49,18 @@ class DefaultBody extends StatelessWidget {
           bottom: bottomPadding!.h,
           top: topPadding!.h,
         ),
-        child: child,
+        child: Column(
+          children: [
+            if (withTopBanner) DefaultBanner(),
+            if (withNavigationBar)
+              Container(
+                  margin: EdgeInsets.symmetric(vertical: 25.h),
+                  child: BodyNavigationBar()),
+            SizedBox(
+                height: MediaQuery.of(context).size.height - 282.h,
+                child: child),
+          ],
+        ),
       )),
     );
   }

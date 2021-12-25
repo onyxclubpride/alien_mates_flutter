@@ -28,15 +28,15 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
 
     if (action.to == 'up') {
       String? parentPage =
-          pages.length > 1 ? pages[pages.length - 2] : AppRoutes.homeRoute;
+          pages.length > 1 ? pages[pages.length - 2] : AppRoutes.homePageRoute;
       if (parentPage == null || parentPage.isEmpty) {
         _dismissAllPopups(store.state.navigationState);
         Global.navState!.pop();
       } else {
         Global.navState!.popUntil(ModalRoute.withName(parentPage));
       }
-      if (parentPage == AppRoutes.homeRoute) {
-        GlobalWidgets().reload(AppRoutes.homeRoute);
+      if (parentPage == AppRoutes.homePageRoute) {
+        GlobalWidgets().reload(AppRoutes.homePageRoute);
       }
     } else if (action.to != null && action.to!.startsWith('#')) {
       int? index = int.tryParse(action.to!.substring(1));
@@ -48,8 +48,8 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
       }
     } else if (action.to != null && pages.contains(action.to)) {
       Global.navState!.popUntil(ModalRoute.withName(action.to!));
-      if (action.to == AppRoutes.homeRoute) {
-        GlobalWidgets().reload(AppRoutes.homeRoute);
+      if (action.to == AppRoutes.homePageRoute) {
+        GlobalWidgets().reload(AppRoutes.homePageRoute);
       }
 
       if (action.reload) {

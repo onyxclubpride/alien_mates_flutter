@@ -4,23 +4,24 @@ import '../../presentation/template/base/template.dart';
 
 class AppRoutes {
   static const splashRoute = "/splash";
-  static const homeRoute = "/home";
-  static const loginRoute = "/login";
-  static const eventRoute = "/events";
-  static const profileRoute = "/profile";
-  static const settingRoute = "/setting";
-  static const helpRoute = "/help";
+  static const homePageRoute = "/home";
+  static const loginPageRoute = "/login";
+  static const eventsPageRoute = "/events";
+  static const profilePageRoute = "/profile";
+  static const settingPageRoute = "/setting";
+  static const helpPageRoute = "/help";
 
-  static const eventDetailsRoute = "/eventDetails";
-  static const helpDetailsRoute = "/helpDetails";
+  static const eventDetailsPageRoute = "/eventDetails";
+  static const helpDetailsPageRoute = "/helpDetails";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
-      AppRoutes.homeRoute: (BuildContext context) => HomePage(),
       // AppRoutes.loginRoute: (BuildContext context) => const LoginPage(),
-      // AppRoutes.eventRoute: (BuildContext context) => const EventPage(),
-      // AppRoutes.helpRoute: (BuildContext context) => const HelpPage(),
+
+      AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
+      AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
+      AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
       // AppRoutes.profileRoute: (BuildContext context) => const ProfilePage(),
       // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
 
