@@ -43,6 +43,7 @@ class PostCreateInput extends StatelessWidget {
         validator: validator,
         controller: controller,
         obscureText: isObscured!,
+        autofocus: false,
         onTap: onTap,
         maxLines: maxlines,
         inputFormatters: <TextInputFormatter>[

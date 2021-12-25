@@ -1,3 +1,4 @@
+import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -48,10 +49,10 @@ class _EventsPageState extends State<EventsPage> {
                 text: 'JOIN',
               ),
             ),
-            child: CachedNetworkImage(
-              imageUrl: state.apiState.posts[i].imageUrl!,
-              fit: BoxFit.cover,
-            )));
+            child: CachedImageOrTextImageWidget(
+                title: _item.title,
+                imageUrl: _item.imageUrl,
+                description: _item.description)));
       }
     }
     return _list;

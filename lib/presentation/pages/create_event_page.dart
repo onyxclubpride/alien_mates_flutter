@@ -33,6 +33,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   File? postImage;
 
+  bool agreementChecked = false;
+
   @override
   void dispose() {
     titleController.dispose();
@@ -58,6 +60,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               key: _formKeyCreateEventPage,
               child: SingleChildScrollView(
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     DefaultBanner(
                       bgColor: ThemeColors.black,
@@ -133,6 +136,53 @@ class _CreateEventPageState extends State<CreateEventPage> {
                               : Image.file(postImage!)),
                     ),
                     SizedBox(height: 20.h),
+                    SpacedRow(
+                      children: [
+                        Transform.scale(
+                          scale: 1.5,
+                          child: Checkbox(
+                            splashRadius: 0,
+                            shape: const CircleBorder(),
+                            checkColor: ThemeColors.black,
+                            activeColor: ThemeColors.yellow,
+                            fillColor: MaterialStateProperty.resolveWith<Color>(
+                                (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.focused)) {
+                                return ThemeColors.fontWhite;
+                              } else {
+                                return ThemeColors.yellow;
+                              }
+                            }),
+                            value: agreementChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                agreementChecked = value!;
+                              });
+                            },
+                          ),
+                        ),
+                        SpacedColumn(
+                          children: [
+                            SizedText(
+                                textAlign: TextAlign.start,
+                                width: 260.w,
+                                text: 'Phone number usage agreement!',
+                                textStyle: latoM20.copyWith(
+                                    color: agreementChecked
+                                        ? ThemeColors.fontWhite
+                                        : ThemeColors.borderDark)),
+                            SizedText(
+                                textAlign: TextAlign.start,
+                                width: 260.w,
+                                text:
+                                    '* Edit to show agreement to show the phone number of the user',
+                                textStyle:
+                                    latoR14.copyWith(color: ThemeColors.red)),
+                          ],
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 20.h),
                     ExpandedButton(text: 'Post', onPressed: _onPostEvent),
                     SizedBox(height: 20.h),
                   ],
@@ -154,19 +204,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   _onPostEvent() async {
     if (_formKeyCreateEventPage.currentState!.validate()) {
-      bool created = await appStore.dispatch(GetCreateEventAction(
-          title: titleController.text,
-          description: descriptionController.text,
-          eventLocation: locationController.text,
-          joinLimit: int.parse(maxPplController.text),
-          imagePath: postImage?.path));
+      if (agreementChecked) {
+        bool created = await appStore.dispatch(GetCreateEventAction(
+            title: titleController.text,
+            description: descriptionController.text,
+            eventLocation: locationController.text,
+            joinLimit: int.parse(maxPplController.text),
+            imagePath: postImage?.path));
 
-      if (!created) {
-        showAlertDialog(context,
-            text:
-                'There was a problem while uploading to server! Please, try again!');
+        if (!created) {
+          showAlertDialog(context,
+              text:
+                  'There was a problem while uploading to server! Please, try again!');
+        } else {
+          appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
+        }
       } else {
-        appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
+        showAlertDialog(context,
+            text: 'Please, check the agreement box to continue!');
       }
     }
   }
