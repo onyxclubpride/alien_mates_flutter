@@ -50,26 +50,23 @@ class BasicInput extends StatelessWidget {
         textInputAction: textInputAction,
         decoration: InputDecoration(
           filled: true,
-          fillColor: readOnly! ? ThemeColors.fontDark : ThemeColors.fontLight,
-          hintText: hintText != null
-              ? AppLocalizations.of(context)!.getString(hintText)
-              : '입력',
+          fillColor: readOnly! ? ThemeColors.fontDark : Colors.white,
+          hintText: hintText ?? '',
           errorText: errorText,
           suffixIcon: suffixIcon,
           errorStyle: latoR14.copyWith(color: ThemeColors.red),
           errorMaxLines: 2,
-          hintStyle:
-              latoR14.copyWith(color: ThemeColors.gray1),
+          hintStyle: latoR14.copyWith(color: ThemeColors.gray1),
           contentPadding:
               EdgeInsets.symmetric(horizontal: 14.w, vertical: 15.h),
           enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              borderRadius: BorderRadius.all(Radius.circular(5.r)),
               borderSide: BorderSide(width: 1, color: ThemeColors.gray1)),
           errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              borderRadius: BorderRadius.all(Radius.circular(5.r)),
               borderSide: BorderSide(width: 1, color: ThemeColors.red)),
           focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(4.r)),
+              borderRadius: BorderRadius.all(Radius.circular(5.r)),
               borderSide: BorderSide(width: 1, color: ThemeColors.red)),
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(4.r)),
@@ -77,7 +74,7 @@ class BasicInput extends StatelessWidget {
                   width: 1,
                   color: !isFocusBorderEnabled!
                       ? ThemeColors.gray1
-                      : ThemeColors.yellow)),
+                      : Colors.black)),
           constraints: BoxConstraints(maxWidth: 324.w),
         ));
   }

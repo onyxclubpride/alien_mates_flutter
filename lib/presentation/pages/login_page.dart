@@ -23,9 +23,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> _formAuthKey2 = GlobalKey<FormState>(debugLabel: '2');
 
-  TextEditingController idController = TextEditingController(text: 'ibextest');
-  TextEditingController pwController =
-      TextEditingController(text: 'Ibex123!@#');
+  TextEditingController idController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
   // TextEditingController idController = TextEditingController(text: 'gmlwnd');
   // TextEditingController pwController = TextEditingController(text: 'Test0928!');
   // TextEditingController idController = TextEditingController();
@@ -61,14 +60,18 @@ class _LoginPageState extends State<LoginPage> {
                   child: SpacedColumn(
                     verticalSpace: 21,
                     children: [
-                      SizedText(text: 'Alien Mates', textStyle: latoB45),
+                      SizedText(
+                          text: 'Alien Mates',
+                          textStyle: latoB45.copyWith(color: Colors.white)),
+                      SizedBox(
+                        height: 5.h,
+                      ),
                       SpacedColumn(verticalSpace: 25, children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            InputLabel(label: 'id'),
                             BasicInput(
-                              hintText: "input",
+                              hintText: "Phone Number",
                               controller: idController,
                             ),
                           ],
@@ -76,9 +79,8 @@ class _LoginPageState extends State<LoginPage> {
                         Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              InputLabel(label: 'password'),
                               BasicInput(
-                                hintText: "input",
+                                hintText: "Password",
                                 controller: pwController,
                                 textInputAction: TextInputAction.done,
                                 isObscured: true,
@@ -89,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
                 SizedBox(
-                  height: 12.h,
+                  height: 1.h,
                 ),
                 SizedBox(
                   height: 19.h,
@@ -102,35 +104,23 @@ class _LoginPageState extends State<LoginPage> {
                 else
                   CircularProgressIndicator(),
                 SizedBox(height: 10.h),
-                SizedBox(
-                  height: 39.h,
-                ),
-                SpacedRow(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  horizontalSpace: 19,
-                  children: [
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: ThemeColors.gray1,
-                      ),
-                    ),
-                    SizedText(
-                      text: 'easy_login',
-                      textStyle: latoR14.apply(color: ThemeColors.gray1),
-                    ),
-                    Expanded(
-                      child: Container(
-                        height: 1,
-                        color: ThemeColors.gray1,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(
-                  height: 34.h,
-                ),
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        SizedText(
+                          text: 'Forgot Password?',
+                          textStyle:
+                              latoR14.apply(color: ThemeColors.fontWhite),
+                        ),
+                        SizedText(
+                          text: 'Sign Up',
+                          textStyle:
+                              latoR14.apply(color: ThemeColors.fontWhite),
+                        ),
+                      ]),
+                )
               ],
             ),
           );

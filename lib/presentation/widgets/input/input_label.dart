@@ -11,7 +11,7 @@ class InputLabel extends StatelessWidget {
       child: Text(
         AppLocalizations.of(context)!.getString(label).toString(),
         textAlign: TextAlign.start,
-        style: latoR14,
+        style: latoR14.copyWith(color: Colors.white),
       ),
     );
   }
