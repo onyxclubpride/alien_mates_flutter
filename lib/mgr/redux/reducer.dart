@@ -74,6 +74,7 @@ final _apiReducer = combineReducers<ApiState>([
 ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
   return state.copyWith(
     posts: action.posts ?? state.posts,
+    postOnly: action.postOnly ?? state.postOnly,
   );
 }
 

@@ -62,8 +62,9 @@ class GetPostsAction {}
 
 class UpdateApiStateAction {
   List<ListPostModelRes>? posts;
+  List<PostOnlyModel>? postOnly;
 
-  UpdateApiStateAction({this.posts});
+  UpdateApiStateAction({this.posts, this.postOnly});
 }
 
 class GetStateInitAction {}

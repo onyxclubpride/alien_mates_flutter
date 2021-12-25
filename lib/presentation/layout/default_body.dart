@@ -61,7 +61,7 @@ class DefaultBody extends StatelessWidget {
                       height: MediaQuery.of(context).size.height -
                           30.h -
                           50.h -
-                          90.h -
+                          70.h -
                           90.h -
                           MediaQuery.of(context).padding.top,
                       child: child),

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ionicons/ionicons.dart';
 import 'package:smart_house_flutter/mgr/models/model_exporter.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';

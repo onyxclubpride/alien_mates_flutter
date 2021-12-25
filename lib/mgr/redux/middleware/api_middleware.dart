@@ -72,6 +72,64 @@ Future<bool> _getCreatePostAction(
     showLoading();
     await firebaseKit.postsCollection.doc(_generatePostUuid()).set({
       "postId": _generatePostUuid(),
+      "title": null,
+      "description": action.postModelReq.description,
+      "imageUrl":
+          'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+      "userId": _generateUserUuid(),
+      "isPost": true,
+      "isEvent": false,
+      "isNotice": false,
+      "numberOfLikes": 0,
+      "numberOfJoins": null,
+      "joinLimit": null,
+      "createdDate": currentDate
+    });
+    await appStore.dispatch(GetPostsAction());
+    closeLoading();
+    return true;
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET CREATE POST CATCH ERROR');
+    return false;
+  }
+}
+
+// Future<bool> _getCreatePostAction(
+//     AppState state, GetCreatePostAction action, NextDispatcher next) async {
+//   try {
+//     showLoading();
+//     await firebaseKit.postsCollection.doc(_generatePostUuid()).set({
+//       "postId": _generatePostUuid(),
+//       "title": action.postModelReq.title,
+//       "description": action.postModelReq.description,
+//       "imageUrl":
+//           'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+//       "userId": "USERSHOHID",
+//       "isPost": true,
+//       "isEvent": false,
+//       "isNotice": false,
+//       "numberOfLikes": 0,
+//       "numberOfJoins": null,
+//       "joinLimit": null,
+//       "createdDate": currentDate
+//     });
+//     await appStore.dispatch(GetPostsAction());
+//     closeLoading();
+//     return true;
+//   } catch (e) {
+//     closeLoading();
+//     logger(e.toString(), hint: 'GET CREATE POST CATCH ERROR');
+//     return false;
+//   }
+// }
+
+Future<bool> _getCreateEventAction(
+    AppState state, GetCreatePostAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    await firebaseKit.postsCollection.doc(_generatePostUuid()).set({
+      "postId": _generatePostUuid(),
       "title": action.postModelReq.title,
       "description": action.postModelReq.description,
       "imageUrl":
@@ -99,6 +157,12 @@ String _generatePostUuid() {
   final uid = uuid.v1();
   String postIdFormat = "POST_${currentDate}_$uid";
   return postIdFormat;
+}
+
+String _generateUserUuid() {
+  final uid = uuid.v1();
+  String userIdFormat = "USER_${currentDate}_$uid";
+  return userIdFormat;
 }
 
 showLoading() {

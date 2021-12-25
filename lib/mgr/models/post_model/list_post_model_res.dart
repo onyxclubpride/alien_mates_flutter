@@ -24,3 +24,15 @@ class ListPostModelRes {
       required this.isPost,
       required this.createdDate});
 }
+
+class PostOnlyModel {
+  String? imageUrl;
+  String? description;
+  String createdDate;
+  int numberOfLikes;
+  PostOnlyModel(
+      {required this.createdDate,
+      required this.numberOfLikes,
+      this.imageUrl,
+      this.description});
+}

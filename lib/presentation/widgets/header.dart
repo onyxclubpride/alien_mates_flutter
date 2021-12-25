@@ -25,12 +25,13 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       leading: leftButton,
       automaticallyImplyLeading: false,
       titleSpacing: 20.h,
+      toolbarHeight: 70.h,
       actions: _buildActions(),
     );
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 90.h);
+  Size get preferredSize => Size(double.infinity, 70.h);
 
   Widget _buildTitle() {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start;

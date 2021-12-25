@@ -1,11 +1,15 @@
 class PostModelReq {
-  String title;
-  String description;
+  String? title;
+  String? description;
   int? joinLimit;
+  int? numberOfJoins;
+  String? imagePath;
 
   PostModelReq({
-    required this.description,
-    required this.title,
+    this.description,
+    this.title,
     this.joinLimit,
+    this.numberOfJoins,
+    this.imagePath,
   });
 }
