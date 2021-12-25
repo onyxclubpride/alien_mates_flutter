@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+
+
 //TODO: THERE IS NO FUTURA
 final futuraR14 = GoogleFonts.lato(
   fontWeight: FontWeight.w400,

@@ -1,4 +1,5 @@
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:smart_house_flutter/mgr/navigation/app_routes.dart';
 import 'package:smart_house_flutter/mgr/redux/action.dart';
@@ -20,29 +21,32 @@ class _AlienMatesAppState extends State<AlienMatesApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ScreenUtilInit(
-      designSize: const Size(360, 640),
-      builder: () => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        builder: (context, child) => MediaQuery(
-            child: child!,
-            data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
-        title: Constants.appTitle,
-        navigatorKey: Global.navKey,
-        initialRoute: AppRoutes.splashRoute,
-        theme: MainTheme.mainThemeDark,
-        routes: AppRoutes.getRoutes(),
-        navigatorObservers: [AppRouterObserver()],
-        localizationsDelegates: const [
-          AppLocalizationsDelegate(),
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-        ],
-        supportedLocales: const [
-          Locale('en'), // English
-          Locale('kr'), // Korean
-        ],
-        locale: locale,
+    return StoreProvider(
+      store: appStore,
+      child: ScreenUtilInit(
+        designSize: const Size(360, 640),
+        builder: () => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          builder: (context, child) => MediaQuery(
+              child: child!,
+              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0)),
+          title: Constants.appTitle,
+          navigatorKey: Global.navKey,
+          initialRoute: AppRoutes.splashRoute,
+          theme: MainTheme.mainThemeDark,
+          routes: AppRoutes.getRoutes(),
+          navigatorObservers: [AppRouterObserver()],
+          localizationsDelegates: const [
+            AppLocalizationsDelegate(),
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: const [
+            Locale('en'), // English
+            Locale('kr'), // Korean
+          ],
+          locale: locale,
+        ),
       ),
     );
   }

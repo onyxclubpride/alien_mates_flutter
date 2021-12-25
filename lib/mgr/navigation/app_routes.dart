@@ -18,7 +18,7 @@ class AppRoutes {
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
-      AppRoutes.loginPageRoute: (BuildContext context) => const LoginPage(),
+      AppRoutes.loginPageRoute: (BuildContext context) => LoginPage(),
 
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),

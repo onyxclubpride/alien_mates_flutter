@@ -8,6 +8,9 @@ import 'package:smart_house_flutter/mgr/redux/action.dart';
 import 'package:smart_house_flutter/presentation/template/base/template.dart';
 import 'package:flutter/material.dart';
 import 'package:smart_house_flutter/mgr/redux/app_state.dart';
+import 'package:smart_house_flutter/presentation/widgets/input/basic_input.dart';
+import 'package:smart_house_flutter/presentation/widgets/input/input_label.dart';
+import 'package:smart_house_flutter/utils/common/validators.dart';
 
 // import 'package:alien_mates_flutter/utils/common/validators.dart';
 
@@ -16,13 +19,12 @@ class LoginPage extends StatefulWidget {
   State<LoginPage> createState() => _LoginPageState();
 }
 
-
 class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> _formAuthKey2 = GlobalKey<FormState>(debugLabel: '2');
 
   TextEditingController idController = TextEditingController(text: 'ibextest');
   TextEditingController pwController =
-  TextEditingController(text: 'Ibex123!@#');
+      TextEditingController(text: 'Ibex123!@#');
   // TextEditingController idController = TextEditingController(text: 'gmlwnd');
   // TextEditingController pwController = TextEditingController(text: 'Test0928!');
   // TextEditingController idController = TextEditingController();
@@ -42,7 +44,11 @@ class _LoginPageState extends State<LoginPage> {
         converter: (store) => store.state,
         builder: (context, state) {
           return DefaultBody(
+            withNavigationBar: false,
+            withTopBanner: false,
+            showAppBar: false,
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Form(
                   onChanged: () {
@@ -54,10 +60,7 @@ class _LoginPageState extends State<LoginPage> {
                   child: SpacedColumn(
                     verticalSpace: 21,
                     children: [
-                      SizedText(
-                        text: 'login',
-                        textStyle: ThemeTextMedium.notoM17,
-                      ),
+                      SizedText(text: 'login', textStyle: latoB45),
                       SpacedColumn(verticalSpace: 25, children: [
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -66,7 +69,6 @@ class _LoginPageState extends State<LoginPage> {
                             BasicInput(
                               hintText: "input",
                               controller: idController,
-                              validator: Validator.validateId,
                             ),
                           ],
                         ),
@@ -77,7 +79,6 @@ class _LoginPageState extends State<LoginPage> {
                               BasicInput(
                                 hintText: "input",
                                 controller: pwController,
-                                validator: Validator.validatePassword,
                                 textInputAction: TextInputAction.done,
                                 isObscured: true,
                               )
@@ -89,49 +90,11 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 12.h,
                 ),
-                if (state.apiState.clientError != null)
-                  SizedText(
-                    text: '${state.apiState.clientError}',
-                    textStyle:
-                    ThemeTextRegular.notoR13.apply(color: ThemeColors.red),
-                  ),
                 SizedBox(
                   height: 19.h,
                 ),
-                if (!isLoading)
-                  ExpandedButton(
-                    text: 'login',
-                    onPressed: _checkNextButton,
-                  )
-                else
-                  CircularProgressIndicator(),
+                CircularProgressIndicator(),
                 SizedBox(height: 10.h),
-                SpacedRow(
-                  horizontalSpace: 11,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TextButtonSec(
-                      text: 'id_password',
-                      onPressed: () {
-                        appStore.dispatch(
-                            NavigateToAction(to: AppRoutes.RouteToNAT_MO_003));
-                      },
-                    ),
-                    SizedText(
-                      text: '|',
-                      textStyle: ThemeTextRegular.notoR13,
-                    ),
-                    TextButtonSec(
-                      text: 'register',
-                      onPressed: () {
-                        appStore.dispatch(UpdateUIAction(isSnsLogin: false));
-                        appStore.dispatch(
-                            NavigateToAction(to: AppRoutes.RouteToNAT_MO_005));
-                      },
-                    ),
-                  ],
-                ),
                 SizedBox(
                   height: 39.h,
                 ),
@@ -143,18 +106,17 @@ class _LoginPageState extends State<LoginPage> {
                     Expanded(
                       child: Container(
                         height: 1,
-                        color: ThemeColors.gray2,
+                        color: ThemeColors.gray1,
                       ),
                     ),
                     SizedText(
                       text: 'easy_login',
-                      textStyle: ThemeTextRegular.notoR13
-                          .apply(color: ThemeColors.gray4),
+                      textStyle: latoR14.apply(color: ThemeColors.gray1),
                     ),
                     Expanded(
                       child: Container(
                         height: 1,
-                        color: ThemeColors.gray2,
+                        color: ThemeColors.gray1,
                       ),
                     ),
                   ],
@@ -162,100 +124,33 @@ class _LoginPageState extends State<LoginPage> {
                 SizedBox(
                   height: 34.h,
                 ),
-                Row(
-                  mainAxisAlignment: Platform.isAndroid
-                      ? MainAxisAlignment.spaceAround
-                      : MainAxisAlignment.spaceBetween,
-                  children: [
-                    SpacedColumn(verticalSpace: 8, children: [
-                      CustomIcon(
-                        imagePath: 'assets/icons/kakao_ic.png',
-                        height: 50.h,
-                        onTap: () {
-                          appStore.dispatch(
-                              GetSnsLoginAction(snsType: SnsType.kakao));
-                        },
-                      ),
-                      SizedText(
-                        text: 'kakaotalk',
-                        textStyle: ThemeTextRegular.notoR13,
-                      )
-                    ]),
-                    SpacedColumn(verticalSpace: 8, children: [
-                      CustomIcon(
-                        imagePath: 'assets/icons/naver_ic.png',
-                        height: 50.h,
-                        onTap: () {
-                          appStore.dispatch(
-                              GetSnsLoginAction(snsType: SnsType.naver));
-                        },
-                      ),
-                      SizedText(
-                        text: 'naver',
-                        textStyle: ThemeTextRegular.notoR13,
-                      )
-                    ]),
-                    SpacedColumn(verticalSpace: 8, children: [
-                      CustomIcon(
-                        imagePath: 'assets/icons/google_ic.png',
-                        height: 50.h,
-                        onTap: () {
-                          appStore.dispatch(
-                              GetSnsLoginAction(snsType: SnsType.google));
-                        },
-                      ),
-                      SizedText(
-                        text: 'google',
-                        textStyle: ThemeTextRegular.notoR13,
-                      )
-                    ]),
-                    if (!Platform.isAndroid)
-                      SpacedColumn(verticalSpace: 8, children: [
-                        CustomIcon(
-                          imagePath: 'assets/icons/apple_ic.png',
-                          height: 50.h,
-                          onTap: () {
-                            appStore.dispatch(
-                                GetSnsLoginAction(snsType: SnsType.apple));
-                          },
-                        ),
-                        SizedText(
-                          text: 'apple',
-                          textStyle: ThemeTextRegular.notoR13,
-                        )
-                      ])
-                  ],
-                )
               ],
             ),
-            paddingTop: 18,
-            paddingBottom: 26,
-            paddingHorizontal: 18,
           );
         });
   }
 
-  _onLogin() async {
-    if (_formAuthKey2.currentState!.validate()) {
-      setState(() {
-        isLoading = true;
-      });
-      bool success = await appStore.dispatch(GetLoginAction(
-          loginReq: LoginReq(
-              password: pwController.text, userId: idController.text)));
-      if (success)
-        appStore.dispatch(
-            NavigateToAction(to: AppRoutes.RouteToNAT_MO_013, replace: true));
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
+  // _onLogin() async {
+  //   if (_formAuthKey2.currentState!.validate()) {
+  //     setState(() {
+  //       isLoading = true;
+  //     });
+  //     bool success = await appStore.dispatch(GetLoginAction(
+  //         loginReq: LoginReq(
+  //             password: pwController.text, userId: idController.text)));
+  //     if (success)
+  //       appStore.dispatch(
+  //           NavigateToAction(to: AppRoutes.RouteToNAT_MO_013, replace: true));
+  //     setState(() {
+  //       isLoading = false;
+  //     });
+  //   }
+  // }
 
-  get _checkNextButton {
-    if (pwController.text.isNotEmpty && idController.text.isNotEmpty) {
-      return _onLogin;
-    }
-    return null;
-  }
+  // get _checkNextButton {
+  //   if (pwController.text.isNotEmpty && idController.text.isNotEmpty) {
+  //     return _onLogin;
+  //   }
+  //   return null;
+  // }
 }

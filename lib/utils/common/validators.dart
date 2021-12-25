@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Validator {
+
   String? validateDomain(value, VoidCallback callback) {
     if (value == null) {
       callback();
@@ -25,4 +26,6 @@ class Validator {
       return null;
     }
   }
+
+
 }

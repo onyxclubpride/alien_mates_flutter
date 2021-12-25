@@ -49,23 +49,25 @@ class DefaultBody extends StatelessWidget {
           bottom: bottomPadding!.h,
           top: topPadding!.h,
         ),
-        child: Column(
-          children: [
-            if (withTopBanner) DefaultBanner(),
-            if (withNavigationBar)
-              Container(
-                  margin: EdgeInsets.symmetric(vertical: 25.h),
-                  child: BodyNavigationBar()),
-            SizedBox(
-                height: MediaQuery.of(context).size.height -
-                    30.h -
-                    50.h -
-                    90.h -
-                    90.h -
-                    MediaQuery.of(context).padding.top,
-                child: child),
-          ],
-        ),
+        child: withTopBanner || withNavigationBar
+            ? Column(
+                children: [
+                  if (withTopBanner) DefaultBanner(),
+                  if (withNavigationBar)
+                    Container(
+                        margin: EdgeInsets.symmetric(vertical: 25.h),
+                        child: BodyNavigationBar()),
+                  SizedBox(
+                      height: MediaQuery.of(context).size.height -
+                          30.h -
+                          50.h -
+                          90.h -
+                          90.h -
+                          MediaQuery.of(context).padding.top,
+                      child: child),
+                ],
+              )
+            : child,
       )),
     );
   }
