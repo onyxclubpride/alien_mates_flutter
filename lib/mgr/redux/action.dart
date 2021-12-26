@@ -141,8 +141,8 @@ class GetLoginAction {
 
 class GetPostByIdAction {
   String postId;
-
-  GetPostByIdAction(this.postId);
+  String? goToRoute;
+  GetPostByIdAction(this.postId, {this.goToRoute});
 }
 
 class GetUserByIdAction {
@@ -169,12 +169,13 @@ class GetSelectImageAction {
 class GetImageDownloadLinkAction {
   String imagePath;
   String? postType;
-
-  GetImageDownloadLinkAction(this.imagePath, {this.postType});
+  String postId;
+  GetImageDownloadLinkAction(this.imagePath,
+      {this.postType, required this.postId});
 }
 
 class GetUpdatePostAction {
-  String? imageUrl;
+  String? imagePath;
   int? numberOfLikes;
   List? joinedUserIds;
   String? title;
@@ -190,7 +191,7 @@ class GetUpdatePostAction {
   String? createdDate;
 
   GetUpdatePostAction(
-      {this.imageUrl,
+      {this.imagePath,
       this.numberOfLikes,
       required this.postId,
       this.joinedUserIds,

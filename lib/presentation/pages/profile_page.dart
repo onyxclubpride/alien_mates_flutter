@@ -1,3 +1,5 @@
+import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -86,26 +88,29 @@ class ProfilePage extends StatelessWidget {
 
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
-      // if (_item.isEvent) {
       _list.add(PostItemBanner(
           height: 110.h,
+          imageUrl: _item.imageUrl,
           leftWidget: InkWell(
-            onTap: _onDeletePress,
+            onTap: () {
+              _onDeletePress(_item.postId);
+            },
             child: const SizedText(
               text: 'Delete',
             ),
           ),
           rightWidget: InkWell(
-            onTap: _onEditPostPress,
+            onTap: () {
+              _onEditPostPress(_item.postId);
+            },
             child: const SizedText(
               text: 'Edit',
             ),
           ),
-          child: CachedNetworkImage(
-            imageUrl: state.apiState.posts[i].imageUrl!,
-            fit: BoxFit.cover,
-          )));
-      // }
+          child: CachedImageOrTextImageWidget(
+              title: _item.title,
+              imageUrl: _item.imageUrl,
+              description: _item.description)));
     }
     return _list;
   }
@@ -122,10 +127,15 @@ class ProfilePage extends StatelessWidget {
   }
 
   _onEditPress() {
-    appStore.dispatch(NavigateToAction(to: AppRoutes.loginPageRoute));
+    appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
   }
 
-  _onEditPostPress() {}
+  _onEditPostPress(String postId) async {
+    appStore.dispatch(
+        GetPostByIdAction(postId, goToRoute: AppRoutes.editNoticePageRoute));
+  }
 
-  _onDeletePress() {}
+  _onDeletePress(String postId) {
+    appStore.dispatch(GetDeletePostAction(postId));
+  }
 }

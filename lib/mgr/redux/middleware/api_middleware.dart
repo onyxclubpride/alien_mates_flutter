@@ -144,6 +144,7 @@ Future<bool> _getCreateNoticeAction(
     if (action.imagePath != null) {
       downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
           action.imagePath!,
+          postId: _postUid,
           postType: "NOTICE_POST"));
     }
     await postsCollection.doc(_postUid).set({
@@ -182,6 +183,7 @@ Future<bool> _getCreateEventAction(
     if (action.imagePath != null) {
       downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
           action.imagePath!,
+          postId: _postUid,
           postType: "EVENT_POST"));
     }
     await postsCollection.doc(_postUid).set({
@@ -218,8 +220,10 @@ Future<bool> _getCreateHelpAction(
     String _userUid = _generateUserUuid();
     String? _downUrl;
     if (action.imagePath != null) {
-      _downUrl = await appStore.dispatch(
-          GetImageDownloadLinkAction(action.imagePath!, postType: 'HELP_POST'));
+      _downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
+          action.imagePath!,
+          postId: _postUid,
+          postType: 'HELP_POST'));
     }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,
@@ -373,6 +377,11 @@ Future<PostModelRes?> _getPostByIdAction(
       imageUrl: _postDetail['imageUrl'],
     );
     next(UpdateApiStateAction(postDetail: _postModelRes));
+    if (action.goToRoute != null) {
+      appStore.dispatch(NavigateToAction(
+        to: action.goToRoute,
+      ));
+    }
     closeLoading();
     return _postModelRes;
   } catch (e) {
@@ -387,6 +396,12 @@ Future<bool> _getUpdatePostAction(
     showLoading();
     PostModelRes? _postById =
         await appStore.dispatch(GetPostByIdAction(action.postId));
+    String? _downUrl;
+    if (action.imagePath != null) {
+      final updateRes = await _updateFileFromFirebaseStorage(
+          action.postId, File(action.imagePath!));
+      _downUrl = await updateRes.ref.getDownloadURL();
+    }
     if (_postById != null) {
       PostModelRes _postModelRes = PostModelRes(
         createdDate: action.createdDate ?? _postById.createdDate,
@@ -401,7 +416,7 @@ Future<bool> _getUpdatePostAction(
         description: action.description ?? _postById.description,
         title: action.title ?? _postById.title,
         joinLimit: action.joinLimit ?? _postById.joinLimit,
-        imageUrl: action.imageUrl ?? _postById.imageUrl,
+        imageUrl: _downUrl ?? _postById.imageUrl,
       );
       await postsCollection.doc(action.postId).update({
         "createdDate": _postModelRes.createdDate,
@@ -421,6 +436,7 @@ Future<bool> _getUpdatePostAction(
       next(UpdateApiStateAction(postDetail: _postModelRes));
       await appStore.dispatch(GetAllKindPostsAction());
       closeLoading();
+      appStore.dispatch(NavigateToAction(to: 'up'));
     }
   } catch (e) {
     closeLoading();
@@ -432,6 +448,7 @@ Future<bool> _getUpdatePostAction(
 Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
+    await _deleteFileFromFirebaseStorage(action.postId);
     showLoading();
     await postsCollection.doc(action.postId).delete();
     await appStore.dispatch(GetAllKindPostsAction());
@@ -442,18 +459,35 @@ Future<void> _getDeletePostAction(
   }
 }
 
+Future<void> _deleteFileFromFirebaseStorage(String postId) async {
+  await FirebaseStorage.instance
+      .ref("/${Constants.firebaseStorageImagesFolderName}/$postId")
+      .delete();
+}
+
+Future<TaskSnapshot> _updateFileFromFirebaseStorage(
+    String postId, File newFile) async {
+  TaskSnapshot _updateRes = await FirebaseStorage.instance
+      .ref("/${Constants.firebaseStorageImagesFolderName}/$postId")
+      .putFile(newFile);
+
+  return _updateRes;
+}
+
 Future<String?> _getImageDownloadLinkAction(AppState state,
     GetImageDownloadLinkAction action, NextDispatcher next) async {
   try {
+    showLoading();
     File _file = File(action.imagePath);
-    String _postUid = _generatePostUuid(type: action.postType);
 
     TaskSnapshot taskSnapshot = await FirebaseStorage.instance
-        .ref("/${Constants.firebaseStorageImagesFolderName}/$_postUid")
+        .ref("/${Constants.firebaseStorageImagesFolderName}/${action.postId}")
         .putFile(_file);
     String downUrl = await taskSnapshot.ref.getDownloadURL();
+    closeLoading();
     return downUrl;
   } catch (e) {
+    closeLoading();
     logger(e.toString(), hint: 'GET IMAGE DOWNLOAD LINK POST CATCH ERROR');
   }
 }
