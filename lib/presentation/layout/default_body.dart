@@ -100,6 +100,6 @@ class DefaultBody extends StatelessWidget {
   }
 
   _onBannerTap() {
-    appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
+    appStore.dispatch(NavigateToAction(to: AppRoutes.createNoticePageRoute));
   }
 }

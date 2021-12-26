@@ -17,14 +17,14 @@ import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
-class CreateHelpPage extends StatefulWidget {
+class CreateNoticePage extends StatefulWidget {
   @override
-  State<CreateHelpPage> createState() => _CreateHelpPageState();
+  State<CreateNoticePage> createState() => _CreateNoticePageState();
 }
 
-class _CreateHelpPageState extends State<CreateHelpPage> {
-  final GlobalKey<FormState> _formKeyCreateHelpPage =
-      GlobalKey<FormState>(debugLabel: '_formKeyCreateHelpPage');
+class _CreateNoticePageState extends State<CreateNoticePage> {
+  final GlobalKey<FormState> _formKeyCreateNoticePage =
+      GlobalKey<FormState>(debugLabel: '_formKeyCreateNoticePage');
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -49,9 +49,9 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
             withActionButton: false,
             titleIcon: _buildTitleIcon(),
             titleText:
-                SizedText(text: 'Create a Support post', textStyle: latoM20),
+                SizedText(text: 'Create a Notice post', textStyle: latoM20),
             child: Form(
-              key: _formKeyCreateHelpPage,
+              key: _formKeyCreateNoticePage,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -64,7 +64,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedText(
-                                text: 'Help details',
+                                text: 'Notice details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
                             Container(
@@ -131,8 +131,8 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
   }
 
   _onPostEvent() async {
-    if (_formKeyCreateHelpPage.currentState!.validate()) {
-      bool created = await appStore.dispatch(GetCreateHelpAction(
+    if (_formKeyCreateNoticePage.currentState!.validate()) {
+      bool created = await appStore.dispatch(GetCreateNoticeAction(
           title: titleController.text,
           description: descriptionController.text,
           imagePath: helpImage?.path));
@@ -142,7 +142,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
             text:
                 'There was a problem while uploading to server! Please, try again!');
       } else {
-        appStore.dispatch(NavigateToAction(to: AppRoutes.helpPageRoute));
+        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }
   }

@@ -140,13 +140,18 @@ Future<bool> _getCreateNoticeAction(
     showLoading();
     String _postUid = _generatePostUuid(type: 'NOTICE_POST');
     String _userUid = _generateUserUuid();
+    String? downUrl;
+    if (action.imagePath != null) {
+      downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
+          action.imagePath!,
+          postType: "NOTICE_POST"));
+    }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,
       "eventLocation": null,
       "title": action.title,
       "description": action.description,
-      "imageUrl":
-          'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+      "imageUrl": downUrl,
       "userId": _userUid,
       "isPost": false,
       "isEvent": false,
@@ -175,8 +180,9 @@ Future<bool> _getCreateEventAction(
     String _userUid = _generateUserUuid();
     String? downUrl;
     if (action.imagePath != null) {
-      downUrl = await appStore
-          .dispatch(GetImageDownloadLinkAction(action.imagePath!));
+      downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
+          action.imagePath!,
+          postType: "EVENT_POST"));
     }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,
@@ -213,7 +219,7 @@ Future<bool> _getCreateHelpAction(
     String? _downUrl;
     if (action.imagePath != null) {
       _downUrl = await appStore.dispatch(
-          GetImageDownloadLinkAction(action.imagePath!, postType: 'HELP'));
+          GetImageDownloadLinkAction(action.imagePath!, postType: 'HELP_POST'));
     }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,

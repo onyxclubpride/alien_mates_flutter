@@ -1,5 +1,6 @@
 import 'package:alien_mates/presentation/pages/create_event_page.dart';
 import 'package:alien_mates/presentation/pages/create_help_page.dart';
+import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:flutter/material.dart';
 import '../../presentation/template/base/template.dart';
 
@@ -17,6 +18,7 @@ class AppRoutes {
 
   static const createEventPageRoute = "/createEvent";
   static const createHelpPageRoute = "/createHelp";
+  static const createNoticePageRoute = "/createNotice";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -37,6 +39,8 @@ class AppRoutes {
       AppRoutes.createEventPageRoute: (BuildContext context) =>
           CreateEventPage(),
       AppRoutes.createHelpPageRoute: (BuildContext context) => CreateHelpPage(),
+      AppRoutes.createNoticePageRoute: (BuildContext context) =>
+          CreateNoticePage(),
     };
 
     return base;
