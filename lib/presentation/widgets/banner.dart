@@ -3,6 +3,7 @@ import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/widgets/open_image_popup.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 
 class DefaultBanner extends StatelessWidget {
@@ -106,38 +107,68 @@ class BodyNavigationBar extends StatelessWidget {
   }
 }
 
-class PostItemBanner extends StatelessWidget {
+class PostItemBanner extends StatefulWidget {
   double height;
   Widget? leftWidget;
   Widget? rightWidget;
   Widget child;
   Color bgColor;
   bool withBorder;
+  String? imageUrl;
   PostItemBanner(
       {required this.child,
       this.height = 145,
       this.leftWidget,
       this.withBorder = false,
       this.bgColor = ThemeColors.componentBgDark,
+      this.imageUrl,
       this.rightWidget});
 
   @override
+  State<PostItemBanner> createState() => _PostItemBannerState();
+}
+
+class _PostItemBannerState extends State<PostItemBanner> {
+  OverlayEntry? _popupDialog;
+
+  @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        DefaultBanner(
-            bgColor: bgColor,
-            withBorder: withBorder,
-            withBottomLeftRadius: leftWidget == null,
-            withBottomRightRadius: leftWidget == null,
-            child: child,
-            height: height),
-        if (leftWidget != null || rightWidget != null)
-          PostButton(
-            leftChild: leftWidget!,
-            rightChild: rightWidget,
-          ),
-      ],
+    return GestureDetector(
+      onLongPress: widget.imageUrl != null
+          ? () {
+              _popupDialog = _createPopupDialog(widget.imageUrl!);
+              Overlay.of(context)!.insert(_popupDialog!);
+            }
+          : null,
+      onLongPressEnd: widget.imageUrl != null
+          ? (details) {
+              _popupDialog?.remove();
+            }
+          : null,
+      child: Column(
+        children: [
+          DefaultBanner(
+              bgColor: widget.bgColor,
+              withBorder: widget.withBorder,
+              withBottomLeftRadius: widget.leftWidget == null,
+              withBottomRightRadius: widget.leftWidget == null,
+              child: widget.child,
+              height: widget.height),
+          if (widget.leftWidget != null || widget.rightWidget != null)
+            PostButton(
+              leftChild: widget.leftWidget!,
+              rightChild: widget.rightWidget,
+            ),
+        ],
+      ),
+    );
+  }
+
+  OverlayEntry _createPopupDialog(String url) {
+    return OverlayEntry(
+      builder: (context) => AnimatedDialog(
+        child: createPopupContent(url),
+      ),
     );
   }
 }

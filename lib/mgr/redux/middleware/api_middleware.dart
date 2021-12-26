@@ -73,7 +73,7 @@ Future<bool> _getAllKindPostsAction(
 
 Future<List<ListPostModelRes>> _getPostsList() async {
   try {
-    QuerySnapshot _querySnapshot = await postsCollection.limit(10).get();
+    QuerySnapshot _querySnapshot = await postsCollection.get();
     List _snapshotList = _querySnapshot.docs;
     List<ListPostModelRes> _posts = [];
     for (int i = 0; i < _snapshotList.length; i++) {
@@ -191,7 +191,7 @@ Future<bool> _getCreateEventAction(
       "isHelp": false,
       "numberOfLikes": null,
       "joinedUserIds": [],
-      "joinLimit": action.joinLimit,
+      "joinLimit": action.joinLimit ?? 0,
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetAllKindPostsAction());
@@ -210,13 +210,17 @@ Future<bool> _getCreateHelpAction(
     showLoading();
     String _postUid = _generatePostUuid(type: 'HELP_POST');
     String _userUid = _generateUserUuid();
+    String? _downUrl;
+    if (action.imagePath != null) {
+      _downUrl = await appStore.dispatch(
+          GetImageDownloadLinkAction(action.imagePath!, postType: 'HELP'));
+    }
     await postsCollection.doc(_postUid).set({
       "postId": _postUid,
       "title": action.title,
       "description": action.description,
       "eventLocation": null,
-      "imageUrl":
-          'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+      "imageUrl": _downUrl,
       "userId": _userUid,
       "isPost": false,
       "isEvent": false,
@@ -299,7 +303,7 @@ Future<void> _getUserIdExistAction(
     final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
     if (postsFetched) {
       for (int i = 0; i < state.apiState.users.length; i++) {
-        UserModelRes? _userInst = state.apiState.users[i];
+        UserModelRes _userInst = state.apiState.users[i];
         if (_userInst.userId == action.userId) {
           next(UpdateApiStateAction(userMe: _userInst));
           next(UpdateInitStateAction(userId: _userInst.userId));
@@ -329,7 +333,8 @@ Future<bool> _getLoginAction(
           next(UpdateInitStateAction(userId: _userInst.userId));
           await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
           await appStore.dispatch(GetAllKindPostsAction());
-          appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+          appStore.dispatch(
+              NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
         }
       }
     }

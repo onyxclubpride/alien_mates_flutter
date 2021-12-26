@@ -31,6 +31,7 @@ class _EventsPageState extends State<EventsPage> {
   List<Widget> _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
+    String _userId = state.apiState.userMe.userId;
 
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
@@ -38,17 +39,21 @@ class _EventsPageState extends State<EventsPage> {
         _list.add(PostItemBanner(
             height: 180.h,
             leftWidget: SizedText(
-              text: 'Joined ${_item.joinedUserIds!.length}',
+              text: 'Joined ${_item.joinedUserIds!.length}/${_item.joinLimit!}',
             ),
             rightWidget: InkWell(
               onTap: () {
-                _onJoinTap(_item.postId, _item.joinedUserIds!, _item.joinLimit!,
-                    "USER_2021.12.25_f547d420-657f-11ec-8de4-a59789f4ac63");
+                _item.joinedUserIds!.contains(_userId)
+                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId)
+                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId);
               },
-              child: const SizedText(
-                text: 'JOIN',
+              child: SizedText(
+                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
               ),
             ),
+            imageUrl: _item.imageUrl,
             child: CachedImageOrTextImageWidget(
                 title: _item.title,
                 imageUrl: _item.imageUrl,
@@ -59,8 +64,6 @@ class _EventsPageState extends State<EventsPage> {
   }
 
   _onJoinTap(String postId, List userIds, int joinLimit, userId) {
-    logger(joinLimit);
-    logger(userIds);
     if (joinLimit > userIds.length) {
       if (!userIds.contains(userId)) {
         appStore.dispatch(GetUpdatePostAction(
@@ -71,14 +74,12 @@ class _EventsPageState extends State<EventsPage> {
     } else {
       showAlertDialog(context, text: "Guests limit is full!");
     }
-    // appStore.dispatch(GetDeletePostAction(postId));
-    // appStore.dispatch(GetPostByIdAction(
-    //     'EVENT_POST_2021.12.25_7e284ae0-6558-11ec-8682-6f9cec7c39a3'));
-    // appStore.dispatch(GetCreateEventAction(
-    //     eventLocation: 'Seoul',
-    //     title: "Cool event",
-    //     description: "Cool event desc",
-    //     joinLimit: 10,
-    //     imagePath: ''));
+  }
+
+  _onUnJoinTap(String postId, List userIds, int joinLimit, userId) {
+    List _list = userIds;
+    _list.remove(userId);
+    appStore
+        .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
   }
 }

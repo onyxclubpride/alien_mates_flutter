@@ -31,6 +31,7 @@ Future<void> _getStateInitAction(
     AppState state, GetStateInitAction action, NextDispatcher next) async {
   String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
   if (_localUserId != null) {
+    await appStore.dispatch(GetAllUsersAction());
     appStore.dispatch(GetUserIdExistAction(_localUserId));
   } else {
     appStore.dispatch(

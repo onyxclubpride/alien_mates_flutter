@@ -17,30 +17,24 @@ import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
-class CreateEventPage extends StatefulWidget {
+class CreateHelpPage extends StatefulWidget {
   @override
-  State<CreateEventPage> createState() => _CreateEventPageState();
+  State<CreateHelpPage> createState() => _CreateHelpPageState();
 }
 
-class _CreateEventPageState extends State<CreateEventPage> {
-  final GlobalKey<FormState> _formKeyCreateEventPage =
-      GlobalKey<FormState>(debugLabel: '_formKeyCreateEventPage');
+class _CreateHelpPageState extends State<CreateHelpPage> {
+  final GlobalKey<FormState> _formKeyCreateHelpPage =
+      GlobalKey<FormState>(debugLabel: '_formKeyCreateHelpPage');
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController maxPplController = TextEditingController();
-  TextEditingController locationController = TextEditingController();
 
-  File? postImage;
-
-  bool agreementChecked = false;
+  File? helpImage;
 
   @override
   void dispose() {
     titleController.dispose();
     descriptionController.dispose();
-    maxPplController.dispose();
-    locationController.dispose();
     super.dispose();
   }
 
@@ -55,9 +49,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
             withActionButton: false,
             titleIcon: _buildTitleIcon(),
             titleText:
-                SizedText(text: 'Create an Event post', textStyle: latoM20),
+                SizedText(text: 'Create an Support post', textStyle: latoM20),
             child: Form(
-              key: _formKeyCreateEventPage,
+              key: _formKeyCreateHelpPage,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -70,7 +64,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedText(
-                                text: 'Event details',
+                                text: 'Help details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
                             Container(
@@ -99,24 +93,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                       controller: descriptionController,
                                     ),
                                   ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Maximum people'),
-                                    PostCreateInput(
-                                      controller: maxPplController,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Location'),
-                                    PostCreateInput(
-                                      controller: locationController,
-                                      validator: Validator.validateText,
-                                    ),
-                                  ]),
                             ]),
                           ],
                         ),
@@ -127,61 +103,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       onTap: _onChooseImage,
                       height: 200.h,
                       child: FittedBox(
-                          child: postImage == null
+                          child: helpImage == null
                               ? const Icon(
                                   Ionicons.add,
                                   color: ThemeColors.borderDark,
                                 )
-                              : Image.file(postImage!)),
+                              : Image.file(helpImage!)),
                     ),
-                    SizedBox(height: 20.h),
-                    SpacedRow(
-                      children: [
-                        Transform.scale(
-                          scale: 1.5,
-                          child: Checkbox(
-                            splashRadius: 0,
-                            shape: const CircleBorder(),
-                            checkColor: ThemeColors.black,
-                            activeColor: ThemeColors.yellow,
-                            fillColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.focused)) {
-                                return ThemeColors.fontWhite;
-                              } else {
-                                return ThemeColors.yellow;
-                              }
-                            }),
-                            value: agreementChecked,
-                            onChanged: (value) {
-                              setState(() {
-                                agreementChecked = value!;
-                              });
-                            },
-                          ),
-                        ),
-                        SpacedColumn(
-                          children: [
-                            SizedText(
-                                textAlign: TextAlign.start,
-                                width: 260.w,
-                                text: 'Phone number usage agreement!',
-                                textStyle: latoM20.copyWith(
-                                    color: agreementChecked
-                                        ? ThemeColors.fontWhite
-                                        : ThemeColors.borderDark)),
-                            SizedText(
-                                textAlign: TextAlign.start,
-                                width: 260.w,
-                                text:
-                                    '* Edit to show agreement to show the phone number of the user',
-                                textStyle:
-                                    latoR14.copyWith(color: ThemeColors.red)),
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 40.h),
                     ExpandedButton(text: 'Post', onPressed: _onPostEvent),
                     SizedBox(height: 20.h),
                   ],
@@ -196,31 +125,24 @@ class _CreateEventPageState extends State<CreateEventPage> {
     String? xImagePath = await appStore.dispatch(GetSelectImageAction());
     if (xImagePath != null) {
       setState(() {
-        postImage = File(xImagePath);
+        helpImage = File(xImagePath);
       });
     }
   }
 
   _onPostEvent() async {
-    if (_formKeyCreateEventPage.currentState!.validate()) {
-      if (agreementChecked) {
-        bool created = await appStore.dispatch(GetCreateEventAction(
-            title: titleController.text,
-            description: descriptionController.text,
-            eventLocation: locationController.text,
-            joinLimit: int.parse(maxPplController.text),
-            imagePath: postImage?.path));
+    if (_formKeyCreateHelpPage.currentState!.validate()) {
+      bool created = await appStore.dispatch(GetCreateHelpAction(
+          title: titleController.text,
+          description: descriptionController.text,
+          imagePath: helpImage?.path));
 
-        if (!created) {
-          showAlertDialog(context,
-              text:
-                  'There was a problem while uploading to server! Please, try again!');
-        } else {
-          appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
-        }
-      } else {
+      if (!created) {
         showAlertDialog(context,
-            text: 'Please, check the agreement box to continue!');
+            text:
+                'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: AppRoutes.helpPageRoute));
       }
     }
   }

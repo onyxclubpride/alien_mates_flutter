@@ -5,7 +5,11 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
   String? imageUrl;
   String? title;
   String? description;
-  CachedImageOrTextImageWidget({this.description, this.title, this.imageUrl});
+  CachedImageOrTextImageWidget({
+    this.description,
+    this.title,
+    this.imageUrl,
+  });
 
   @override
   Widget build(BuildContext context) {
