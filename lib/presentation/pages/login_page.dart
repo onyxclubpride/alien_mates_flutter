@@ -1,6 +1,8 @@
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/presentation/widgets/bottom_sheet/help_detail_sheet.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/notice_detail_sheet.dart';
+import 'package:alien_mates/presentation/widgets/bottom_sheet/post_feed_sheet.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/signUp_sheet.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:alien_mates/utils/common/validators.dart';
@@ -149,7 +151,9 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         isScrollControlled: true,
         builder: (context) {
-          return NoticeDetail();
+          // return NoticeDetail();
+          // return HelpDetail();
+          return PostFeed();
         });
   }
 }

@@ -80,7 +80,7 @@ class _NoticeDetailState extends State<NoticeDetail> {
                               ),
                             )),
                         ExpandedButton(
-                          text: 'LOGIN',
+                          text: 'OKAY',
                           onPressed: () {},
                         ),
                       ]),
