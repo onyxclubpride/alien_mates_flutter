@@ -76,6 +76,7 @@ class GetStateInitAction {}
 class GetCreatePostAction {
   String? description;
   String? imagePath;
+
   GetCreatePostAction({this.description, this.imagePath});
 }
 
@@ -83,6 +84,7 @@ class GetCreateNoticeAction {
   String? imagePath;
   String title;
   String description;
+
   GetCreateNoticeAction(
       {required this.title, this.imagePath, required this.description});
 }
@@ -93,6 +95,7 @@ class GetCreateEventAction {
   String description;
   int? joinLimit;
   String eventLocation;
+
   GetCreateEventAction(
       {required this.title,
       required this.description,
@@ -105,6 +108,7 @@ class GetCreateHelpAction {
   String title;
   String description;
   String? imagePath;
+
   GetCreateHelpAction(
       {required this.title, required this.description, this.imagePath});
 }
@@ -124,22 +128,26 @@ class GetCreateUserAction {
 
 class GetUserIdExistAction {
   String userId;
+
   GetUserIdExistAction(this.userId);
 }
 
 class GetLoginAction {
   String phoneNumber;
   String password;
+
   GetLoginAction({required this.phoneNumber, required this.password});
 }
 
 class GetPostByIdAction {
   String postId;
+
   GetPostByIdAction(this.postId);
 }
 
 class GetUserByIdAction {
   String userId;
+
   GetUserByIdAction(this.userId);
 }
 
@@ -147,18 +155,21 @@ class GetAllUsersAction {}
 
 class GetDeletePostAction {
   String postId;
+
   GetDeletePostAction(this.postId);
 }
 
 class GetSelectImageAction {
   bool multipleImages;
   bool withCamera;
+
   GetSelectImageAction({this.multipleImages = false, this.withCamera = false});
 }
 
 class GetImageDownloadLinkAction {
   String imagePath;
   String? postType;
+
   GetImageDownloadLinkAction(this.imagePath, {this.postType});
 }
 
@@ -209,5 +220,6 @@ class RemoveLocalUserIdAction {}
 
 class UpdateInitStateAction {
   String? userId;
+
   UpdateInitStateAction({this.userId});
 }

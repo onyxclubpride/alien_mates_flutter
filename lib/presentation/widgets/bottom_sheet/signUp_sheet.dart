@@ -1,5 +1,6 @@
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
+import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -20,8 +21,8 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final GlobalKey<FormState> _formKeySignUp =
-      GlobalKey<FormState>(debugLabel: '_formKeySignUp');
+  final GlobalKey<FormState> _formKeySignUpPage =
+      GlobalKey<FormState>(debugLabel: '_formKeySignupPage');
 
   TextEditingController nameController = TextEditingController(text: '');
   TextEditingController passController = TextEditingController(text: '');
@@ -29,6 +30,8 @@ class _SignUpState extends State<SignUp> {
   TextEditingController phoneNumberController =
       TextEditingController(text: '+82 ');
   TextEditingController otpController = TextEditingController(text: '');
+  TextEditingController uniNameController = TextEditingController(text: '');
+
   String errorText = "";
 
   @override
@@ -71,7 +74,7 @@ class _SignUpState extends State<SignUp> {
                 padding: EdgeInsets.symmetric(vertical: 20.w),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
                   Form(
-                    key: _formKeySignUp,
+                    key: _formKeySignUpPage,
                     child: SpacedColumn(
                       verticalSpace: 21,
                       children: [
@@ -106,6 +109,7 @@ class _SignUpState extends State<SignUp> {
                             isObscured: true,
                           ),
                           BasicInput(
+                            validator: Validator.validatePhoneNumber,
                             isFocusBorderEnabled: false,
                             hintText: "Phone Number",
                             controller: phoneNumberController,
@@ -115,6 +119,11 @@ class _SignUpState extends State<SignUp> {
                             hintText: "OTP",
                             controller: otpController,
                           ),
+                          BasicInput(
+                            isFocusBorderEnabled: false,
+                            hintText: "University Name",
+                            controller: uniNameController,
+                          ),
                           if (errorText.isNotEmpty)
                             SizedText(
                               text: errorText,
@@ -122,13 +131,15 @@ class _SignUpState extends State<SignUp> {
                                   color: ThemeColors.fontWhite),
                             ),
                           ExpandedButton(
-                            text: 'LOGIN',
+                            text: 'Sign Up',
                             onPressed: () {
                               print(nameController);
                               print(passController);
                               print(confirmPassController);
                               print(phoneNumberController);
-                              print(otpController);
+                              print("HELLO WORLD");
+
+                              _signUpPress();
                             },
                           ),
                         ]),
@@ -140,5 +151,23 @@ class _SignUpState extends State<SignUp> {
             ),
           );
         });
+  }
+
+  _signUpPress() async {
+    setState(() {
+      errorText = "";
+    });
+    if (_formKeySignUpPage.currentState!.validate()) {
+      bool matched = await appStore.dispatch(GetCreateUserAction(
+          phoneNumber: phoneNumberController.text,
+          password: passController.text,
+          name: nameController.text,
+          uniName: uniNameController.text));
+      if (!matched) {
+        setState(() {
+          errorText = "There is something wrong. Please check your data again";
+        });
+      }
+    }
   }
 }

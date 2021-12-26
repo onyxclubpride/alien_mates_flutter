@@ -74,7 +74,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
             //     description: "Cool event desc",
             //     joinLimit: 10,
             //     imagePath: ''));
-            // appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
+            appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
           },
         ),
       ));
