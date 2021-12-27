@@ -1,3 +1,4 @@
+import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -33,10 +34,9 @@ class HomePage extends StatelessWidget {
       if (_item.isPost) {
         _list.add(PostItemBanner(
             imageUrl: _item.imageUrl,
-            child: CachedNetworkImage(
-              imageUrl: state.apiState.posts[i].imageUrl!,
-              fit: BoxFit.cover,
-            )));
+            desc: _item.description,
+            child: CachedImageOrTextImageWidget(
+                imageUrl: _item.imageUrl, description: _item.description)));
       }
     }
     return _list;

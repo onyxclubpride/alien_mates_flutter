@@ -88,7 +88,7 @@ Future<List<ListPostModelRes>> _getPostsList() async {
         imageUrl: item['imageUrl'],
         description: item['description'],
         joinedUserIds: item['joinedUserIds'],
-        // likedUserIds: item['likedUserIds'],
+        likedUserIds: item['likedUserIds'],
         title: item['title'],
         joinLimit: item['joinLimit'],
       );
@@ -104,22 +104,29 @@ Future<List<ListPostModelRes>> _getPostsList() async {
 Future<bool> _getCreatePostAction(
     AppState state, GetCreatePostAction action, NextDispatcher next) async {
   try {
-    String _uid = _generatePostUuid();
-    String _userUid = _generateUserUuid();
     showLoading();
+    String _uid = _generatePostUuid();
+    String _postUid = _generatePostUuid();
+    String _userUid = _generateUserUuid();
+    String? downUrl;
+    if (action.imagePath != null) {
+      downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
+          action.imagePath!,
+          postId: _postUid,
+          postType: "NOTICE_POST"));
+    }
     await postsCollection.doc(_uid).set({
       "postId": _uid,
       "title": null,
       "description": action.description,
       "eventLocation": null,
-      "imageUrl":
-          'https://firebasestorage.googleapis.com/v0/b/alien-mates.appspot.com/o/posts_images%2Ftestid123.jpg?alt=media&token=d8788469-483d-4a35-969e-fafbaa9e9603',
+      "imageUrl": downUrl,
       "userId": _userUid,
       "isPost": true,
       "isEvent": false,
       "isNotice": false,
       "isHelp": false,
-      "likedUserIds": 0,
+      "likedUserIds": [],
       "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
@@ -369,7 +376,7 @@ Future<PostModelRes?> _getPostByIdAction(
       userId: _postDetail['userId'],
       isEvent: _postDetail['isEvent'],
       isHelp: _postDetail['isHelp'],
-      // likedUserIds: _postDetail['likedUserIds'],
+      likedUserIds: _postDetail['likedUserIds'],
       joinedUserIds: _postDetail['joinedUserIds'],
       description: _postDetail['description'],
       title: _postDetail['title'],
@@ -411,7 +418,7 @@ Future<bool> _getUpdatePostAction(
         userId: action.userId ?? _postById.userId,
         isEvent: action.isEvent ?? _postById.isEvent,
         isHelp: action.isHelp ?? _postById.isHelp,
-        // likedUserIds: action.likedUserIds ?? _postById.likedUserIds,
+        likedUserIds: action.likedUserIds ?? _postById.likedUserIds,
         joinedUserIds: action.joinedUserIds ?? _postById.joinedUserIds,
         description: action.description ?? _postById.description,
         title: action.title ?? _postById.title,

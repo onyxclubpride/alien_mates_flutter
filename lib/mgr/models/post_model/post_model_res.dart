@@ -1,6 +1,6 @@
 class PostModelRes {
   String? imageUrl;
-  List<String>? likedUserIds;
+  List? likedUserIds;
   List? joinedUserIds;
   String? title;
   String? description;

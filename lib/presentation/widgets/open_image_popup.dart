@@ -5,6 +5,21 @@ Widget createPopupContent(String url) => ClipRRect(
     borderRadius: BorderRadius.circular(16.r),
     child: CachedNetworkImage(imageUrl: url, height: 400.h));
 
+Widget createPopupContentForDesc(String desc) => Container(
+    margin: EdgeInsets.symmetric(horizontal: 20.w),
+    width: 300.w,
+    height: 400.h,
+    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+    decoration: BoxDecoration(
+      color: ThemeColors.borderDark,
+      borderRadius: BorderRadius.circular(16.r),
+    ),
+    child: SizedText(
+        textAlign: TextAlign.left,
+        text: desc,
+        textStyle: latoM16.copyWith(color: ThemeColors.fontWhite)));
+
+// if(desc!= null)
 class AnimatedDialog extends StatefulWidget {
   const AnimatedDialog({required this.child});
 

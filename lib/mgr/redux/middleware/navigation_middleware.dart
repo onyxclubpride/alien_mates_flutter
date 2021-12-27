@@ -83,22 +83,77 @@ class NavigationMiddleware extends MiddlewareClass<AppState> {
     if (!action.isStayPopup) {
       _dismissAllPopups(navState);
     }
-    _pushOrReplaceNamed(action.to, action);
+    _pushOrReplaceNamed(action.to, action, store);
   }
 
-  void _pushOrReplaceNamed(String? to, NavigateToAction action) {
+  void _pushOrReplaceNamed(
+      String? to, NavigateToAction action, Store<AppState> store) {
+    if (action.pushAndRemoveUntil != null) {
+      _pushAndRemoveUntil(action);
+      return;
+    }
+    if (action.removeUntilPage != null) {
+      _removeUntil(action);
+      return;
+    }
     if (action.replace) {
-      Global.navState!
-          .pushReplacementNamed(to ?? "", arguments: action.arguments);
+      _pushReplacement(action);
+      return;
     } else {
-      Global.navState!.pushNamed(to ?? "", arguments: action.arguments);
+      _push(action);
+      return;
     }
   }
 
-  // void _navigatePage(Store<AppState> store, NavigateToAction action) {
-  //   _dismissAllPopups(store.state.navigationState);
-  //   Global.navState!.push(MaterialPageRoute(builder: (context) => action.page!));
-  // }
+  _push(NavigateToAction action) async {
+    Widget page = await action.page;
+    Global.navState!.push(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionDuration: Duration(milliseconds: 200),
+        reverseTransitionDuration: Duration(milliseconds: 200),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        //  CupertinoPageTransition(
+        //     linearTransition: true,
+        //     primaryRouteAnimation: animation,
+        //     secondaryRouteAnimation: secondaryAnimation,
+        //     child: child),
+        settings: RouteSettings(name: action.to, arguments: action.arguments)));
+  }
+
+  _pushReplacement(NavigateToAction action) async {
+    Widget page = action.page;
+    Global.navState!.pushReplacement(PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => page,
+        transitionDuration: Duration(milliseconds: 200),
+        reverseTransitionDuration: Duration(milliseconds: 200),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+            FadeTransition(opacity: animation, child: child),
+        settings: RouteSettings(name: action.to, arguments: action.arguments)));
+  }
+
+  _pushAndRemoveUntil(NavigateToAction action) async {
+    Widget page = action.page;
+    // appStore.dispatch(UpdateNavigationAction(restart: true));
+    Global.navState!.pushAndRemoveUntil(
+        PageRouteBuilder(
+            pageBuilder: (context, animation, secondaryAnimation) => page,
+            transitionDuration: Duration(milliseconds: 200),
+            reverseTransitionDuration: Duration(milliseconds: 200),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) =>
+                    FadeTransition(opacity: animation, child: child),
+            settings:
+                RouteSettings(name: action.to, arguments: action.arguments)),
+        (route) => false);
+  }
+
+  _removeUntil(NavigateToAction action) async {
+    Global.navState!.popUntil((route) {
+      return route.settings.name == action.removeUntilPage;
+    });
+    _push(action);
+  }
 
   _showPopup(NavigationState state, ShowPopupAction action) {
     if (action.dismissAll) {

@@ -1,7 +1,7 @@
 class ListPostModelRes {
   bool success;
   String? imageUrl;
-  List<String>? likedUserIds;
+  List? likedUserIds;
   int? joinLimit;
   List? joinedUserIds;
   String? title;

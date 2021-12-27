@@ -115,6 +115,7 @@ class PostItemBanner extends StatefulWidget {
   Color bgColor;
   bool withBorder;
   String? imageUrl;
+  String? desc;
   PostItemBanner(
       {required this.child,
       this.height = 145,
@@ -122,6 +123,7 @@ class PostItemBanner extends StatefulWidget {
       this.withBorder = false,
       this.bgColor = ThemeColors.componentBgDark,
       this.imageUrl,
+      this.desc,
       this.rightWidget});
 
   @override
@@ -139,12 +141,15 @@ class _PostItemBannerState extends State<PostItemBanner> {
               _popupDialog = _createPopupDialog(widget.imageUrl!);
               Overlay.of(context)!.insert(_popupDialog!);
             }
-          : null,
-      onLongPressEnd: widget.imageUrl != null
-          ? (details) {
-              _popupDialog?.remove();
-            }
-          : null,
+          : widget.desc != null
+              ? () {
+                  _popupDialog = _createPopupDialogForDesc(widget.desc!);
+                  Overlay.of(context)!.insert(_popupDialog!);
+                }
+              : null,
+      onLongPressEnd: (details) {
+        _popupDialog?.remove();
+      },
       child: Column(
         children: [
           DefaultBanner(
@@ -164,10 +169,18 @@ class _PostItemBannerState extends State<PostItemBanner> {
     );
   }
 
-  OverlayEntry _createPopupDialog(String url) {
+  OverlayEntry _createPopupDialog(String url, {String? desc}) {
     return OverlayEntry(
       builder: (context) => AnimatedDialog(
         child: createPopupContent(url),
+      ),
+    );
+  }
+
+  OverlayEntry _createPopupDialogForDesc(String desc) {
+    return OverlayEntry(
+      builder: (context) => AnimatedDialog(
+        child: createPopupContentForDesc(desc),
       ),
     );
   }

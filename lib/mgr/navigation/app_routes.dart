@@ -13,7 +13,7 @@ class AppRoutes {
   static const loginPageRoute = "/login";
   static const eventsPageRoute = "/events";
   static const profilePageRoute = "/profile";
-  static const settingPageRoute = "/setting";
+  // static const settingPageRoute = "/setting";
   static const helpPageRoute = "/help";
 
   static const createEventPageRoute = "/createEvent";
@@ -25,6 +25,8 @@ class AppRoutes {
   static const noticeDetailsRoute = "/noticeDetails";
   static const editEventPageRoute = "/editEvent";
   static const editHelpPageRoute = "/editHelp";
+  // static const editEventPageRoute = "/editEvent";
+  // static const editHelpPageRoute = "/editHelp";
   static const editNoticePageRoute = "/editNotice";
 
   static Map<String, WidgetBuilder> getRoutes() {

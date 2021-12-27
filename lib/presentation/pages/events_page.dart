@@ -54,6 +54,7 @@ class _EventsPageState extends State<EventsPage> {
               ),
             ),
             imageUrl: _item.imageUrl,
+            desc: _item.description,
             child: CachedImageOrTextImageWidget(
                 title: _item.title,
                 imageUrl: _item.imageUrl,

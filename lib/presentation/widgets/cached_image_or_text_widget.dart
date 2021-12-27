@@ -28,15 +28,19 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
 
   Widget _buildSupportTextsWidget() {
     List<Widget> list = [];
-    list.add(Padding(
-      padding: EdgeInsets.only(left: 8.w),
-      child: SizedText(
-        textAlign: TextAlign.left,
-        text: title,
-        textStyle: latoM20.copyWith(color: ThemeColors.fontDark),
-      ),
-    ));
-    list.add(Divider(thickness: 1.w, color: ThemeColors.borderDark));
+    if (title != null) {
+      list.add(Padding(
+        padding: EdgeInsets.only(left: 8.w),
+        child: SizedText(
+          textAlign: TextAlign.left,
+          text: title,
+          textStyle: latoM20.copyWith(color: ThemeColors.fontDark),
+        ),
+      ));
+    }
+    if (title != null) {
+      list.add(Divider(thickness: 1.w, color: ThemeColors.borderDark));
+    }
     list.add(SizedText(
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,

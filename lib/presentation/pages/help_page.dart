@@ -40,7 +40,8 @@ class _HelpPageState extends State<HelpPage> {
           builder: (context) => PostItemBanner(
               imageUrl: _item.imageUrl,
               withBorder: true,
-              height: 160,
+              desc: _item.description,
+              height: 160.h,
               bgColor: ThemeColors.black,
               child: CachedImageOrTextImageWidget(
                   title: _item.title,

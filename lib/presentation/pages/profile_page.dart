@@ -1,10 +1,12 @@
-import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet_general.dart';
+import 'dart:io';
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:alien_mates/presentation/widgets/input/input_label.dart';
+import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
+import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -14,7 +16,6 @@ import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -22,7 +23,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final GlobalKey<FormState> _formKeyCreatePostPage =
+      GlobalKey<FormState>(debugLabel: '_formKeyCreatePostPage');
   final ScrollController _controller = ScrollController();
+  TextEditingController descriptionController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -137,14 +141,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
   _onEditPress() {
     showModalBottomSheet(
-        backgroundColor: Colors.black,
+        backgroundColor: ThemeColors.bgDark,
         enableDrag: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(16.r),
                 topRight: Radius.circular(16.r))),
         context: context,
-        barrierColor: ThemeColors.gray1.withOpacity(0.2),
+        barrierColor: ThemeColors.black.withOpacity(0.8),
         isScrollControlled: true,
         builder: (context) {
           return Container(
@@ -168,9 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 20.h),
               ExpandedButton(
                 text: 'Feed',
-                onPressed: () {
-                  // appStore.dispatch(NavigateToAction(to: AppRoutes.createEventPageRoute));
-                },
+                onPressed: _onFeedPress,
               ),
               SizedBox(height: 27.h),
               ExpandedButton(
@@ -202,6 +204,142 @@ class _ProfilePageState extends State<ProfilePage> {
     // appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
   }
 
+  _onFeedPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: 150.h,
+            margin: EdgeInsets.all(25.w),
+            child: SpacedColumn(children: [
+              SizedBox(height: 0.h),
+              GestureDetector(
+                onTap: () {
+                  appStore.dispatch(DismissPopupAction());
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: Container(
+                    width: 80.w,
+                    height: 4.h,
+                    color: ThemeColors.gray1,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              ExpandedButton(
+                text: 'Image only',
+                onPressed: _onImageOnlyPress,
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Text only',
+                onPressed: _onTextOnlyPress,
+              ),
+            ]),
+          );
+        });
+  }
+
+  _onImageOnlyPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return ImagesContainerForSheet();
+        });
+  }
+
+  _onTextOnlyPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: 360.h + MediaQuery.of(context).viewInsets.bottom,
+            margin: EdgeInsets.symmetric(horizontal: 25.w),
+            child: Column(children: [
+              // if (MediaQuery.of(context).viewInsets.bottom == 0)
+              SizedBox(height: 15.h),
+              if (MediaQuery.of(context).viewInsets.bottom == 0)
+                GestureDetector(
+                  onTap: () {
+                    appStore.dispatch(DismissPopupAction());
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: Container(
+                      width: 80.w,
+                      height: 4.h,
+                      color: ThemeColors.gray1,
+                    ),
+                  ),
+                ),
+              SizedBox(height: 10.h),
+              SizedText(
+                  text: "Create Post",
+                  textStyle: latoM30.copyWith(color: ThemeColors.fontDark)),
+              SizedBox(height: 10.h),
+              Divider(thickness: 1.w, color: ThemeColors.borderDark),
+              SizedBox(height: 10.h),
+              Form(
+                key: _formKeyCreatePostPage,
+                child: PostCreateInput(
+                  maxlines: 10,
+                  hintText: 'Type something...',
+                  validator: Validator.validateText,
+                  controller: descriptionController,
+                ),
+              ),
+              SizedBox(height: 30.h),
+              ExpandedButton(
+                text: 'POST',
+                onPressed: _onPostPost,
+              ),
+            ]),
+          );
+        });
+  }
+
+  _onPostPost() async {
+    if (_formKeyCreatePostPage.currentState!.validate()) {
+      bool created = await appStore.dispatch(
+          GetCreatePostAction(description: descriptionController.text));
+      if (!created) {
+        showAlertDialog(context,
+            text:
+                'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+      }
+    }
+  }
+
   _onEditPostPress(String postId) async {
     appStore.dispatch(
         GetPostByIdAction(postId, goToRoute: AppRoutes.editNoticePageRoute));
@@ -216,5 +354,89 @@ class _ProfilePageState extends State<ProfilePage> {
         appStore.dispatch(GetDeletePostAction(postId));
       },
     );
+  }
+}
+
+class ImagesContainerForSheet extends StatefulWidget {
+  const ImagesContainerForSheet({Key? key}) : super(key: key);
+
+  @override
+  _ImagesContainerForSheetState createState() =>
+      _ImagesContainerForSheetState();
+}
+
+class _ImagesContainerForSheetState extends State<ImagesContainerForSheet> {
+  File? postImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 350.h,
+      margin: EdgeInsets.all(25.w),
+      child: SpacedColumn(children: [
+        GestureDetector(
+          onTap: () {
+            appStore.dispatch(DismissPopupAction());
+          },
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20.r),
+            child: Container(
+              width: 80.w,
+              height: 4.h,
+              color: ThemeColors.gray1,
+            ),
+          ),
+        ),
+        SizedBox(height: 10.h),
+        SizedText(
+            text: "Create Post",
+            textStyle: latoM30.copyWith(color: ThemeColors.fontDark)),
+        SizedBox(height: 10.h),
+        Divider(thickness: 1.w, color: ThemeColors.borderDark),
+        SizedBox(height: 10.h),
+        DefaultBanner(
+          onTap: _onChooseImage,
+          height: 200.h,
+          child: FittedBox(
+              child: postImage == null
+                  ? const Icon(
+                      Ionicons.add,
+                      color: ThemeColors.borderDark,
+                    )
+                  : Image.file(postImage!)),
+        ),
+        SizedBox(height: 20.h),
+        ExpandedButton(
+          text: 'POST',
+          onPressed: _onPostPost,
+        ),
+      ]),
+    );
+  }
+
+  _onChooseImage() async {
+    String? xImagePath = await appStore.dispatch(GetSelectImageAction());
+    if (xImagePath != null) {
+      setState(() {
+        postImage = File(xImagePath);
+      });
+    }
+  }
+
+  _onPostPost() async {
+    if (postImage != null) {
+      bool created = await appStore
+          .dispatch(GetCreatePostAction(imagePath: postImage?.path));
+
+      if (!created) {
+        showAlertDialog(context,
+            text:
+                'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+      }
+    } else {
+      showAlertDialog(context, text: 'Please select image first!');
+    }
   }
 }

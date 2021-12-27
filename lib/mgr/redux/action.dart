@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/navigation/router.dart';
 import 'package:flutter/material.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 export "./app_state.dart";
@@ -7,10 +8,15 @@ class NavigateToAction {
   final String? to;
   final bool replace;
   final dynamic arguments;
+  String? removeUntilPage;
+  String? pushAndRemoveUntil;
 
   // final Widget? page;
   final bool reload;
   final bool isStayPopup;
+  Widget get page {
+    return AppRouter.getRoutes(to, arguments: arguments);
+  }
 
   NavigateToAction(
       {this.to,
@@ -18,7 +24,9 @@ class NavigateToAction {
       this.arguments,
       // this.page,
       this.reload = false,
-      this.isStayPopup = false});
+      this.isStayPopup = false,
+      this.pushAndRemoveUntil,
+      this.removeUntilPage});
 }
 
 class NavigateToOrderAction {}
