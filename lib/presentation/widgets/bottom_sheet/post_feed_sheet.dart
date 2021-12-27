@@ -1,5 +1,4 @@
 import 'package:alien_mates/presentation/pages/create_help_page.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/post_sheet.dart';
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
@@ -53,9 +52,7 @@ class _PostFeedState extends State<PostFeed> {
                       SpacedColumn(verticalSpace: 25, children: [
                         ExpandedButton(
                           text: 'Feed',
-                          onPressed: () {
-                            _postImageOrText(context);
-                          },
+                          onPressed: () {},
                         ),
                         ExpandedButton(
                           text: 'Event',
@@ -74,7 +71,8 @@ class _PostFeedState extends State<PostFeed> {
                         ExpandedButton(
                           text: 'Notice',
                           onPressed: () {
-                            print("HELLO WORLD");
+                            appStore.dispatch(NavigateToAction(
+                                to: AppRoutes.helpDetailsRoute));
                           },
                         ),
                       ]),
@@ -84,19 +82,6 @@ class _PostFeedState extends State<PostFeed> {
               ),
             ),
           );
-        });
-  }
-
-  _postImageOrText(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        enableDrag: true,
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          // return NoticeDetail();
-          // return HelpDetail();
-          return PostSheet();
         });
   }
 }
