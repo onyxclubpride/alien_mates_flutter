@@ -1,3 +1,5 @@
+import 'package:alien_mates/presentation/pages/create_help_page.dart';
+import 'package:alien_mates/presentation/widgets/bottom_sheet/post_sheet.dart';
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
@@ -21,39 +23,6 @@ class PostFeed extends StatefulWidget {
 }
 
 class _PostFeedState extends State<PostFeed> {
-  final GlobalKey<FormState> _formKeyPostFeedPage =
-      GlobalKey<FormState>(debugLabel: '_formKeySignupPage');
-
-  TextEditingController nameController = TextEditingController(text: '');
-  TextEditingController passController = TextEditingController(text: '');
-  TextEditingController confirmPassController = TextEditingController(text: '');
-  TextEditingController phoneNumberController =
-      TextEditingController(text: '+82 ');
-  TextEditingController otpController = TextEditingController(text: '');
-  TextEditingController uniNameController = TextEditingController(text: '');
-
-  String errorText = "";
-
-  @override
-  void dispose() {
-    passController.dispose();
-    confirmPassController.dispose();
-    otpController.dispose();
-    super.dispose();
-  }
-
-  _fireBaseAuth() async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      phoneNumber: '+44 7123 123 456',
-      verificationCompleted: (PhoneAuthCredential credential) {},
-      verificationFailed: (FirebaseAuthException e) {},
-      codeSent: (String verificationId, int? resendToken) {},
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
-
-  FirebaseAuth auth = FirebaseAuth.instance;
-
   // backgroundColor: Color.fromRGBO(r, g, b, 0)
   @override
   Widget build(BuildContext context) {
@@ -73,49 +42,61 @@ class _PostFeedState extends State<PostFeed> {
               child: Padding(
                 padding: EdgeInsets.symmetric(vertical: 20.w),
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  Form(
-                    key: _formKeyPostFeedPage,
-                    child: SpacedColumn(
-                      verticalSpace: 21,
-                      children: [
-                        Container(
-                          height: 3,
-                          width: 70.w,
-                          color: Colors.grey,
+                  SpacedColumn(
+                    verticalSpace: 21,
+                    children: [
+                      Container(
+                        height: 3,
+                        width: 70.w,
+                        color: Colors.grey,
+                      ),
+                      SpacedColumn(verticalSpace: 25, children: [
+                        ExpandedButton(
+                          text: 'Feed',
+                          onPressed: () {
+                            _postImageOrText(context);
+                          },
                         ),
-                        SpacedColumn(verticalSpace: 25, children: [
-                          ExpandedButton(
-                            text: 'Feed',
-                            onPressed: () {
-                              print("Feed");
-                            },
-                          ),
-                          ExpandedButton(
-                            text: 'Event',
-                            onPressed: () {
-                              print("HELLO WORLD");
-                            },
-                          ),
-                          ExpandedButton(
-                            text: 'Help',
-                            onPressed: () {
-                              print("HELLO WORLD");
-                            },
-                          ),
-                          ExpandedButton(
-                            text: 'Notice',
-                            onPressed: () {
-                              print("HELLO WORLD");
-                            },
-                          ),
-                        ]),
-                      ],
-                    ),
+                        ExpandedButton(
+                          text: 'Event',
+                          onPressed: () {
+                            appStore.dispatch(NavigateToAction(
+                                to: AppRoutes.createEventPageRoute));
+                          },
+                        ),
+                        ExpandedButton(
+                          text: 'Help',
+                          onPressed: () {
+                            appStore.dispatch(NavigateToAction(
+                                to: AppRoutes.createHelpPageRoute));
+                          },
+                        ),
+                        ExpandedButton(
+                          text: 'Notice',
+                          onPressed: () {
+                            print("HELLO WORLD");
+                          },
+                        ),
+                      ]),
+                    ],
                   ),
                 ]),
               ),
             ),
           );
+        });
+  }
+
+  _postImageOrText(context) {
+    showModalBottomSheet(
+        backgroundColor: Colors.transparent,
+        enableDrag: true,
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          // return NoticeDetail();
+          // return HelpDetail();
+          return PostSheet();
         });
   }
 }
