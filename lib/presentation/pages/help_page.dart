@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/open_image_popup.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
@@ -43,10 +44,17 @@ class _HelpPageState extends State<HelpPage> {
               desc: _item.description,
               height: 160.h,
               bgColor: ThemeColors.black,
-              child: CachedImageOrTextImageWidget(
-                  title: _item.title,
-                  imageUrl: _item.imageUrl,
-                  description: _item.description)),
+              child: GestureDetector(
+                onTap: () {
+                  print("IN THE HElP PAGE");
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.helpDetailsPageRoute));
+                },
+                child: CachedImageOrTextImageWidget(
+                    title: _item.title,
+                    imageUrl: _item.imageUrl,
+                    description: _item.description),
+              )),
         ));
       }
     }

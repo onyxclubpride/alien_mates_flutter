@@ -42,7 +42,7 @@ final latoR16 = GoogleFonts.lato(
 );
 
 final latoB14 = GoogleFonts.lato(
-  fontWeight: FontWeight.w500,
+  fontWeight: FontWeight.w700,
   fontSize: 14.0,
 );
 

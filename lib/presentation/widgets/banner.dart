@@ -116,15 +116,16 @@ class PostItemBanner extends StatefulWidget {
   bool withBorder;
   String? imageUrl;
   String? desc;
-  PostItemBanner(
-      {required this.child,
-      this.height = 145,
-      this.leftWidget,
-      this.withBorder = false,
-      this.bgColor = ThemeColors.componentBgDark,
-      this.imageUrl,
-      this.desc,
-      this.rightWidget});
+  PostItemBanner({
+    required this.child,
+    this.height = 145,
+    this.leftWidget,
+    this.withBorder = false,
+    this.bgColor = ThemeColors.componentBgDark,
+    this.imageUrl,
+    this.desc,
+    this.rightWidget,
+  });
 
   @override
   State<PostItemBanner> createState() => _PostItemBannerState();

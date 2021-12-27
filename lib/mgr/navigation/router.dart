@@ -3,6 +3,7 @@ import 'package:alien_mates/presentation/pages/create_event_page.dart';
 import 'package:alien_mates/presentation/pages/create_help_page.dart';
 import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/edit_notice_page.dart';
+import 'package:alien_mates/presentation/pages/help_details_page.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
 class AppRouter {
@@ -27,6 +28,9 @@ class AppRouter {
           return HelpPage();
         case (AppRoutes.eventsPageRoute):
           return EventsPage();
+
+        case (AppRoutes.helpDetailsPageRoute):
+          return HelpDetailsPage();
         // case (AppRoutes.editEventPageRoute):
         //   return EditNoticePage();
         default:

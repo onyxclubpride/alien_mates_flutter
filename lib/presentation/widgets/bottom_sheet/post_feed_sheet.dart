@@ -71,8 +71,7 @@ class _PostFeedState extends State<PostFeed> {
                         ExpandedButton(
                           text: 'Notice',
                           onPressed: () {
-                            appStore.dispatch(NavigateToAction(
-                                to: AppRoutes.helpDetailsRoute));
+                            print("HELLO WORLD");
                           },
                         ),
                       ]),

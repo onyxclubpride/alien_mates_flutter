@@ -21,7 +21,7 @@ class AppRoutes {
   static const createNoticePageRoute = "/createNotice";
 
   static const eventDetailsRoute = "/eventDetails";
-  static const helpDetailsRoute = "/helpDetails";
+  static const helpDetailsPageRoute = "/helpDetails";
   static const noticeDetailsRoute = "/noticeDetails";
   static const editEventPageRoute = "/editEvent";
   static const editHelpPageRoute = "/editHelp";
@@ -45,7 +45,8 @@ class AppRoutes {
       AppRoutes.createNoticePageRoute: (BuildContext context) =>
           CreateNoticePage(),
 
-      AppRoutes.helpDetailsRoute: (BuildContext context) => HelpDetailsPage(),
+      AppRoutes.helpDetailsPageRoute: (BuildContext context) =>
+          HelpDetailsPage(),
       // AppRoutes.eventDetailRoute: (BuildContext context) => EventDetail(),
       // AppRoutes.noticeDetailRoute: (BuildContext context) => NoticeDetail(),
 
