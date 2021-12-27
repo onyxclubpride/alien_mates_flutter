@@ -32,7 +32,7 @@ class ApiState {
             userId: "",
             isEvent: false,
             isHelp: false,
-            numberOfLikes: 0,
+            likedUserIds: [],
             joinedUserIds: [],
             description: "",
             title: "",

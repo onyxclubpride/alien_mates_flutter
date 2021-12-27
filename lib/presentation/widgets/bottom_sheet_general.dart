@@ -1,7 +1,4 @@
-import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/popup_layout.dart';
 
 // still need to work on it
 

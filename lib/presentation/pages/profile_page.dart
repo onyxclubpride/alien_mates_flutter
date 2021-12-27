@@ -1,5 +1,9 @@
+import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
+import 'package:alien_mates/presentation/widgets/bottom_sheet_general.dart';
+import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -12,7 +16,12 @@ import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
   final ScrollController _controller = ScrollController();
 
   @override
@@ -127,7 +136,70 @@ class ProfilePage extends StatelessWidget {
   }
 
   _onEditPress() {
-    appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
+    showModalBottomSheet(
+        backgroundColor: Colors.black,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.gray1.withOpacity(0.2),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: 300.h,
+            margin: EdgeInsets.all(25.w),
+            child: SpacedColumn(children: [
+              SizedBox(height: 0.h),
+              GestureDetector(
+                onTap: () {
+                  appStore.dispatch(DismissPopupAction());
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: Container(
+                    width: 80.w,
+                    height: 4.h,
+                    color: ThemeColors.gray1,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              ExpandedButton(
+                text: 'Feed',
+                onPressed: () {
+                  // appStore.dispatch(NavigateToAction(to: AppRoutes.createEventPageRoute));
+                },
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Event',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createEventPageRoute));
+                },
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Support',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createHelpPageRoute));
+                },
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Notice',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createNoticePageRoute));
+                },
+              ),
+            ]),
+          );
+        });
+    // appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
   }
 
   _onEditPostPress(String postId) async {
@@ -136,6 +208,13 @@ class ProfilePage extends StatelessWidget {
   }
 
   _onDeletePress(String postId) {
-    appStore.dispatch(GetDeletePostAction(postId));
+    showBodyDialog(
+      context,
+      text: 'Do you want to delete?',
+      onMainButtonText: 'Yes',
+      onPress: () {
+        appStore.dispatch(GetDeletePostAction(postId));
+      },
+    );
   }
 }

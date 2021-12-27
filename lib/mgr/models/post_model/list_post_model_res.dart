@@ -1,7 +1,7 @@
 class ListPostModelRes {
   bool success;
   String? imageUrl;
-  int? numberOfLikes;
+  List<String>? likedUserIds;
   int? joinLimit;
   List? joinedUserIds;
   String? title;
@@ -15,7 +15,7 @@ class ListPostModelRes {
 
   ListPostModelRes(
       {this.imageUrl,
-      this.numberOfLikes,
+      this.likedUserIds,
       this.joinedUserIds,
       this.description,
       this.title,

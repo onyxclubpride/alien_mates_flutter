@@ -176,7 +176,7 @@ class GetImageDownloadLinkAction {
 
 class GetUpdatePostAction {
   String? imagePath;
-  int? numberOfLikes;
+  List<String>? likedUserIds;
   List? joinedUserIds;
   String? title;
   String? description;
@@ -192,7 +192,7 @@ class GetUpdatePostAction {
 
   GetUpdatePostAction(
       {this.imagePath,
-      this.numberOfLikes,
+      this.likedUserIds,
       required this.postId,
       this.joinedUserIds,
       this.description,

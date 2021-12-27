@@ -59,3 +59,77 @@ ButtonStyle expandedButtonTheme() {
     ),
   );
 }
+
+ButtonStyle normalButtonTheme() {
+  return ButtonStyle(
+      elevation: MaterialStateProperty.all(0),
+      textStyle: MaterialStateProperty.resolveWith<TextStyle>(
+          (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled))
+          return latoM20.copyWith(color: ThemeColors.gray1);
+        return latoM20.copyWith(color: ThemeColors.fontWhite);
+      }),
+      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.disabled)) return ThemeColors.gray1;
+          return ThemeColors.yellow;
+        },
+      ),
+      maximumSize: MaterialStateProperty.all(Size(112.w, 50.h)),
+      minimumSize: MaterialStateProperty.all(Size(112.w, 50.h)),
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(
+            Radius.circular(8.r),
+          ),
+        ),
+      ));
+}
+
+ButtonStyle mainButtonTheme() {
+  return ButtonStyle(
+    elevation: MaterialStateProperty.all(0),
+    padding: MaterialStateProperty.all(EdgeInsets.zero),
+    textStyle: MaterialStateProperty.all(latoM16),
+    foregroundColor: MaterialStateProperty.all(ThemeColors.fontWhite),
+    maximumSize: MaterialStateProperty.all(Size(206.w, 50.h)),
+    minimumSize: MaterialStateProperty.all(Size(206.w, 50.h)),
+    shape: MaterialStateProperty.all(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.r),
+        ),
+      ),
+    ),
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) return ThemeColors.gray1;
+        return ThemeColors.yellow;
+      },
+    ),
+  );
+}
+
+ButtonStyle smallButtonTheme() {
+  return ButtonStyle(
+    elevation: MaterialStateProperty.all(0),
+    padding: MaterialStateProperty.all(EdgeInsets.zero),
+    textStyle: MaterialStateProperty.all(latoM20),
+    foregroundColor: MaterialStateProperty.all(ThemeColors.fontWhite),
+    maximumSize: MaterialStateProperty.all(Size(50.w, 28.h)),
+    minimumSize: MaterialStateProperty.all(Size(50.w, 28.h)),
+    shape: MaterialStateProperty.all(
+      RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(
+          Radius.circular(8.r),
+        ),
+      ),
+    ),
+    backgroundColor: MaterialStateProperty.resolveWith<Color>(
+      (Set<MaterialState> states) {
+        if (states.contains(MaterialState.disabled)) return ThemeColors.gray1;
+        return ThemeColors.yellow;
+      },
+    ),
+  );
+}

@@ -28,7 +28,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController maxPplController = TextEditingController();
+  TextEditingController maxPplController = TextEditingController(text: "0");
   TextEditingController locationController = TextEditingController();
 
   File? postImage;
@@ -104,6 +104,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   children: [
                                     InputLabel(label: 'Maximum people'),
                                     PostCreateInput(
+                                      hintText: 'Leave 0 if none',
                                       controller: maxPplController,
                                       keyboardType: TextInputType.number,
                                     ),
@@ -137,28 +138,25 @@ class _CreateEventPageState extends State<CreateEventPage> {
                     SizedBox(height: 20.h),
                     SpacedRow(
                       children: [
-                        Transform.scale(
-                          scale: 1.5,
-                          child: Checkbox(
-                            splashRadius: 0,
-                            shape: const CircleBorder(),
-                            checkColor: ThemeColors.black,
-                            activeColor: ThemeColors.yellow,
-                            fillColor: MaterialStateProperty.resolveWith<Color>(
-                                (Set<MaterialState> states) {
-                              if (states.contains(MaterialState.focused)) {
-                                return ThemeColors.fontWhite;
-                              } else {
-                                return ThemeColors.yellow;
-                              }
-                            }),
-                            value: agreementChecked,
-                            onChanged: (value) {
-                              setState(() {
-                                agreementChecked = value!;
-                              });
-                            },
-                          ),
+                        Checkbox(
+                          splashRadius: 0,
+                          shape: const CircleBorder(),
+                          checkColor: ThemeColors.black,
+                          activeColor: ThemeColors.yellow,
+                          fillColor: MaterialStateProperty.resolveWith<Color>(
+                              (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.focused)) {
+                              return ThemeColors.fontWhite;
+                            } else {
+                              return ThemeColors.yellow;
+                            }
+                          }),
+                          value: agreementChecked,
+                          onChanged: (value) {
+                            setState(() {
+                              agreementChecked = value!;
+                            });
+                          },
                         ),
                         SpacedColumn(
                           children: [
@@ -208,7 +206,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             title: titleController.text,
             description: descriptionController.text,
             eventLocation: locationController.text,
-            joinLimit: int.parse(maxPplController.text),
+            joinLimit: int.parse(maxPplController.text).toInt(),
             imagePath: postImage?.path));
 
         if (!created) {

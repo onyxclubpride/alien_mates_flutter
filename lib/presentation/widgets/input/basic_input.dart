@@ -16,10 +16,12 @@ class BasicInput extends StatelessWidget {
   VoidCallback? onTap;
   bool? isFocusBorderEnabled;
   RegExp? regexPattern;
+  Widget? icon;
 
   BasicInput(
       {this.hintText,
       this.validator,
+      this.icon,
       this.onTap,
       this.controller,
       this.errorText,
@@ -54,6 +56,7 @@ class BasicInput extends StatelessWidget {
           hintText: hintText ?? '',
           errorText: errorText,
           suffixIcon: suffixIcon,
+          prefixIcon: icon,
           errorStyle: latoR14.copyWith(color: ThemeColors.red),
           errorMaxLines: 2,
           hintStyle: latoR14.copyWith(color: ThemeColors.gray1),

@@ -88,7 +88,7 @@ Future<List<ListPostModelRes>> _getPostsList() async {
         imageUrl: item['imageUrl'],
         description: item['description'],
         joinedUserIds: item['joinedUserIds'],
-        numberOfLikes: item['numberOfLikes'],
+        likedUserIds: item['likedUserIds'],
         title: item['title'],
         joinLimit: item['joinLimit'],
       );
@@ -119,7 +119,7 @@ Future<bool> _getCreatePostAction(
       "isEvent": false,
       "isNotice": false,
       "isHelp": false,
-      "numberOfLikes": 0,
+      "likedUserIds": 0,
       "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
@@ -158,7 +158,7 @@ Future<bool> _getCreateNoticeAction(
       "isEvent": false,
       "isNotice": true,
       "isHelp": false,
-      "numberOfLikes": null,
+      "likedUserIds": null,
       "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
@@ -197,7 +197,7 @@ Future<bool> _getCreateEventAction(
       "isEvent": true,
       "isNotice": false,
       "isHelp": false,
-      "numberOfLikes": null,
+      "likedUserIds": null,
       "joinedUserIds": [],
       "joinLimit": action.joinLimit ?? 0,
       "createdDate": currentDateAndTime
@@ -236,7 +236,7 @@ Future<bool> _getCreateHelpAction(
       "isEvent": false,
       "isNotice": false,
       "isHelp": true,
-      "numberOfLikes": null,
+      "likedUserIds": null,
       "joinedUserIds": null,
       "joinLimit": null,
       "createdDate": currentDateAndTime
@@ -369,7 +369,7 @@ Future<PostModelRes?> _getPostByIdAction(
       userId: _postDetail['userId'],
       isEvent: _postDetail['isEvent'],
       isHelp: _postDetail['isHelp'],
-      numberOfLikes: _postDetail['numberOfLikes'],
+      likedUserIds: _postDetail['likedUserIds'],
       joinedUserIds: _postDetail['joinedUserIds'],
       description: _postDetail['description'],
       title: _postDetail['title'],
@@ -411,7 +411,7 @@ Future<bool> _getUpdatePostAction(
         userId: action.userId ?? _postById.userId,
         isEvent: action.isEvent ?? _postById.isEvent,
         isHelp: action.isHelp ?? _postById.isHelp,
-        numberOfLikes: action.numberOfLikes ?? _postById.numberOfLikes,
+        likedUserIds: action.likedUserIds ?? _postById.likedUserIds,
         joinedUserIds: action.joinedUserIds ?? _postById.joinedUserIds,
         description: action.description ?? _postById.description,
         title: action.title ?? _postById.title,
@@ -426,7 +426,7 @@ Future<bool> _getUpdatePostAction(
         "userId": _postModelRes.userId,
         "isEvent": _postModelRes.isEvent,
         "isHelp": _postModelRes.isHelp,
-        "numberOfLikes": _postModelRes.numberOfLikes,
+        "likedUserIds": _postModelRes.likedUserIds,
         "joinedUserIds": _postModelRes.joinedUserIds,
         "description": _postModelRes.description,
         "title": _postModelRes.title,
@@ -436,7 +436,6 @@ Future<bool> _getUpdatePostAction(
       next(UpdateApiStateAction(postDetail: _postModelRes));
       await appStore.dispatch(GetAllKindPostsAction());
       closeLoading();
-      appStore.dispatch(NavigateToAction(to: 'up'));
     }
   } catch (e) {
     closeLoading();
@@ -448,8 +447,8 @@ Future<bool> _getUpdatePostAction(
 Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
-    await _deleteFileFromFirebaseStorage(action.postId);
     showLoading();
+    await _deleteFileFromFirebaseStorage(action.postId);
     await postsCollection.doc(action.postId).delete();
     await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
@@ -515,7 +514,7 @@ Future<void> _getUserByIdAction(
 //       "isPost": true,
 //       "isEvent": false,
 //       "isNotice": false,
-//       "numberOfLikes": 0,
+//       "likedUserIds": 0,
 //       "joinedUserIds": null,
 //       "joinLimit": null,
 //       "createdDate": currentDateAndTime

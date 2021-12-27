@@ -164,7 +164,7 @@ class _EditNoticePageState extends State<EditNoticePage> {
             text:
                 'There was a problem while updating to server! Please, try again!');
       } else {
-        // appStore.dispatch(NavigateToAction(to: 'up'));
+        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }
   }

@@ -14,9 +14,6 @@ class AppRoutes {
   static const settingPageRoute = "/setting";
   static const helpPageRoute = "/help";
 
-  static const eventDetailsPageRoute = "/eventDetails";
-  static const helpDetailsPageRoute = "/helpDetails";
-
   static const createEventPageRoute = "/createEvent";
   static const createHelpPageRoute = "/createHelp";
   static const createNoticePageRoute = "/createNotice";
@@ -30,16 +27,11 @@ class AppRoutes {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
       AppRoutes.loginPageRoute: (BuildContext context) => LoginPage(),
 
-      // AppRoutes.signUpBottomSheet: (BuildContext context) =>
-      //     SignUpBottomSheet(),
-
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
       AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
       AppRoutes.profilePageRoute: (BuildContext context) => ProfilePage(),
       // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
-      // AppRoutes.eventDetailsRoute: (BuildContext context) => const EventDetilsPage(),
-      // AppRoutes.helpDetailsRoute: (BuildContext context) => const helpDetilsPage(),
 
       AppRoutes.createEventPageRoute: (BuildContext context) =>
           CreateEventPage(),

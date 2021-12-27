@@ -1,6 +1,6 @@
 class PostModelRes {
   String? imageUrl;
-  int? numberOfLikes;
+  List<String>? likedUserIds;
   List? joinedUserIds;
   String? title;
   String? description;
@@ -16,7 +16,7 @@ class PostModelRes {
 
   PostModelRes(
       {this.imageUrl,
-      this.numberOfLikes,
+      this.likedUserIds,
       required this.postId,
       this.joinedUserIds,
       this.description,

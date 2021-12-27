@@ -1,14 +1,9 @@
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
-Widget createPopupContent(String url) => Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16.0),
-        child: CachedNetworkImage(
-            imageUrl: url, fit: BoxFit.fitWidth, height: 400.h),
-      ),
-    );
+Widget createPopupContent(String url) => ClipRRect(
+    borderRadius: BorderRadius.circular(16.r),
+    child: CachedNetworkImage(imageUrl: url, height: 400.h));
 
 class AnimatedDialog extends StatefulWidget {
   const AnimatedDialog({required this.child});

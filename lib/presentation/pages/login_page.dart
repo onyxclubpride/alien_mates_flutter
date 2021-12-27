@@ -1,10 +1,5 @@
-import 'package:alien_mates/mgr/models/model_exporter.dart';
-import 'package:alien_mates/mgr/navigation/app_routes.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/help_detail_sheet.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/notice_detail_sheet.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/post_feed_sheet.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/signUp_sheet.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
+import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
