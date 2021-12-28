@@ -5,10 +5,12 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
   String? imageUrl;
   String? title;
   String? description;
+  int maxLines;
   CachedImageOrTextImageWidget({
     this.description,
     this.title,
     this.imageUrl,
+    this.maxLines = 5,
   });
 
   @override
@@ -20,7 +22,7 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
       );
     } else {
       return Padding(
-        padding: EdgeInsets.all(14.w),
+        padding: EdgeInsets.all(10.w),
         child: _buildSupportTextsWidget(),
       );
     }
@@ -44,12 +46,12 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
     list.add(SizedText(
       overflow: TextOverflow.ellipsis,
       textAlign: TextAlign.left,
-      maxLines: 5,
+      maxLines: maxLines,
       text: description,
       textStyle: latoM16.copyWith(color: ThemeColors.fontDark),
     ));
     return SpacedColumn(
-        verticalSpace: 8,
+        verticalSpace: 4,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: list);
   }

@@ -53,9 +53,8 @@ class Validator {
   }
 
   static String? validateName(String? value) {
-    if (value != null && value.length < 2) {
-      // name_must_be_more_than_2_character
-      return '이름을 입력 해 주세요.';
+    if (value != null && value.length < 4) {
+      return 'Please enter proper name!';
     } else {
       return null;
     }

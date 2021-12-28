@@ -1,5 +1,6 @@
 import 'package:alien_mates/presentation/widgets/bottom_sheet/post_feed_sheet.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
+import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
@@ -86,24 +87,20 @@ class _LoginPageState extends State<LoginPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         InkWell(
-                          child: SizedText(
-                            text: 'Forget Password',
-                            textStyle:
-                                latoB14.apply(color: ThemeColors.fontWhite),
-                          ),
-                          onTap: () {
-                            _noticeDetailSheet(context);
-                          },
-                        ),
+                            child: SizedText(
+                              text: 'Forget Password',
+                              textStyle: latoB14.apply(
+                                  color:
+                                      ThemeColors.fontWhite.withOpacity(0.5)),
+                            ),
+                            onTap: null),
                         InkWell(
                           child: SizedText(
                             text: 'Sign Up',
                             textStyle:
                                 latoB14.apply(color: ThemeColors.fontWhite),
                           ),
-                          onTap: () {
-                            _signUp(context);
-                          },
+                          onTap: _signUp,
                         ),
                       ]),
                 )
@@ -128,11 +125,11 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
-  _signUp(context) {
+  _signUp() {
     showModalBottomSheet(
-        backgroundColor: Colors.transparent,
+        backgroundColor: ThemeColors.bgDark,
         enableDrag: true,
-        context: context,
+        context: Global.navKey.currentContext!,
         isScrollControlled: true,
         builder: (context) {
           return SignUp();

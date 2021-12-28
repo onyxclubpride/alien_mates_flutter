@@ -122,6 +122,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           child: CachedImageOrTextImageWidget(
               title: _item.title,
+              maxLines: 3,
               imageUrl: _item.imageUrl,
               description: _item.description)));
     }

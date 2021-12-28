@@ -52,80 +52,88 @@ class _SignUpState extends State<SignUp> {
         converter: (store) => store.state,
         builder: (context, state) {
           return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 5),
-            padding: EdgeInsets.symmetric(horizontal: 10.w),
-            decoration: const BoxDecoration(
+            margin: EdgeInsets.symmetric(horizontal: 5.w),
+            padding: EdgeInsets.only(
+                left: 10.w,
+                right: 10.w,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+                  topLeft: Radius.circular(20.r),
+                  topRight: Radius.circular(20.r)),
               color: ThemeColors.black,
             ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20.w),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                Form(
-                  key: _formKeySignUpPage,
-                  child: SpacedColumn(
-                    verticalSpace: 21,
-                    children: [
-                      Container(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKeySignUpPage,
+                child: SpacedColumn(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  verticalSpace: 21,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        appStore.dispatch(DismissPopupAction());
+                      },
+                      child: Container(
                         height: 3.h,
                         width: 70.w,
                         color: Colors.grey,
                       ),
-                      SizedText(
-                          text: 'Sign Up',
-                          textStyle: latoB45.copyWith(color: Colors.white)),
-                      SpacedColumn(verticalSpace: 25, children: [
-                        BasicInput(
-                          validator: Validator.validateName,
-                          hintText: "Name",
-                          controller: nameController,
+                    ),
+                    SizedText(
+                        text: 'Sign Up',
+                        textStyle: latoB45.copyWith(color: Colors.white)),
+                    SpacedColumn(verticalSpace: 25, children: [
+                      BasicInput(
+                        validator: Validator.validateName,
+                        hintText: "Name",
+                        controller: nameController,
+                      ),
+                      BasicInput(
+                        hintText: "Password",
+                        controller: passController,
+                        isObscured: true,
+                      ),
+                      BasicInput(
+                        hintText: "Confirm Password",
+                        controller: confirmPassController,
+                        isObscured: true,
+                      ),
+                      BasicInput(
+                        validator: Validator.validatePhoneNumber,
+                        hintText: "Phone Number",
+                        keyboardType: TextInputType.number,
+                        icon: Padding(
+                          padding: EdgeInsets.only(top: 12.h),
+                          child: const SizedText(text: '+82'),
                         ),
-                        BasicInput(
-                          hintText: "Password",
-                          controller: passController,
-                          textInputAction: TextInputAction.done,
-                          isObscured: true,
+                        controller: phoneNumberController,
+                      ),
+                      BasicInput(
+                        hintText: "OTP",
+                        controller: otpController,
+                        keyboardType: TextInputType.number,
+                      ),
+                      BasicInput(
+                        hintText: "University Name",
+                        textInputAction: TextInputAction.done,
+                        controller: uniNameController,
+                      ),
+                      if (errorText.isNotEmpty)
+                        SizedText(
+                          text: errorText,
+                          textStyle:
+                              latoM16.copyWith(color: ThemeColors.fontWhite),
                         ),
-                        BasicInput(
-                          hintText: "Confirm Password",
-                          controller: confirmPassController,
-                          isObscured: true,
-                        ),
-                        BasicInput(
-                          validator: Validator.validatePhoneNumber,
-                          hintText: "Phone Number",
-                          keyboardType: TextInputType.number,
-                          icon: Padding(
-                            padding: EdgeInsets.only(top: 12.h),
-                            child: const SizedText(text: '+82'),
-                          ),
-                          controller: phoneNumberController,
-                        ),
-                        BasicInput(
-                          hintText: "OTP",
-                          controller: otpController,
-                          keyboardType: TextInputType.number,
-                        ),
-                        BasicInput(
-                          hintText: "University Name",
-                          controller: uniNameController,
-                        ),
-                        if (errorText.isNotEmpty)
-                          SizedText(
-                            text: errorText,
-                            textStyle:
-                                latoM16.copyWith(color: ThemeColors.fontWhite),
-                          ),
-                        ExpandedButton(
-                          text: 'Sign Up',
-                          onPressed: _signUpPress,
-                        ),
-                      ]),
-                    ],
-                  ),
+                      ExpandedButton(
+                        text: 'Sign Up',
+                        onPressed: _signUpPress,
+                      ),
+                      SizedBox(height: 5.h)
+                    ]),
+                  ],
                 ),
-              ]),
+              ),
             ),
           );
         });
