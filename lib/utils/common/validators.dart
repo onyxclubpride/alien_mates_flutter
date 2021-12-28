@@ -1,15 +1,13 @@
-import 'package:flutter/material.dart';
-
 class Validator {
   static String? validatePassword(String? value) {
     RegExp regex = RegExp(
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,13}$');
     if (value != null) {
       if (value.isEmpty) {
-        return '대문자 소문자,숫자,특수문자 조합 8~13자리';
+        return 'Password must not be empty';
       }
       if (!regex.hasMatch(value)) {
-        return "대문자 소문자,숫자,특수문자 조합 8~13자리";
+        return "Password must contain lower, upper, 1 character and between 8-13.";
       }
     } else {
       return null;

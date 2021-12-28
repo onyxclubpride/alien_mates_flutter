@@ -14,6 +14,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "849882501725-dfs5kkc9uscp0ujjpbi76civt6ecnf1k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onyxclubpride.apps.alienmates",
+            "certificate_hash": "cc45ea4832b497fae9e3cf97eaf1e5089dd129e1"
+          }
+        },
+        {
+          "client_id": "849882501725-uk9ejlkroh6uvad3m7pr73ph8r7177am.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.onyxclubpride.apps.alienmates",
+            "certificate_hash": "3e7c8986721f7fe05fbf1ea6b9cf768776f1127a"
+          }
+        },
+        {
           "client_id": "849882501725-49g5kf7q2r4pbdcsii6nuhh3pa9e3e47.apps.googleusercontent.com",
           "client_type": 3
         }
