@@ -22,19 +22,16 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKeySignUpPage =
       GlobalKey<FormState>(debugLabel: '_formKeySignupPage');
 
-  TextEditingController nameController = TextEditingController(text: 'NameTes');
-  TextEditingController passController =
-      TextEditingController(text: 'Ibextest123!');
-  TextEditingController confirmPassController =
-      TextEditingController(text: 'Ibextest123!@');
-  TextEditingController phoneNumberController =
-      TextEditingController(text: '1027192101');
-  TextEditingController otpController = TextEditingController(text: "111111");
+  TextEditingController nameController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+  TextEditingController confirmPassController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
+  TextEditingController otpController = TextEditingController();
   TextEditingController uniNameController = TextEditingController();
 
-  int? sentOtp = 111111;
+  int? sentOtp;
 
-  bool isOtpSent = true;
+  bool isOtpSent = false;
   bool isOtpCorrect = false;
   String errorText = "";
 
