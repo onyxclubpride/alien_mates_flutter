@@ -20,11 +20,13 @@ class DefaultBody extends StatelessWidget {
   bool withNavigationBar;
   bool withActionButton;
   SizedText? titleText;
+  Widget? footer;
 
   DefaultBody({
     this.centerTitle = false,
     this.showAppBar = true,
     this.titleIcon,
+    this.footer,
     this.leftButton,
     required this.child,
     this.onRightButtonClick,
@@ -40,6 +42,8 @@ class DefaultBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
+
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
@@ -54,6 +58,17 @@ class DefaultBody extends StatelessWidget {
                       onRightButtonClick: onRightButtonClick,
                       rightIcon: rightIcon,
                     )
+                  : null,
+              bottomSheet: footer != null
+                  ? showFab
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                            left: horizontalPadding!.w,
+                            right: horizontalPadding!.w,
+                            bottom: bottomPadding!.h,
+                          ),
+                          child: footer)
+                      : null
                   : null,
               body: SafeArea(
                   child: Padding(

@@ -83,6 +83,22 @@ class Validator {
     }
   }
 
+  static String? validateOtp(String? value) {
+    RegExp regex = RegExp(r'^[0-9]{6}$');
+    if (value != null) {
+      if (value.isEmpty) {
+        // enter_phone_number
+        return 'Enter Verification Code!';
+      }
+      if (!regex.hasMatch(value)) {
+        // number_must_be_between_10_and_11
+        return "Verification Code must be 6 digits!";
+      }
+    } else {
+      return null;
+    }
+  }
+
   static String? validateBin(String? value) {
     if (value != null && value.length != 10) {
       // bin_must_consist_of_10_digits

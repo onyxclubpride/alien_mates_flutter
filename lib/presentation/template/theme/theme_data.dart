@@ -5,14 +5,24 @@ class MainTheme {
   static ThemeData get mainThemeDark {
     return ThemeData(
         scaffoldBackgroundColor: ThemeColors.bgDark,
+        bottomSheetTheme: _bottomSheetDarkTheme(),
         appBarTheme: _appBarDarkTheme());
   }
 
   static ThemeData get mainThemeLight {
     return ThemeData(
         scaffoldBackgroundColor: ThemeColors.bgLight,
+        bottomSheetTheme: _bottomSheetLightTheme(),
         appBarTheme: _appBarLightTheme());
   }
+}
+
+BottomSheetThemeData _bottomSheetDarkTheme() {
+  return BottomSheetThemeData(backgroundColor: Colors.transparent);
+}
+
+BottomSheetThemeData _bottomSheetLightTheme() {
+  return BottomSheetThemeData(backgroundColor: Colors.transparent);
 }
 
 AppBarTheme _appBarDarkTheme() {

@@ -4,6 +4,7 @@ import 'package:alien_mates/presentation/pages/create_help_page.dart';
 import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/edit_notice_page.dart';
 import 'package:alien_mates/presentation/pages/help_details_page.dart';
+import 'package:alien_mates/presentation/pages/sign_up_page.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
 class AppRouter {
@@ -14,6 +15,8 @@ class AppRouter {
           return HomePage();
         case (AppRoutes.loginPageRoute):
           return LoginPage();
+        case (AppRoutes.signUpPageRoute):
+          return const SignUpPage();
         case (AppRoutes.createHelpPageRoute):
           return CreateHelpPage();
         case (AppRoutes.createNoticePageRoute):

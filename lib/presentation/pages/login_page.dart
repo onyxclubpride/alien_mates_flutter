@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/post_feed_sheet.dart';
 import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
@@ -126,26 +127,6 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   _signUp() {
-    showModalBottomSheet(
-        backgroundColor: ThemeColors.bgDark,
-        enableDrag: true,
-        context: Global.navKey.currentContext!,
-        isScrollControlled: true,
-        builder: (context) {
-          return SignUp();
-        });
-  }
-
-  _noticeDetailSheet(context) {
-    showModalBottomSheet(
-        backgroundColor: Colors.transparent,
-        enableDrag: true,
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          // return NoticeDetail();
-          // return HelpDetail();
-          return PostFeed();
-        });
+    appStore.dispatch(NavigateToAction(to: AppRoutes.signUpPageRoute));
   }
 }

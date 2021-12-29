@@ -3,6 +3,7 @@ import 'package:alien_mates/presentation/pages/create_help_page.dart';
 import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/edit_notice_page.dart';
 import 'package:alien_mates/presentation/pages/help_details_page.dart';
+import 'package:alien_mates/presentation/pages/sign_up_page.dart';
 
 import 'package:flutter/material.dart';
 import '../../presentation/template/base/template.dart';
@@ -11,6 +12,7 @@ class AppRoutes {
   static const splashRoute = "/splash";
   static const homePageRoute = "/home";
   static const loginPageRoute = "/login";
+  static const signUpPageRoute = "/signUp";
   static const eventsPageRoute = "/events";
   static const profilePageRoute = "/profile";
   // static const settingPageRoute = "/setting";
@@ -33,6 +35,7 @@ class AppRoutes {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
       AppRoutes.loginPageRoute: (BuildContext context) => LoginPage(),
+      AppRoutes.signUpPageRoute: (BuildContext context) => const SignUpPage(),
       AppRoutes.homePageRoute: (BuildContext context) => HomePage(),
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
       AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
