@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/navigation/router.dart';
 import 'package:flutter/material.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -74,9 +75,17 @@ class UpdateApiStateAction {
   List<UserModelRes>? users;
   UserModelRes? userMe;
   PostModelRes? postDetail;
+  String? selectedUni;
+  List<UnivModelRes>? univs;
 
   UpdateApiStateAction(
-      {this.posts, this.postOnly, this.users, this.userMe, this.postDetail});
+      {this.posts,
+      this.selectedUni,
+      this.postOnly,
+      this.users,
+      this.univs,
+      this.userMe,
+      this.postDetail});
 }
 
 class GetStateInitAction {}
@@ -180,6 +189,11 @@ class GetImageDownloadLinkAction {
   String postId;
   GetImageDownloadLinkAction(this.imagePath,
       {this.postType, required this.postId});
+}
+
+class GetSearchUniversityAction {
+  String? name;
+  GetSearchUniversityAction({this.name});
 }
 
 class GetUpdatePostAction {

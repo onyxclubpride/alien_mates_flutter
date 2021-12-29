@@ -1,8 +1,12 @@
 import 'dart:io';
 
+import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/rest/api_service_client.dart';
+import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -59,6 +63,9 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getSelectImageAction(store.state, action, next);
       case GetImageDownloadLinkAction:
         return _getImageDownloadLinkAction(store.state, action, next);
+      case GetSearchUniversityAction:
+        return _getSearchUniversityAction(store.state, action, next);
+
       default:
         return next(action);
     }
@@ -262,19 +269,30 @@ Future<bool> _getCreateHelpAction(
 Future<bool> _getCreateUserAction(
     AppState state, GetCreateUserAction action, NextDispatcher next) async {
   try {
-    showLoading();
+    bool userExists = false;
     String _userUid = _generateUserUuid();
-    await usersCollection.doc(_userUid).set({
-      "userId": _userUid,
-      "name": action.name,
-      "phoneNumber": action.phoneNumber,
-      "password": action.password,
-      "uniName": action.uniName,
-      "postIds": [],
-      "createdDate": currentDateAndTime,
-      "isAdmin": false,
-    });
-    closeLoading();
+    for (int i = 0; i < state.apiState.users.length; i++) {
+      UserModelRes user = state.apiState.users[i];
+      if (user.phoneNumber == action.phoneNumber) {
+        userExists = true;
+      }
+    }
+    if (!userExists) {
+      showLoading();
+      await usersCollection.doc(_userUid).set({
+        "userId": _userUid,
+        "name": action.name,
+        "phoneNumber": action.phoneNumber,
+        "password": action.password,
+        "uniName": action.uniName,
+        "postIds": [],
+        "createdDate": currentDateAndTime,
+        "isAdmin": false,
+      });
+      closeLoading();
+    } else {
+      showError('User exists with the given phone number');
+    }
     return true;
   } catch (e) {
     closeLoading();
@@ -499,6 +517,43 @@ Future<String?> _getImageDownloadLinkAction(AppState state,
   }
 }
 
+Future<List<UnivModelRes>?> _getSearchUniversityAction(AppState state,
+    GetSearchUniversityAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    List<UnivModelRes> _univs = [];
+    final res =
+        await _getClient().get(ApiQueries.querySearchUniv, queryParameters: {
+      "name": action.name != null ? action.name!.toLowerCase() : "",
+      "country": "Korea, Republic of"
+    });
+    if (res.statusCode == 200) {
+      if (res.data.isNotEmpty) {
+        for (int i = 0; i < res.data.length; i++) {
+          _univs.add(UnivModelRes(
+            name: res.data[i]['name'],
+            alpha_two_code: res.data[i]['alpha_two_code'],
+            country: res.data[i]['country'],
+            domains: res.data[i]['domains'],
+            web_pages: res.data[i]['web_pages'],
+          ));
+        }
+        next(UpdateApiStateAction(univs: _univs));
+        closeLoading();
+        return _univs;
+      }
+      closeLoading();
+    }
+  } on DioError catch (e) {
+    closeLoading();
+    if (e.response != null) {
+      showError(e.response!.data.toString());
+    } else {
+      showError(e.error.toString());
+    }
+  }
+}
+
 Future<void> _getUserByIdAction(
     AppState state, GetUserByIdAction action, NextDispatcher next) async {
   // final _test = await usersCollection
@@ -554,7 +609,20 @@ showLoading() {
 }
 
 closeLoading() {
-  appStore.dispatch(DismissPopupAction(all: true));
+  appStore.dispatch(DismissPopupAction());
+}
+
+showError(String? error, {VoidCallback? onTap}) {
+  showAlertDialog(
+    Global.navKey.currentState!.context,
+    text: '${error.toString()}',
+    horizontalPadding: 20,
+    buttonText: 'Ok',
+    onPress: onTap ??
+        () {
+          appStore.dispatch(DismissPopupAction(all: true));
+        },
+  );
 }
 
 Future<String?> _getSelectImageAction(
@@ -571,4 +639,18 @@ Future<String?> _getSelectImageAction(
   } catch (e) {
     logger(e.toString(), hint: 'GET SELECT IMAGE CATCH ERROR');
   }
+}
+
+Dio _getClient(
+    {String? token,
+    String? contentType,
+    Map<String, dynamic>? queryParameters,
+    String? additionalUrl,
+    String? tokenAuth}) {
+  return ApiClient(
+          additionalUrl: additionalUrl,
+          token: token != null ? "${tokenAuth ?? "Bearer"} $token" : null,
+          queryParameters: queryParameters,
+          contentType: contentType)
+      .init();
 }

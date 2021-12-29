@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
@@ -21,16 +22,19 @@ class _SignUpPageState extends State<SignUpPage> {
   final GlobalKey<FormState> _formKeySignUpPage =
       GlobalKey<FormState>(debugLabel: '_formKeySignupPage');
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passController = TextEditingController();
-  TextEditingController confirmPassController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
-  TextEditingController otpController = TextEditingController();
+  TextEditingController nameController = TextEditingController(text: 'NameTes');
+  TextEditingController passController =
+      TextEditingController(text: 'Ibextest123!');
+  TextEditingController confirmPassController =
+      TextEditingController(text: 'Ibextest123!@');
+  TextEditingController phoneNumberController =
+      TextEditingController(text: '1027192101');
+  TextEditingController otpController = TextEditingController(text: "111111");
   TextEditingController uniNameController = TextEditingController();
 
-  int? sentOtp;
+  int? sentOtp = 111111;
 
-  bool isOtpSent = false;
+  bool isOtpSent = true;
   bool isOtpCorrect = false;
   String errorText = "";
 
@@ -46,6 +50,14 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
+        onDidChange: (previousViewModel, viewModel) {
+          if (viewModel.apiState.selectedUni.isNotEmpty) {
+            setState(() {
+              uniNameController =
+                  TextEditingController(text: viewModel.apiState.selectedUni);
+            });
+          }
+        },
         builder: (context, state) {
           return DefaultBody(
             withNavigationBar: false,
@@ -96,30 +108,49 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         controller: phoneNumberController,
                       ),
+                      // if (isOtpSent)
                       BasicInput(
                         hintText: "OTP",
-                        readOnly: !isOtpSent,
+                        readOnly: isOtpCorrect,
                         controller: otpController,
+                        onChanged: (value) {
+                          logger(value);
+                          logger(sentOtp);
+
+                          if (value.toString() == sentOtp.toString()) {
+                            setState(() {
+                              isOtpCorrect = true;
+                            });
+                          }
+                        },
                         validator: Validator.validateOtp,
                         keyboardType: TextInputType.number,
                         suffixIcon: IconButton(
                           onPressed: _onVerifyOtp,
                           icon: Icon(
-                            Ionicons.checkmark_done,
-                            color: isOtpSent
-                                ? ThemeColors.bgDark
-                                : ThemeColors.fontWhite,
+                            Ionicons.checkmark_done_sharp,
+                            color: isOtpCorrect
+                                ? Colors.blueAccent
+                                : ThemeColors.transparent,
                           ),
                         ),
                       ),
-                      if (isOtpCorrect)
-                        BasicInput(
-                          hintText: "University Name",
-                          textInputAction: TextInputAction.done,
-                          controller: uniNameController,
-                          readOnly: true,
-                          onTap: _onSearchUniPress,
+                      // if (isOtpCorrect)
+                      BasicInput(
+                        hintText: "University Name",
+                        textInputAction: TextInputAction.done,
+                        controller: uniNameController,
+                        validator: Validator.validateName,
+                        suffixIcon: IconButton(
+                          onPressed: _onSearchUniPress,
+                          icon: const Icon(
+                            Ionicons.search,
+                            color: ThemeColors.componentBgDark,
+                          ),
                         ),
+                        onTap: _onSearchUniPress,
+                        readOnly: true,
+                      ),
                       if (errorText.isNotEmpty)
                         SizedText(
                           text: errorText,
@@ -135,7 +166,13 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _onSearchUniPress() {
-    //TODO: SHOH
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: ThemeColors.transparent,
+      builder: (context) {
+        return UniversitiesWidget();
+      },
+    );
   }
 
   _onSendOtp() async {
@@ -161,6 +198,7 @@ class _SignUpPageState extends State<SignUpPage> {
             setState(() {
               isOtpSent = true;
               sentOtp = resendToken;
+              logger(sentOtp, hint: 'TOKEN');
             });
           },
           codeAutoRetrievalTimeout: (String verificationId) {
@@ -190,17 +228,19 @@ class _SignUpPageState extends State<SignUpPage> {
           errorText = "";
         });
         if (_formKeySignUpPage.currentState!.validate()) {
-          // bool matched = await appStore.dispatch(GetCreateUserAction(
-          //     phoneNumber: phoneNumberController.text,
-          //     password: passController.text,
-          //     name: nameController.text,
-          //     uniName: uniNameController.text));
-          // if (!matched) {
-          //   setState(() {
-          //     errorText =
-          //         "There is something wrong. Please check your data again";
-          //   });
-          // }
+          bool matched = await appStore.dispatch(GetCreateUserAction(
+              phoneNumber: phoneNumberController.text,
+              password: passController.text,
+              name: nameController.text,
+              uniName: uniNameController.text));
+          if (!matched) {
+            setState(() {
+              errorText =
+                  "There is something wrong. Please check your data again";
+            });
+          } else {
+            // appStore.dispatch(NavigateToAction(to: 'up'));
+          }
         }
       } else {
         setState(() {
@@ -224,5 +264,93 @@ class _SignUpPageState extends State<SignUpPage> {
 
   closeLoading() {
     appStore.dispatch(DismissPopupAction(all: true));
+  }
+}
+
+class UniversitiesWidget extends StatefulWidget {
+  @override
+  _UniversitiesWidgetState createState() => _UniversitiesWidgetState();
+}
+
+class _UniversitiesWidgetState extends State<UniversitiesWidget> {
+  List<UnivModelRes> univs = [];
+  TextEditingController uniNameController = TextEditingController();
+
+  @override
+  void dispose() {
+    uniNameController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, AppState>(
+        converter: (store) => store.state,
+        builder: (context, state) => Container(
+              margin: EdgeInsets.symmetric(horizontal: 10.w),
+              padding: EdgeInsets.only(right: 20.w, left: 20.w, top: 20.h),
+              decoration: BoxDecoration(
+                  color: ThemeColors.componentBgDark,
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(16.r),
+                      topLeft: Radius.circular(16.r))),
+              child: SpacedColumn(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                verticalSpace: 14,
+                children: [
+                  BasicInput(
+                    hintText: "University Name",
+                    textInputAction: TextInputAction.done,
+                    controller: uniNameController,
+                    validator: Validator.validateName,
+                    suffixIcon: IconButton(
+                      onPressed: () async {
+                        List<UnivModelRes>? _univs = await appStore.dispatch(
+                            GetSearchUniversityAction(
+                                name: uniNameController.text));
+                        if (_univs != null) {
+                          setState(() {
+                            univs = _univs;
+                          });
+                        }
+                      },
+                      icon: const Icon(
+                        Ionicons.search,
+                        color: ThemeColors.componentBgDark,
+                      ),
+                    ),
+                  ),
+                  Container(
+                    height: 280.h,
+                    child: SingleChildScrollView(
+                      child: SpacedColumn(
+                        verticalSpace: 10,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: _getUnivItem(state.apiState.univs),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ));
+  }
+
+  List<Widget> _getUnivItem(List<UnivModelRes> univs) {
+    List<Widget> list = [];
+    for (int i = 0; i < univs.length; i++) {
+      list.add(InkWell(
+        onTap: () {
+          appStore.dispatch(UpdateApiStateAction(selectedUni: univs[i].name));
+          appStore.dispatch(DismissPopupAction());
+        },
+        child: SizedText(
+          textAlign: TextAlign.start,
+          text: univs[i].name,
+          textStyle: latoM20.copyWith(color: ThemeColors.fontWhite),
+        ),
+      ));
+    }
+
+    return list;
   }
 }

@@ -84,7 +84,7 @@ class Validator {
   }
 
   static String? validateOtp(String? value) {
-    RegExp regex = RegExp(r'^[0-9]{6}$');
+    RegExp regex = RegExp(r'^[0-9]{6,10}$');
     if (value != null) {
       if (value.isEmpty) {
         // enter_phone_number

@@ -78,6 +78,8 @@ ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
     users: action.users ?? state.users,
     userMe: action.userMe ?? state.userMe,
     postDetail: action.postDetail ?? state.postDetail,
+    selectedUni: action.selectedUni ?? state.selectedUni,
+    univs: action.univs ?? state.univs,
   );
 }
 

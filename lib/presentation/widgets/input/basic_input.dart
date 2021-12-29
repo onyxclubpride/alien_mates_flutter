@@ -7,6 +7,7 @@ class BasicInput extends StatelessWidget {
   String? Function(String?)? validator;
   TextEditingController? controller;
   String? errorText;
+  String? initVal;
   bool? isObscured;
   bool? readOnly;
   Widget? suffixIcon;
@@ -25,6 +26,7 @@ class BasicInput extends StatelessWidget {
       this.onTap,
       this.controller,
       this.errorText,
+      this.initVal,
       this.readOnly = false,
       this.suffixIcon,
       this.keyboardType = TextInputType.text,
@@ -48,6 +50,7 @@ class BasicInput extends StatelessWidget {
         ],
         keyboardType: keyboardType,
         readOnly: readOnly!,
+        initialValue: initVal,
         onChanged: onChanged,
         textInputAction: textInputAction,
         decoration: InputDecoration(

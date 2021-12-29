@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:flutter/material.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 
@@ -11,12 +12,16 @@ class ApiState {
   final List<UserModelRes> users;
   final UserModelRes userMe;
   final PostModelRes postDetail;
+  final String selectedUni;
+  final List<UnivModelRes> univs;
 
   ApiState(
       {required this.posts,
       required this.postOnly,
       required this.users,
       required this.userMe,
+      required this.selectedUni,
+      required this.univs,
       required this.postDetail});
 
   factory ApiState.initial() {
@@ -39,6 +44,7 @@ class ApiState {
             joinLimit: 0,
             imageUrl: "",
             eventLocation: ""),
+        univs: [],
         userMe: UserModelRes(
             userId: "",
             phoneNumber: "",
@@ -46,7 +52,8 @@ class ApiState {
             password: "",
             createdDate: "",
             uniName: '',
-            postIds: []));
+            postIds: []),
+        selectedUni: '');
   }
 
   ApiState copyWith({
@@ -55,6 +62,8 @@ class ApiState {
     List<UserModelRes>? users,
     UserModelRes? userMe,
     PostModelRes? postDetail,
+    String? selectedUni,
+    List<UnivModelRes>? univs,
   }) {
     return ApiState(
       posts: posts ?? this.posts,
@@ -62,6 +71,8 @@ class ApiState {
       users: users ?? this.users,
       userMe: userMe ?? this.userMe,
       postDetail: postDetail ?? this.postDetail,
+      selectedUni: selectedUni ?? this.selectedUni,
+      univs: univs ?? this.univs,
     );
   }
 }

@@ -30,10 +30,12 @@ class InitMiddleware extends MiddlewareClass<AppState> {
 Future<void> _getStateInitAction(
     AppState state, GetStateInitAction action, NextDispatcher next) async {
   String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
+  await appStore.dispatch(GetAllUsersAction());
   if (_localUserId != null) {
-    await appStore.dispatch(GetAllUsersAction());
     appStore.dispatch(GetUserIdExistAction(_localUserId));
   } else {
+    await appStore.dispatch(GetSearchUniversityAction());
+
     appStore.dispatch(
         NavigateToAction(to: AppRoutes.loginPageRoute, replace: true));
   }
