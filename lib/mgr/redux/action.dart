@@ -75,17 +75,16 @@ class UpdateApiStateAction {
   List<UserModelRes>? users;
   UserModelRes? userMe;
   PostModelRes? postDetail;
+  String? postDetailUserPhoneNumber;
   String? selectedUni;
   List<UnivModelRes>? univs;
-
   UpdateApiStateAction(
       {this.posts,
-      this.selectedUni,
       this.postOnly,
       this.users,
-      this.univs,
       this.userMe,
-      this.postDetail});
+      this.postDetail,
+      this.postDetailUserPhoneNumber});
 }
 
 class GetStateInitAction {}

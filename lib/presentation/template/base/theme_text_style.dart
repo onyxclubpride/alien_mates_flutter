@@ -85,3 +85,8 @@ final latoM30 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
   fontSize: 30.0,
 );
+
+final latoB20 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 20.0,
+);

@@ -87,19 +87,19 @@ Future<List<ListPostModelRes>> _getPostsList() async {
     for (int i = 0; i < _snapshotList.length; i++) {
       var item = _snapshotList[i];
       ListPostModelRes postModelRes = ListPostModelRes(
-        createdDate: item['createdDate'],
-        postId: item['postId'],
-        isEvent: item['isEvent'],
-        isNotice: item['isNotice'],
-        isPost: item['isPost'],
-        isHelp: item['isHelp'],
-        imageUrl: item['imageUrl'],
-        description: item['description'],
-        joinedUserIds: item['joinedUserIds'],
-        likedUserIds: item['likedUserIds'],
-        title: item['title'],
-        joinLimit: item['joinLimit'],
-      );
+          createdDate: item['createdDate'],
+          postId: item['postId'],
+          isEvent: item['isEvent'],
+          isNotice: item['isNotice'],
+          isPost: item['isPost'],
+          isHelp: item['isHelp'],
+          imageUrl: item['imageUrl'],
+          description: item['description'],
+          joinedUserIds: item['joinedUserIds'],
+          likedUserIds: item['likedUserIds'],
+          title: item['title'],
+          joinLimit: item['joinLimit'],
+          userId: item['userId']);
       _posts.add(postModelRes);
     }
     return _posts;
@@ -113,9 +113,7 @@ Future<bool> _getCreatePostAction(
     AppState state, GetCreatePostAction action, NextDispatcher next) async {
   try {
     showLoading();
-    String _uid = _generatePostUuid();
     String _postUid = _generatePostUuid();
-    String _userUid = _generateUserUuid();
     String? downUrl;
     if (action.imagePath != null) {
       downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
@@ -123,13 +121,13 @@ Future<bool> _getCreatePostAction(
           postId: _postUid,
           postType: "NOTICE_POST"));
     }
-    await postsCollection.doc(_uid).set({
-      "postId": _uid,
+    await postsCollection.doc(_postUid).set({
+      "postId": _postUid,
       "title": null,
       "description": action.description,
       "eventLocation": null,
       "imageUrl": downUrl,
-      "userId": _userUid,
+      "userId": state.apiState.userMe.userId,
       "isPost": true,
       "isEvent": false,
       "isNotice": false,
@@ -154,7 +152,6 @@ Future<bool> _getCreateNoticeAction(
   try {
     showLoading();
     String _postUid = _generatePostUuid(type: 'NOTICE_POST');
-    String _userUid = _generateUserUuid();
     String? downUrl;
     if (action.imagePath != null) {
       downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
@@ -168,7 +165,7 @@ Future<bool> _getCreateNoticeAction(
       "title": action.title,
       "description": action.description,
       "imageUrl": downUrl,
-      "userId": _userUid,
+      "userId": state.apiState.userMe.userId,
       "isPost": false,
       "isEvent": false,
       "isNotice": true,
@@ -193,7 +190,6 @@ Future<bool> _getCreateEventAction(
   try {
     showLoading();
     String _postUid = _generatePostUuid(type: 'EVENT_POST');
-    String _userUid = _generateUserUuid();
     String? downUrl;
     if (action.imagePath != null) {
       downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
@@ -207,7 +203,7 @@ Future<bool> _getCreateEventAction(
       "description": action.description,
       "eventLocation": action.eventLocation,
       "imageUrl": downUrl,
-      "userId": _userUid,
+      "userId": state.apiState.userMe.userId,
       "isPost": false,
       "isEvent": true,
       "isNotice": false,
@@ -232,7 +228,6 @@ Future<bool> _getCreateHelpAction(
   try {
     showLoading();
     String _postUid = _generatePostUuid(type: 'HELP_POST');
-    String _userUid = _generateUserUuid();
     String? _downUrl;
     if (action.imagePath != null) {
       _downUrl = await appStore.dispatch(GetImageDownloadLinkAction(
@@ -246,7 +241,7 @@ Future<bool> _getCreateHelpAction(
       "description": action.description,
       "eventLocation": null,
       "imageUrl": _downUrl,
-      "userId": _userUid,
+      "userId": state.apiState.userMe.userId,
       "isPost": false,
       "isEvent": false,
       "isNotice": false,
@@ -388,20 +383,20 @@ Future<PostModelRes?> _getPostByIdAction(
     showLoading();
     final _postDetail = await postsCollection.doc(action.postId).get();
     PostModelRes _postModelRes = PostModelRes(
-      createdDate: _postDetail['createdDate'],
-      postId: _postDetail['postId'],
-      isNotice: _postDetail['isNotice'],
-      isPost: _postDetail['isPost'],
-      userId: _postDetail['userId'],
-      isEvent: _postDetail['isEvent'],
-      isHelp: _postDetail['isHelp'],
-      likedUserIds: _postDetail['likedUserIds'],
-      joinedUserIds: _postDetail['joinedUserIds'],
-      description: _postDetail['description'],
-      title: _postDetail['title'],
-      joinLimit: _postDetail['joinLimit'],
-      imageUrl: _postDetail['imageUrl'],
-    );
+        createdDate: _postDetail['createdDate'],
+        postId: _postDetail['postId'],
+        isNotice: _postDetail['isNotice'],
+        isPost: _postDetail['isPost'],
+        userId: _postDetail['userId'],
+        isEvent: _postDetail['isEvent'],
+        isHelp: _postDetail['isHelp'],
+        likedUserIds: _postDetail['likedUserIds'],
+        joinedUserIds: _postDetail['joinedUserIds'],
+        description: _postDetail['description'],
+        title: _postDetail['title'],
+        joinLimit: _postDetail['joinLimit'],
+        imageUrl: _postDetail['imageUrl'],
+        eventLocation: _postDetail['eventLocation']);
     next(UpdateApiStateAction(postDetail: _postModelRes));
     if (action.goToRoute != null) {
       appStore.dispatch(NavigateToAction(
@@ -452,7 +447,7 @@ Future<bool> _getUpdatePostAction(
         "userId": _postModelRes.userId,
         "isEvent": _postModelRes.isEvent,
         "isHelp": _postModelRes.isHelp,
-        // "likedUserIds": _postModelRes.likedUserIds,
+        "likedUserIds": _postModelRes.likedUserIds,
         "joinedUserIds": _postModelRes.joinedUserIds,
         "description": _postModelRes.description,
         "title": _postModelRes.title,
@@ -556,11 +551,20 @@ Future<List<UnivModelRes>?> _getSearchUniversityAction(AppState state,
 
 Future<void> _getUserByIdAction(
     AppState state, GetUserByIdAction action, NextDispatcher next) async {
-  // final _test = await usersCollection
-  //     //'USER_2021.12.25_f547d420-657f-11ec-8de4-a59789f4ac63'
-  //     .doc(action.userId)
-  //     .get();
-  // logger(_test, hint: '1 USER');
+  try {
+    showLoading();
+    // user detail json
+    final _userDetail = await usersCollection.doc(action.userId).get();
+    logger(action.userId, hint: "USER");
+
+    next(UpdateApiStateAction(
+        postDetailUserPhoneNumber: _userDetail['phoneNumber']));
+
+    closeLoading();
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'Event detail Phone Number CATCH ERROR');
+  }
 }
 
 // Future<bool> _getCreatePostAction(

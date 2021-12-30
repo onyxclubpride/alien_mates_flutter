@@ -73,14 +73,15 @@ final _apiReducer = combineReducers<ApiState>([
 
 ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
   return state.copyWith(
-    posts: action.posts ?? state.posts,
-    postOnly: action.postOnly ?? state.postOnly,
-    users: action.users ?? state.users,
-    userMe: action.userMe ?? state.userMe,
-    postDetail: action.postDetail ?? state.postDetail,
-    selectedUni: action.selectedUni ?? state.selectedUni,
-    univs: action.univs ?? state.univs,
-  );
+      posts: action.posts ?? state.posts,
+      postOnly: action.postOnly ?? state.postOnly,
+      users: action.users ?? state.users,
+      userMe: action.userMe ?? state.userMe,
+      postDetail: action.postDetail ?? state.postDetail,
+      selectedUni: action.selectedUni ?? state.selectedUni,
+      univs: action.univs ?? state.univs,
+      postDetailUserPhoneNumber:
+          action.postDetailUserPhoneNumber ?? state.postDetailUserPhoneNumber);
 }
 
 ///

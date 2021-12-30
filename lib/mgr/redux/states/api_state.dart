@@ -14,6 +14,7 @@ class ApiState {
   final PostModelRes postDetail;
   final String selectedUni;
   final List<UnivModelRes> univs;
+  final String postDetailUserPhoneNumber;
 
   ApiState(
       {required this.posts,
@@ -22,7 +23,8 @@ class ApiState {
       required this.userMe,
       required this.selectedUni,
       required this.univs,
-      required this.postDetail});
+      required this.postDetail,
+      required this.postDetailUserPhoneNumber});
 
   factory ApiState.initial() {
     return ApiState(
@@ -53,18 +55,17 @@ class ApiState {
             createdDate: "",
             uniName: '',
             postIds: []),
-        selectedUni: '');
+        selectedUni: '',
+        postDetailUserPhoneNumber: "");
   }
 
-  ApiState copyWith({
-    List<ListPostModelRes>? posts,
-    List<PostOnlyModel>? postOnly,
-    List<UserModelRes>? users,
-    UserModelRes? userMe,
-    PostModelRes? postDetail,
-    String? selectedUni,
-    List<UnivModelRes>? univs,
-  }) {
+  ApiState copyWith(
+      {List<ListPostModelRes>? posts,
+      List<PostOnlyModel>? postOnly,
+      List<UserModelRes>? users,
+      UserModelRes? userMe,
+      PostModelRes? postDetail,
+      String? postDetailUserPhoneNumber}) {
     return ApiState(
       posts: posts ?? this.posts,
       postOnly: postOnly ?? this.postOnly,
@@ -73,6 +74,8 @@ class ApiState {
       postDetail: postDetail ?? this.postDetail,
       selectedUni: selectedUni ?? this.selectedUni,
       univs: univs ?? this.univs,
+      postDetailUserPhoneNumber:
+          postDetailUserPhoneNumber ?? this.postDetailUserPhoneNumber,
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
@@ -37,31 +38,43 @@ class _EventsPageState extends State<EventsPage> {
       ListPostModelRes _item = postsList[i];
       if (_item.isEvent) {
         _list.add(PostItemBanner(
-            height: 180.h,
-            leftWidget: SizedText(
-              text: 'Joined ${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+          height: 180.h,
+          leftWidget: SizedText(
+            text: 'Joined ${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+          ),
+          rightWidget: InkWell(
+            onTap: () {
+              _item.joinedUserIds!.contains(_userId)
+                  ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                      _item.joinLimit!, _userId)
+                  : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                      _item.joinLimit!, _userId);
+            },
+            child: SizedText(
+              text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
             ),
-            rightWidget: InkWell(
-              onTap: () {
-                _item.joinedUserIds!.contains(_userId)
-                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId)
-                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId);
-              },
-              child: SizedText(
-                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
-              ),
-            ),
-            imageUrl: _item.imageUrl,
-            desc: _item.description,
+          ),
+          imageUrl: _item.imageUrl,
+          desc: _item.description,
+          child: GestureDetector(
+            onTap: () {
+              _singleEventDetails(_item.postId, _item.userId);
+            },
             child: CachedImageOrTextImageWidget(
                 title: _item.title,
                 imageUrl: _item.imageUrl,
-                description: _item.description)));
+                description: _item.description),
+          ),
+        ));
       }
     }
     return _list;
+  }
+
+  _singleEventDetails(eventId, userId) async {
+    await appStore.dispatch(GetUserByIdAction(userId));
+    await appStore.dispatch(GetPostByIdAction(eventId));
+    appStore.dispatch(NavigateToAction(to: AppRoutes.eventDetailsPageRoute));
   }
 
   _onJoinTap(String postId, List userIds, int joinLimit, userId) {

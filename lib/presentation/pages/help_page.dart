@@ -3,6 +3,7 @@ import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dar
 import 'package:alien_mates/presentation/widgets/open_image_popup.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -46,9 +47,7 @@ class _HelpPageState extends State<HelpPage> {
               bgColor: ThemeColors.black,
               child: GestureDetector(
                 onTap: () {
-                  print("IN THE HElP PAGE");
-                  appStore.dispatch(
-                      NavigateToAction(to: AppRoutes.helpDetailsPageRoute));
+                  _singlePostDetail(_item.postId);
                 },
                 child: CachedImageOrTextImageWidget(
                     title: _item.title,
@@ -59,5 +58,10 @@ class _HelpPageState extends State<HelpPage> {
       }
     }
     return _list;
+  }
+
+  _singlePostDetail(postId) async {
+    await appStore.dispatch(GetPostByIdAction(postId));
+    appStore.dispatch(NavigateToAction(to: AppRoutes.helpDetailsPageRoute));
   }
 }

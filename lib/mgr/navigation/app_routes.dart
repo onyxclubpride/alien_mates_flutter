@@ -2,6 +2,7 @@ import 'package:alien_mates/presentation/pages/create_event_page.dart';
 import 'package:alien_mates/presentation/pages/create_help_page.dart';
 import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/edit_notice_page.dart';
+import 'package:alien_mates/presentation/pages/event_details_page.dart';
 import 'package:alien_mates/presentation/pages/help_details_page.dart';
 import 'package:alien_mates/presentation/pages/sign_up_page.dart';
 
@@ -22,7 +23,7 @@ class AppRoutes {
   static const createHelpPageRoute = "/createHelp";
   static const createNoticePageRoute = "/createNotice";
 
-  static const eventDetailsRoute = "/eventDetails";
+  static const eventDetailsPageRoute = "/eventDetails";
   static const helpDetailsPageRoute = "/helpDetails";
   static const noticeDetailsRoute = "/noticeDetails";
   static const editEventPageRoute = "/editEvent";
@@ -50,7 +51,8 @@ class AppRoutes {
 
       AppRoutes.helpDetailsPageRoute: (BuildContext context) =>
           HelpDetailsPage(),
-      // AppRoutes.eventDetailRoute: (BuildContext context) => EventDetail(),
+      AppRoutes.eventDetailsPageRoute: (BuildContext context) =>
+          EventDetailsPage(),
       // AppRoutes.noticeDetailRoute: (BuildContext context) => NoticeDetail(),
 
       AppRoutes.editNoticePageRoute: (BuildContext context) => EditNoticePage(),

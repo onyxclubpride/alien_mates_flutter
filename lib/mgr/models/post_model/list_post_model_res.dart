@@ -12,6 +12,7 @@ class ListPostModelRes {
   bool isHelp;
   String postId;
   String createdDate;
+  String userId;
 
   ListPostModelRes(
       {this.imageUrl,
@@ -26,7 +27,8 @@ class ListPostModelRes {
       required this.isEvent,
       required this.isNotice,
       required this.isPost,
-      required this.createdDate});
+      required this.createdDate,
+      required this.userId});
 }
 
 class PostOnlyModel {

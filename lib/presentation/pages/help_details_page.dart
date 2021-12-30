@@ -30,77 +30,53 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
             withNavigationBar: false,
             withActionButton: false,
             titleIcon: _buildTitleIcon(),
-            titleText: SizedText(text: 'Help Detail', textStyle: latoM20),
+            titleText: SizedText(text: 'Back', textStyle: latoM20),
             child: SingleChildScrollView(
-              child: Container(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-                  SpacedColumn(
-                    verticalSpace: 21,
-                    children: [
+              child: Column(mainAxisSize: MainAxisSize.min, children: [
+                SpacedColumn(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  verticalSpace: 21,
+                  children: [
+                    if (state.apiState.postDetail.imageUrl != null)
                       PostItemBanner(
                           child: CachedNetworkImage(
-                        imageUrl: "https://picsum.photos/id/237/500/300",
+                        imageUrl: state.apiState.postDetail.imageUrl!,
                         fit: BoxFit.cover,
                       )),
-                      SpacedColumn(verticalSpace: 25, children: [
-                        Container(
-                            alignment: Alignment.topLeft,
-                            height: 300.h,
-                            child: SingleChildScrollView(
-                              child: Column(
-                                children: [
-                                  SizedText(
-                                      text: 'The title',
-                                      textStyle: latoB45.copyWith(
-                                          color: Colors.white)),
-                                  SizedBox(height: 20.h),
-                                  SizedText(
-                                    text: 'The title',
+                    SpacedColumn(verticalSpace: 25, children: [
+                      Container(
+                          height: MediaQuery.of(context).size.height / 2,
+                          alignment: Alignment.topLeft,
+                          child: SingleChildScrollView(
+                            child: Column(
+                              children: [
+                                SizedText(
+                                    text: state.apiState.postDetail.title,
                                     textStyle:
-                                        latoR16.copyWith(color: Colors.white),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                  SizedBox(height: 20.h),
-                                  Row(
-                                    children: [
-                                      SizedText(
-                                          text: 'Kakao ID : ',
-                                          textStyle: latoB14.copyWith(
-                                              color: Colors.white)),
-                                      SizedBox(width: 20.w),
-                                      SizedText(
-                                          text: 'NishatNN',
-                                          textStyle: latoR16.copyWith(
-                                              color: Colors.white)),
-                                    ],
-                                  ),
-                                  SizedBox(height: 10.h),
-                                  Row(
-                                    children: [
-                                      SizedText(
-                                          text: 'Phone       : ',
-                                          textStyle: latoB14.copyWith(
-                                              color: Colors.white)),
-                                      SizedBox(width: 20.w),
-                                      SizedText(
-                                          text: '01027212121',
-                                          textStyle: latoR16.copyWith(
-                                              color: Colors.white)),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            )),
-                        ExpandedButton(
-                          text: 'OKAY',
-                          onPressed: () {
-                            appStore.dispatch(NavigateToAction(to: 'up'));
-                          },
-                        ),
-                      ]),
-                    ],
-                  ),
-                ]),
+                                        latoB45.copyWith(color: Colors.white)),
+                                SizedBox(height: 20.h),
+                                SizedText(
+                                  text: state.apiState.postDetail.description,
+                                  textStyle:
+                                      latoR16.copyWith(color: Colors.white),
+                                  textAlign: TextAlign.left,
+                                ),
+                                SizedBox(height: 20.h),
+                              ],
+                            ),
+                          )),
+                    ]),
+                  ],
+                ),
+              ]),
+            ),
+            footer: Container(
+              margin: EdgeInsets.only(bottom: 15.h),
+              child: ExpandedButton(
+                text: 'OKAY',
+                onPressed: () {
+                  appStore.dispatch(NavigateToAction(to: 'up'));
+                },
               ),
             ),
           );
