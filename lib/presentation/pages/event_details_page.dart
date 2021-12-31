@@ -22,12 +22,12 @@ class EventDetailsPage extends StatefulWidget {
 class _EventDetailsPageState extends State<EventDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    print("IN Event DETAIL PAGE");
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
           var postDetail = state.apiState.postDetail;
-          print(postDetail);
+          String _userId = state.apiState.userMe.userId;
+
           return DefaultBody(
             withTopBanner: false,
             withNavigationBar: false,
@@ -168,27 +168,23 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             footer: Container(
               margin: EdgeInsets.only(bottom: 15.h),
               child: ExpandedButton(
-                text: (postDetail.joinedUserIds!
-                            .contains(state.apiState.userMe.userId) ==
-                        true)
+                text: (postDetail.joinedUserIds!.contains(_userId) == true)
                     ? 'UNDO'
                     : 'JOIN',
                 onPressed: () {
                   //Change to update
-                  postDetail.joinedUserIds!.contains(postDetail.joinedUserIds!
-                          .contains(state.apiState.userMe.userId))
+                  postDetail.joinedUserIds!.contains(_userId)
                       ? _onUnJoinTap(
                           postDetail.postId,
                           postDetail.joinedUserIds!,
                           postDetail.joinLimit!,
-                          postDetail.joinedUserIds!
-                              .contains(state.apiState.userMe.userId))
+                          state.initState.userId)
                       : _onJoinTap(
                           postDetail.postId,
                           postDetail.joinedUserIds!,
                           postDetail.joinLimit!,
-                          postDetail.joinedUserIds!
-                              .contains(state.apiState.userMe.userId));
+                          state.initState.userId,
+                        );
                 },
               ),
             ),
@@ -227,4 +223,3 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
   }
 }
-//  if(state.apiState.postDetail.joinedUserIds.contains(state.apiState.userMe.userId) )
