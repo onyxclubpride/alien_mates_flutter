@@ -26,6 +26,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
+          var postDetail = state.apiState.postDetail;
+          print(postDetail);
           return DefaultBody(
             withTopBanner: false,
             withNavigationBar: false,
@@ -134,24 +136,22 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                               fontWeight: FontWeight.bold,
                                               color: ThemeColors.fontWhite),
                                         ),
-                                        if (state.apiState.postDetail
-                                            .joinedUserIds!.isNotEmpty)
-                                          Text(
-                                            state.apiState.postDetail
-                                                .joinedUserIds!.length
-                                                .toString(),
-                                            style: const TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: ThemeColors.fontWhite),
-                                          ),
-                                        const Text(
-                                          '0',
-                                          style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: ThemeColors.yellow),
-                                        )
+                                        (postDetail.joinedUserIds!.isNotEmpty)
+                                            ? Text(
+                                                postDetail.joinedUserIds!.length
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ThemeColors.yellow),
+                                              )
+                                            : const Text(
+                                                '0',
+                                                style: TextStyle(
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: ThemeColors.yellow),
+                                              )
                                       ],
                                     ),
                                   ),
@@ -168,14 +168,27 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             footer: Container(
               margin: EdgeInsets.only(bottom: 15.h),
               child: ExpandedButton(
-                text: 'JOIN',
+                text: (postDetail.joinedUserIds!
+                            .contains(state.apiState.userMe.userId) ==
+                        true)
+                    ? 'UNDO'
+                    : 'JOIN',
                 onPressed: () {
                   //Change to update
-                  // _item.joinedUserIds!.contains(_userId)
-                  //     ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                  //         _item.joinLimit!, _userId)
-                  //     : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                  //         _item.joinLimit!, _userId);
+                  postDetail.joinedUserIds!.contains(postDetail.joinedUserIds!
+                          .contains(state.apiState.userMe.userId))
+                      ? _onUnJoinTap(
+                          postDetail.postId,
+                          postDetail.joinedUserIds!,
+                          postDetail.joinLimit!,
+                          postDetail.joinedUserIds!
+                              .contains(state.apiState.userMe.userId))
+                      : _onJoinTap(
+                          postDetail.postId,
+                          postDetail.joinedUserIds!,
+                          postDetail.joinLimit!,
+                          postDetail.joinedUserIds!
+                              .contains(state.apiState.userMe.userId));
                 },
               ),
             ),
@@ -214,3 +227,4 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
   }
 }
+//  if(state.apiState.postDetail.joinedUserIds.contains(state.apiState.userMe.userId) )
