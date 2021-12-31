@@ -35,7 +35,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 70.h);
+  Size get preferredSize => Size(double.infinity, 50.h);
 
   Widget _buildTitle() {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start;
@@ -51,7 +51,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         titleText ??
             SizedText(
               text: 'Alien Mates',
-              textStyle: latoM36,
+              textStyle: latoM30,
             ),
       ],
     );
@@ -66,7 +66,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         child: IconButton(
           padding: EdgeInsets.zero,
           icon: const Icon(Ionicons.person, color: ThemeColors.bgLight),
-          iconSize: 30.h,
+          iconSize: 25.h,
           onPressed: () {
             // appStore.dispatch(GetCreateEventAction(
             //     eventLocation: 'Seoul',
@@ -84,7 +84,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         child: IconButton(
           padding: EdgeInsets.zero,
           icon: Icon(rightIcon!, color: ThemeColors.bgLight),
-          iconSize: 30.h,
+          iconSize: 25.h,
           onPressed: onRightButtonClick,
         ),
       ));

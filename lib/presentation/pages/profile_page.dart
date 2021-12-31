@@ -37,6 +37,10 @@ class _ProfilePageState extends State<ProfilePage> {
             withNavigationBar: false,
             rightIcon: Ionicons.create_outline,
             onRightButtonClick: _onEditPress,
+            titleText: SizedText(
+              text: "Back",
+              textStyle: latoM20,
+            ),
             titleIcon: _buildTitleIcon(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
