@@ -1,3 +1,7 @@
+/////////////////////
+///MAKE PAGE INSTED OF BOTTOMSHEE
+/////////////////////
+
 import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 import 'package:alien_mates/utils/common/validators.dart';
