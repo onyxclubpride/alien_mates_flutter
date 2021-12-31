@@ -65,7 +65,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getImageDownloadLinkAction(store.state, action, next);
       case GetSearchUniversityAction:
         return _getSearchUniversityAction(store.state, action, next);
-
+      case GetUpdateUserAction:
+        return _getUpdateUserAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -137,6 +138,7 @@ Future<bool> _getCreatePostAction(
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
+    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
@@ -175,6 +177,7 @@ Future<bool> _getCreateNoticeAction(
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
+    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
@@ -213,6 +216,7 @@ Future<bool> _getCreateEventAction(
       "joinLimit": action.joinLimit ?? 0,
       "createdDate": currentDateAndTime
     });
+    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
@@ -251,6 +255,7 @@ Future<bool> _getCreateHelpAction(
       "joinLimit": null,
       "createdDate": currentDateAndTime
     });
+    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
@@ -465,6 +470,57 @@ Future<bool> _getUpdatePostAction(
   return true;
 }
 
+Future<bool> _getUpdateUserAction(
+    AppState state, GetUpdateUserAction action, NextDispatcher next) async {
+  try {
+    //Saving old user info
+    UserModelRes _oldUserData = UserModelRes(
+      name: state.apiState.userMe.name,
+      userId: state.apiState.userMe.userId,
+      createdDate: state.apiState.userMe.createdDate,
+      password: state.apiState.userMe.password,
+      phoneNumber: state.apiState.userMe.phoneNumber,
+      uniName: state.apiState.userMe.uniName,
+      postIds: state.apiState.userMe.postIds,
+    );
+    showLoading();
+    //Updating the user
+    await usersCollection.doc(state.apiState.userMe.userId).update({
+      "name": state.apiState.userMe.name,
+      "userId": state.apiState.userMe.userId,
+      "createdDate": state.apiState.userMe.createdDate,
+      "password": state.apiState.userMe.password,
+      "phoneNumber": state.apiState.userMe.phoneNumber,
+      "uniName": state.apiState.userMe.uniName,
+      "postIds": [...?state.apiState.userMe.postIds, action.postId],
+    });
+    UserModelRes? _updatedUser = await appStore
+        .dispatch(GetUserByIdAction(state.apiState.userMe.userId));
+    if (_updatedUser != null) {
+      //If update successful, update the state
+      next(UpdateApiStateAction(userMe: _updatedUser));
+    } else {
+      //If not success then revert user info back
+      await usersCollection.doc(state.apiState.userMe.userId).update({
+        "name": _oldUserData.name,
+        "userId": _oldUserData.userId,
+        "createdDate": _oldUserData.createdDate,
+        "password": _oldUserData.password,
+        "phoneNumber": _oldUserData.phoneNumber,
+        "uniName": _oldUserData.uniName,
+        "postIds": _oldUserData.postIds,
+      });
+    }
+    await appStore.dispatch(GetAllKindPostsAction());
+    closeLoading();
+    return true;
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET UPDATE POST CATCH ERROR');
+    return false;
+  }
+}
+
 Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
@@ -549,21 +605,27 @@ Future<List<UnivModelRes>?> _getSearchUniversityAction(AppState state,
   }
 }
 
-Future<void> _getUserByIdAction(
+Future<UserModelRes?> _getUserByIdAction(
     AppState state, GetUserByIdAction action, NextDispatcher next) async {
   try {
     showLoading();
     // user detail json
     final _userDetail = await usersCollection.doc(action.userId).get();
-    logger(action.userId, hint: "USER");
-
-    next(UpdateApiStateAction(
-        postDetailUserPhoneNumber: _userDetail['phoneNumber']));
-
+    UserModelRes _userModel = UserModelRes(
+      name: _userDetail['name'],
+      userId: _userDetail['userId'],
+      createdDate: _userDetail['createdDate'],
+      password: _userDetail['password'],
+      phoneNumber: _userDetail['phoneNumber'],
+      uniName: _userDetail['uniName'],
+      postIds: _userDetail['postIds'],
+    );
+    next(UpdateApiStateAction(postDetailUser: _userModel));
     closeLoading();
+    return _userModel;
   } catch (e) {
     closeLoading();
-    logger(e.toString(), hint: 'Event detail Phone Number CATCH ERROR');
+    logger(e.toString(), hint: 'Get User By Id CATCH ERROR');
   }
 }
 

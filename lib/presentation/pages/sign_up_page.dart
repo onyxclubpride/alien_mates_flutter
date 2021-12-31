@@ -236,7 +236,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   "There is something wrong. Please check your data again";
             });
           } else {
-            // appStore.dispatch(NavigateToAction(to: 'up'));
+            appStore.dispatch(NavigateToAction(to: 'up'));
           }
         }
       } else {

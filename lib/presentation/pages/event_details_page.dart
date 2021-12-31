@@ -74,8 +74,8 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                             color: ThemeColors.fontWhite),
                                       ),
                                       SizedText(
-                                        text: state
-                                            .apiState.postDetailUserPhoneNumber,
+                                        text: state.apiState.postDetailUser
+                                            .phoneNumber,
                                         textStyle: latoM16.copyWith(
                                             color: ThemeColors.fontWhite),
                                       )

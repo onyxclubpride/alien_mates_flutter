@@ -75,16 +75,18 @@ class UpdateApiStateAction {
   List<UserModelRes>? users;
   UserModelRes? userMe;
   PostModelRes? postDetail;
-  String? postDetailUserPhoneNumber;
   String? selectedUni;
   List<UnivModelRes>? univs;
+  UserModelRes? postDetailUser;
   UpdateApiStateAction(
       {this.posts,
       this.postOnly,
       this.users,
       this.userMe,
       this.postDetail,
-      this.postDetailUserPhoneNumber});
+      this.univs,
+      this.selectedUni,
+      this.postDetailUser});
 }
 
 class GetStateInitAction {}
@@ -226,6 +228,14 @@ class GetUpdatePostAction {
       this.isHelp,
       this.isPost,
       this.createdDate});
+}
+
+class GetUpdateUserAction {
+  String postId;
+
+  GetUpdateUserAction({
+    required this.postId,
+  });
 }
 
 ///----------------- Init -----------------
