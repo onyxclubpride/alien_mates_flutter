@@ -17,10 +17,19 @@ class HomePage extends StatelessWidget {
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
                 child: SizedBox(
-              height: 200.h,
               child: ListView(
                 controller: _controller,
-                children: [..._buildPostsWidgetList(state)],
+                children: [
+                  DefaultBanner(
+                    height: 90.h,
+                    onTap: () {},
+                    // child: _buildBanners(state),
+                  ),
+                  Container(
+                      margin: EdgeInsets.symmetric(vertical: 25.h),
+                      child: BodyNavigationBar()),
+                  ..._buildPostsWidgetList(state)
+                ],
               ),
             )));
   }
@@ -37,6 +46,7 @@ class HomePage extends StatelessWidget {
             desc: _item.description,
             child: CachedImageOrTextImageWidget(
                 imageUrl: _item.imageUrl, description: _item.description)));
+        _list.add(SizedBox(height: 20.h));
       }
     }
     return _list;

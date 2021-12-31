@@ -79,31 +79,11 @@ class DefaultBody extends StatelessWidget {
                   top: topPadding!.h,
                 ),
                 child: withTopBanner || withNavigationBar
-                    ? Column(
-                        children: [
-                          if (withTopBanner)
-                            DefaultBanner(
-                              height: 90.h,
-                              onTap: () {
-                                _onBannerTap();
-                              },
-                              // child: _buildBanners(state),
-                            ),
-                          if (withNavigationBar)
-                            Container(
-                                margin: EdgeInsets.symmetric(vertical: 25.h),
-                                child: BodyNavigationBar()),
-                          SizedBox(
-                              height: MediaQuery.of(context).size.height -
-                                  30.h -
-                                  50.h -
-                                  70.h -
-                                  90.h -
-                                  MediaQuery.of(context).padding.top -
-                                  MediaQuery.of(context).padding.bottom,
-                              child: child),
-                        ],
-                      )
+                    ? SizedBox(
+                        height: MediaQuery.of(context).size.height -
+                            90.h -
+                            MediaQuery.of(context).padding.bottom,
+                        child: child)
                     : child,
               )),
             ));

@@ -25,7 +25,17 @@ class _EventsPageState extends State<EventsPage> {
         builder: (context, state) => DefaultBody(
                 child: ListView(
               controller: _controller,
-              children: [..._buildPostsWidgetList(state)],
+              children: [
+                DefaultBanner(
+                  height: 90.h,
+                  onTap: () {},
+                  // child: _buildBanners(state),
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 25.h),
+                    child: BodyNavigationBar()),
+                ..._buildPostsWidgetList(state)
+              ],
             )));
   }
 
@@ -66,6 +76,7 @@ class _EventsPageState extends State<EventsPage> {
                 description: _item.description),
           ),
         ));
+        _list.add(SizedBox(height: 20.h));
       }
     }
     return _list;

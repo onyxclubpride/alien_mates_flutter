@@ -27,7 +27,17 @@ class _HelpPageState extends State<HelpPage> {
         builder: (context, state) => DefaultBody(
                 child: ListView(
               controller: _controller,
-              children: [..._buildPostsWidgetList(state)],
+              children: [
+                DefaultBanner(
+                  height: 90.h,
+                  onTap: () {},
+                  // child: _buildBanners(state),
+                ),
+                Container(
+                    margin: EdgeInsets.symmetric(vertical: 25.h),
+                    child: BodyNavigationBar()),
+                ..._buildPostsWidgetList(state)
+              ],
             )));
   }
 
@@ -38,8 +48,8 @@ class _HelpPageState extends State<HelpPage> {
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
       if (_item.isHelp) {
-        _list.add(Builder(
-          builder: (context) => PostItemBanner(
+        _list.add(
+          PostItemBanner(
               imageUrl: _item.imageUrl,
               withBorder: true,
               desc: _item.description,
@@ -54,7 +64,8 @@ class _HelpPageState extends State<HelpPage> {
                     imageUrl: _item.imageUrl,
                     description: _item.description),
               )),
-        ));
+        );
+        _list.add(SizedBox(height: 20.h));
       }
     }
     return _list;

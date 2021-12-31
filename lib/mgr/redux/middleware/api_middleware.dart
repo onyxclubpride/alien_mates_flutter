@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
@@ -536,9 +537,18 @@ Future<void> _getDeletePostAction(
 }
 
 Future<void> _deleteFileFromFirebaseStorage(String postId) async {
-  await FirebaseStorage.instance
-      .ref("/${Constants.firebaseStorageImagesFolderName}/$postId")
-      .delete();
+  try {
+    final _instance = await FirebaseStorage.instance
+        .ref("/${Constants.firebaseStorageImagesFolderName}/")
+        .listAll();
+    for (int i = 0; i < _instance.items.length; i++) {
+      if (_instance.items[i].name.toString() == postId.toString()) {
+        await _instance.items[i].delete();
+      }
+    }
+  } catch (e) {
+    logger(e.toString(), hint: 'GET POST IMAGE DELETE CATCH ERROR');
+  }
 }
 
 Future<TaskSnapshot> _updateFileFromFirebaseStorage(
@@ -675,7 +685,7 @@ showLoading() {
 }
 
 closeLoading() {
-  appStore.dispatch(DismissPopupAction());
+  appStore.dispatch(DismissPopupAction(all: true));
 }
 
 showError(String? error, {VoidCallback? onTap}) {
