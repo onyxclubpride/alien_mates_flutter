@@ -67,7 +67,11 @@ class DismissPopupAction {
 
 ///----------------- API -----------------
 
-class GetAllKindPostsAction {}
+class GetAllKindPostsAction {
+  bool showLoading;
+
+  GetAllKindPostsAction({this.showLoading = true});
+}
 
 class UpdateApiStateAction {
   List<ListPostModelRes>? posts;
@@ -160,7 +164,8 @@ class GetLoginAction {
 class GetPostByIdAction {
   String postId;
   String? goToRoute;
-  GetPostByIdAction(this.postId, {this.goToRoute});
+  bool showloading;
+  GetPostByIdAction(this.postId, {this.goToRoute, this.showloading = true});
 }
 
 class GetUserByIdAction {
@@ -198,8 +203,11 @@ class GetSearchUniversityAction {
 }
 
 class GetUpdatePostAction {
+  bool showloading;
+  bool islikeact;
+  ListPostModelRes? listPostModelRes;
   String? imagePath;
-  List<String>? likedUserIds;
+  List? likedUserIds;
   List? joinedUserIds;
   String? title;
   String? description;
@@ -227,6 +235,9 @@ class GetUpdatePostAction {
       this.isNotice,
       this.isHelp,
       this.isPost,
+      this.showloading = true,
+      this.islikeact = false,
+      this.listPostModelRes,
       this.createdDate});
 }
 

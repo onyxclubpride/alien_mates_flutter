@@ -116,10 +116,12 @@ class PostItemBanner extends StatefulWidget {
   bool withBorder;
   String? imageUrl;
   String? desc;
+  VoidCallback? onDoubleTap;
   PostItemBanner({
     required this.child,
     this.height = 145,
     this.leftWidget,
+    this.onDoubleTap,
     this.withBorder = false,
     this.bgColor = ThemeColors.componentBgDark,
     this.imageUrl,
@@ -137,6 +139,7 @@ class _PostItemBannerState extends State<PostItemBanner> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onDoubleTap: widget.onDoubleTap,
       onLongPress: widget.imageUrl != null
           ? () {
               _popupDialog = _createPopupDialog(widget.imageUrl!);

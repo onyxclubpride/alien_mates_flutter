@@ -1,15 +1,22 @@
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   final ScrollController _controller = ScrollController();
+  bool isliking = false;
+  String likingpostid = "";
 
   @override
   Widget build(BuildContext context) {
@@ -37,18 +44,81 @@ class HomePage extends StatelessWidget {
   List<Widget> _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
-
+    String _userId = state.apiState.userMe.userId;
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
       if (_item.isPost) {
         _list.add(PostItemBanner(
+            // onDoubleTap: () {
+            //   _onLikeTap(_item.postId, _item.likedUserIds!, _userId, _item);
+            // },
             imageUrl: _item.imageUrl,
             desc: _item.description,
+            leftWidget: SizedText(
+              text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
+            ),
+            rightWidget: isliking
+                ? likingpostid == _item.postId
+                    ? SpinKitThreeBounce(
+                        color: Colors.black,
+                        size: 10.h,
+                      )
+                    : IconButton(
+                        iconSize: 15.h,
+                        icon: Icon(_item.likedUserIds!.contains(_userId)
+                            ? Ionicons.happy
+                            : Ionicons.happy_outline),
+                        onPressed: () {
+                          _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
+                              _item);
+                        },
+                      )
+                : IconButton(
+                    iconSize: 15.h,
+                    icon: Icon(_item.likedUserIds!.contains(_userId)
+                        ? Ionicons.happy
+                        : Ionicons.happy_outline),
+                    onPressed: () {
+                      _onLikeTap(
+                          _item.postId, _item.likedUserIds!, _userId, _item);
+                    },
+                  ),
             child: CachedImageOrTextImageWidget(
                 imageUrl: _item.imageUrl, description: _item.description)));
         _list.add(SizedBox(height: 20.h));
       }
     }
     return _list;
+  }
+
+  _onLikeTap(
+      String postId, List userIds, String userId, ListPostModelRes item) async {
+    setState(() {
+      likingpostid = postId;
+      isliking = true;
+    });
+    if (!userIds.contains(userId)) {
+      List _list = userIds;
+      _list.add(userId);
+      await appStore.dispatch(GetUpdatePostAction(
+          showloading: false,
+          listPostModelRes: item,
+          islikeact: true,
+          postId: postId,
+          likedUserIds: _list));
+    } else {
+      List _list = userIds;
+      _list.remove(userId);
+      await appStore.dispatch(GetUpdatePostAction(
+          islikeact: true,
+          showloading: false,
+          listPostModelRes: item,
+          postId: postId,
+          likedUserIds: _list));
+    }
+    setState(() {
+      likingpostid = "";
+      isliking = false;
+    });
   }
 }

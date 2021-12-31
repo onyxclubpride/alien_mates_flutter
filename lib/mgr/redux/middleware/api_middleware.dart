@@ -386,7 +386,7 @@ Future<bool> _getLoginAction(
 Future<PostModelRes?> _getPostByIdAction(
     AppState state, GetPostByIdAction action, NextDispatcher next) async {
   try {
-    showLoading();
+    if (action.showloading) showLoading();
     final _postDetail = await postsCollection.doc(action.postId).get();
     PostModelRes _postModelRes = PostModelRes(
         createdDate: _postDetail['createdDate'],
@@ -409,10 +409,10 @@ Future<PostModelRes?> _getPostByIdAction(
         to: action.goToRoute,
       ));
     }
-    closeLoading();
+    if (action.showloading) closeLoading();
     return _postModelRes;
   } catch (e) {
-    closeLoading();
+    if (action.showloading) closeLoading();
     logger(e.toString(), hint: 'GET 1 POST CATCH ERROR');
   }
 }
@@ -420,9 +420,29 @@ Future<PostModelRes?> _getPostByIdAction(
 Future<bool> _getUpdatePostAction(
     AppState state, GetUpdatePostAction action, NextDispatcher next) async {
   try {
-    showLoading();
-    PostModelRes? _postById =
-        await appStore.dispatch(GetPostByIdAction(action.postId));
+    if (action.islikeact) {
+      PostModelRes _postModelRes = PostModelRes(
+        postId: action.postId,
+        createdDate: action.listPostModelRes!.createdDate,
+        isNotice: action.listPostModelRes!.isNotice,
+        isPost: action.listPostModelRes!.isPost,
+        userId: action.listPostModelRes!.userId,
+        isEvent: action.listPostModelRes!.isEvent,
+        isHelp: action.listPostModelRes!.isHelp,
+        likedUserIds: action.likedUserIds,
+        joinedUserIds: action.listPostModelRes!.joinedUserIds,
+        description: action.listPostModelRes!.description,
+        title: action.listPostModelRes!.title,
+        joinLimit: action.listPostModelRes!.joinLimit,
+        imageUrl: action.listPostModelRes!.imageUrl,
+      );
+      next(UpdateApiStateAction(postDetail: _postModelRes));
+    }
+    if (action.showloading) {
+      showLoading();
+    }
+    PostModelRes? _postById = await appStore.dispatch(
+        GetPostByIdAction(action.postId, showloading: action.showloading));
     String? _downUrl;
     if (action.imagePath != null) {
       final updateRes = await _updateFileFromFirebaseStorage(
@@ -461,11 +481,16 @@ Future<bool> _getUpdatePostAction(
         "imageUrl": _postModelRes.imageUrl,
       });
       next(UpdateApiStateAction(postDetail: _postModelRes));
-      await appStore.dispatch(GetAllKindPostsAction());
-      closeLoading();
+      await appStore
+          .dispatch(GetAllKindPostsAction(showLoading: action.showloading));
+      if (action.showloading) {
+        closeLoading();
+      }
     }
   } catch (e) {
-    closeLoading();
+    if (action.showloading) {
+      closeLoading();
+    }
     logger(e.toString(), hint: 'GET UPDATE POST CATCH ERROR');
   }
   return true;
