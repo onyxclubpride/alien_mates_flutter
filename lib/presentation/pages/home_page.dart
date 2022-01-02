@@ -1,4 +1,6 @@
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:flare_flutter/flare_actor.dart';
+import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -14,6 +16,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final FlareControls flareControls = FlareControls();
+
   final ScrollController _controller = ScrollController();
   bool isliking = false;
   String likingpostid = "";
@@ -48,43 +52,75 @@ class _HomePageState extends State<HomePage> {
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
       if (_item.isPost) {
-        _list.add(PostItemBanner(
-            // onDoubleTap: () {
-            //   _onLikeTap(_item.postId, _item.likedUserIds!, _userId, _item);
-            // },
-            imageUrl: _item.imageUrl,
-            desc: _item.description,
-            leftWidget: SizedText(
-              text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
-            ),
-            rightWidget: isliking
-                ? likingpostid == _item.postId
-                    ? SpinKitThreeBounce(
-                        color: Colors.black,
-                        size: 10.h,
-                      )
+        _list.add(Stack(
+          alignment: Alignment.center,
+          children: [
+            PostItemBanner(
+                onDoubleTap: !isliking
+                    ? () {
+                        flareControls.play("like");
+
+                        if (!isliking) {
+                          _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
+                              _item);
+                        }
+                      }
+                    : null,
+                imageUrl: _item.imageUrl,
+                desc: _item.description,
+                leftWidget: SizedText(
+                  text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
+                ),
+                rightWidget: isliking
+                    ? likingpostid == _item.postId
+                        ? SpinKitThreeBounce(
+                            color: Colors.black,
+                            size: 10.h,
+                          )
+                        : IconButton(
+                            splashColor: Colors.transparent,
+                            iconSize: 15.h,
+                            icon: Icon(_item.likedUserIds!.contains(_userId)
+                                ? Ionicons.happy
+                                : Ionicons.happy_outline),
+                            onPressed: () {
+                              if (!isliking) {
+                                _onLikeTap(_item.postId, _item.likedUserIds!,
+                                    _userId, _item);
+                              }
+                            },
+                          )
                     : IconButton(
+                        splashColor: Colors.transparent,
                         iconSize: 15.h,
                         icon: Icon(_item.likedUserIds!.contains(_userId)
                             ? Ionicons.happy
                             : Ionicons.happy_outline),
                         onPressed: () {
-                          _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
-                              _item);
+                          if (!isliking) {
+                            _onLikeTap(_item.postId, _item.likedUserIds!,
+                                _userId, _item);
+                          }
                         },
+                      ),
+                child: CachedImageOrTextImageWidget(
+                    imageUrl: _item.imageUrl, description: _item.description)),
+            isliking
+                ? likingpostid == _item.postId
+                    ? Container(
+                        height: 100,
+                        width: 100,
+                        child: FlareActor(
+                          'assets/instagram_like.flr',
+                          controller: flareControls,
+                          color: Colors.white,
+                          animation: 'idle',
+                        ),
                       )
-                : IconButton(
-                    iconSize: 15.h,
-                    icon: Icon(_item.likedUserIds!.contains(_userId)
-                        ? Ionicons.happy
-                        : Ionicons.happy_outline),
-                    onPressed: () {
-                      _onLikeTap(
-                          _item.postId, _item.likedUserIds!, _userId, _item);
-                    },
-                  ),
-            child: CachedImageOrTextImageWidget(
-                imageUrl: _item.imageUrl, description: _item.description)));
+                    : Container()
+                : Container(),
+          ],
+        ));
         _list.add(SizedBox(height: 20.h));
       }
     }
@@ -94,8 +130,8 @@ class _HomePageState extends State<HomePage> {
   _onLikeTap(
       String postId, List userIds, String userId, ListPostModelRes item) async {
     setState(() {
-      likingpostid = postId;
       isliking = true;
+      likingpostid = postId;
     });
     if (!userIds.contains(userId)) {
       List _list = userIds;
