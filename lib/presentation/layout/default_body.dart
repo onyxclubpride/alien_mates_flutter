@@ -42,7 +42,6 @@ class DefaultBody extends StatelessWidget {
     this.withActionButton = true,
     this.withNavigationBar = true,
     this.withTopBanner = true,
-    this.showFloatingButton = false,
     this.floatingAction = null,
   });
 
@@ -54,11 +53,6 @@ class DefaultBody extends StatelessWidget {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               resizeToAvoidBottomInset: true,
-              // floatingActionButton: Visibility(
-              //   visible: showFloatingButton!,
-              //   child: Fab2(),
-              // ),
-
               floatingActionButton: floatingAction,
               appBar: showAppBar
                   ? DefaultHeader(

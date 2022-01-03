@@ -42,6 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
             withTopBanner: false,
             withNavigationBar: false,
             rightIcon: Ionicons.settings_outline,
+            onRightButtonClick: () {
+              appStore
+                  .dispatch(NavigateToAction(to: AppRoutes.settingsPageRoute));
+            },
             titleText: SizedText(
               text: "Back",
               textStyle: latoM20,
