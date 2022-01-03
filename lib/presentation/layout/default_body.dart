@@ -1,6 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/widgets/fab_2.dart';
 import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -21,24 +22,25 @@ class DefaultBody extends StatelessWidget {
   bool withActionButton;
   SizedText? titleText;
   Widget? footer;
+  bool? showFloatingButton;
 
-  DefaultBody({
-    this.centerTitle = false,
-    this.showAppBar = true,
-    this.titleIcon,
-    this.footer,
-    this.leftButton,
-    required this.child,
-    this.onRightButtonClick,
-    this.bottomPadding = 0,
-    this.horizontalPadding = 20,
-    this.topPadding = 0,
-    this.rightIcon,
-    this.titleText,
-    this.withActionButton = true,
-    this.withNavigationBar = true,
-    this.withTopBanner = true,
-  });
+  DefaultBody(
+      {this.centerTitle = false,
+      this.showAppBar = true,
+      this.titleIcon,
+      this.footer,
+      this.leftButton,
+      required this.child,
+      this.onRightButtonClick,
+      this.bottomPadding = 0,
+      this.horizontalPadding = 20,
+      this.topPadding = 0,
+      this.rightIcon,
+      this.titleText,
+      this.withActionButton = true,
+      this.withNavigationBar = true,
+      this.withTopBanner = true,
+      this.showFloatingButton = false});
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +50,10 @@ class DefaultBody extends StatelessWidget {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               resizeToAvoidBottomInset: true,
+              floatingActionButton: Visibility(
+                visible: showFloatingButton!,
+                child: Fab2(),
+              ),
               appBar: showAppBar
                   ? DefaultHeader(
                       withAction: withActionButton,
