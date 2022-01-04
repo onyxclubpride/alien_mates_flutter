@@ -1,3 +1,5 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/mgr/navigation/router.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
@@ -32,9 +34,12 @@ class _SettingsPageState extends State<SettingsPage> {
               child: SpacedColumn(
                 verticalSpace: 20.h,
                 children: [
-                  GestureDetector(
-                    onTap: () {
-                      logger("HEllo world");
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () {
+                      appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.profilePageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -52,9 +57,12 @@ class _SettingsPageState extends State<SettingsPage> {
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      logger("HEllo world");
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () {
+                      appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.eventsPageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -76,8 +84,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     thickness: 1,
                     color: ThemeColors.gray1,
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () {
                       logger("HEllo world");
                     },
                     child: SpacedRow(
@@ -96,8 +106,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () {
                       logger("HEllo world");
                     },
                     child: SpacedRow(
@@ -116,8 +128,10 @@ class _SettingsPageState extends State<SettingsPage> {
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),
-                  GestureDetector(
-                    onTap: () {
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () {
                       logger("HEllo world");
                     },
                     child: SpacedRow(
@@ -140,9 +154,12 @@ class _SettingsPageState extends State<SettingsPage> {
                     thickness: 1,
                     color: ThemeColors.gray1,
                   ),
-                  GestureDetector(
-                    onTap: () {
-                      logger("HEllo world");
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        primary: ThemeColors.bgDark, elevation: 0),
+                    onPressed: () async {
+                      await appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.loginPageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,

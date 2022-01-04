@@ -38,8 +38,15 @@ class UpdateNavigationAction {
   final String? name;
   final bool? isPage;
   final String? method;
+  final bool? isRemoveUntil;
+  final bool? restart;
 
-  UpdateNavigationAction({this.name, this.isPage, this.method});
+  UpdateNavigationAction(
+      {this.name,
+      this.isPage,
+      this.method,
+      this.isRemoveUntil = false,
+      this.restart = false});
 }
 
 class ShowPopupAction<T> {
@@ -249,6 +256,11 @@ class GetUpdateUserAction {
   });
 }
 
+class GetLogoutUserAction {
+  String? routeTo;
+  GetLogoutUserAction({this.routeTo});
+}
+
 ///----------------- Init -----------------
 
 class GetLocalUserIdAction {}
@@ -266,3 +278,15 @@ class UpdateInitStateAction {
 
   UpdateInitStateAction({this.userId});
 }
+
+class UpdateInitAction {
+  String? token;
+  String? deviceToken;
+
+  UpdateInitAction({
+    this.token,
+    this.deviceToken,
+  });
+}
+
+class GetRemoveLocalTokenAction {}

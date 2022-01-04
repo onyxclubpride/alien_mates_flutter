@@ -68,6 +68,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getSearchUniversityAction(store.state, action, next);
       case GetUpdateUserAction:
         return _getUpdateUserAction(store.state, action, next);
+      case GetLogoutUserAction:
+        return _logout(store.state, action);
       default:
         return next(action);
     }
@@ -109,6 +111,18 @@ Future<List<ListPostModelRes>> _getPostsList() async {
     logger(e.toString(), hint: 'GET POSTS LIST CATCH ERROR');
     return [];
   }
+}
+
+_logout(AppState state, GetLogoutUserAction action) async {
+  await appStore.dispatch(GetRemoveLocalTokenAction());
+  appStore.dispatch(UpdateInitAction(token: ""));
+  // appStore.dispatch(UpdateApiAction(restart: true));
+  appStore.dispatch(UpdateNavigationAction(restart: true));
+  if (action.routeTo != null)
+    appStore.dispatch(NavigateToAction(
+        to: action.routeTo,
+        pushAndRemoveUntil: state.navigationState.history.first.name));
+  return null;
 }
 
 Future<bool> _getCreatePostAction(
