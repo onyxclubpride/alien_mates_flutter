@@ -4,6 +4,7 @@ import 'package:alien_mates/presentation/pages/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/edit_notice_page.dart';
 import 'package:alien_mates/presentation/pages/event_details_page.dart';
 import 'package:alien_mates/presentation/pages/help_details_page.dart';
+import 'package:alien_mates/presentation/pages/settings_page.dart';
 import 'package:alien_mates/presentation/pages/sign_up_page.dart';
 
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class AppRoutes {
   static const signUpPageRoute = "/signUp";
   static const eventsPageRoute = "/events";
   static const profilePageRoute = "/profile";
-  // static const settingPageRoute = "/setting";
+  static const settingsPageRoute = "/setting";
   static const helpPageRoute = "/help";
 
   static const createEventPageRoute = "/createEvent";
@@ -41,7 +42,8 @@ class AppRoutes {
       AppRoutes.eventsPageRoute: (BuildContext context) => EventsPage(),
       AppRoutes.helpPageRoute: (BuildContext context) => HelpPage(),
       AppRoutes.profilePageRoute: (BuildContext context) => ProfilePage(),
-      // AppRoutes.settingRoute: (BuildContext context) => const SettingPage(),
+      AppRoutes.settingsPageRoute: (BuildContext context) =>
+          const SettingsPage(),
 
       AppRoutes.createEventPageRoute: (BuildContext context) =>
           CreateEventPage(),

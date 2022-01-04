@@ -24,23 +24,26 @@ class DefaultBody extends StatelessWidget {
   Widget? footer;
   bool? showFloatingButton;
 
-  DefaultBody(
-      {this.centerTitle = false,
-      this.showAppBar = true,
-      this.titleIcon,
-      this.footer,
-      this.leftButton,
-      required this.child,
-      this.onRightButtonClick,
-      this.bottomPadding = 0,
-      this.horizontalPadding = 20,
-      this.topPadding = 0,
-      this.rightIcon,
-      this.titleText,
-      this.withActionButton = true,
-      this.withNavigationBar = true,
-      this.withTopBanner = true,
-      this.showFloatingButton = false});
+  Widget? floatingAction;
+
+  DefaultBody({
+    this.centerTitle = false,
+    this.showAppBar = true,
+    this.titleIcon,
+    this.footer,
+    this.leftButton,
+    required this.child,
+    this.onRightButtonClick,
+    this.bottomPadding = 0,
+    this.horizontalPadding = 20,
+    this.topPadding = 0,
+    this.rightIcon,
+    this.titleText,
+    this.withActionButton = true,
+    this.withNavigationBar = true,
+    this.withTopBanner = true,
+    this.floatingAction = null,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -50,10 +53,7 @@ class DefaultBody extends StatelessWidget {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               resizeToAvoidBottomInset: true,
-              floatingActionButton: Visibility(
-                visible: showFloatingButton!,
-                child: Fab2(),
-              ),
+              floatingActionButton: floatingAction,
               appBar: showAppBar
                   ? DefaultHeader(
                       withAction: withActionButton,
