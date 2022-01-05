@@ -1,24 +1,7 @@
-///////////////////
-///DONT NEED THIS
-//////////////////
-
-import 'package:alien_mates/presentation/pages/create_help_page.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
-import 'package:alien_mates/utils/common/global_widgets.dart';
-import 'package:alien_mates/utils/common/validators.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ionicons/ionicons.dart';
-import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
-import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 
 class PostFeed extends StatefulWidget {
   @override

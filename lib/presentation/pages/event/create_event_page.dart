@@ -1,20 +1,9 @@
 import 'dart:io';
 
-import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
-import 'package:alien_mates/presentation/widgets/input/input_label.dart';
-import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
-import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
-import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:flutter/material.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
 class CreateEventPage extends StatefulWidget {

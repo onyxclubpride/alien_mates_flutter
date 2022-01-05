@@ -1,13 +1,11 @@
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
 class HomePage extends StatefulWidget {

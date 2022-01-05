@@ -14,13 +14,28 @@ export 'package:auto_size_text/auto_size_text.dart';
 //Layout
 export '../../layout/default_body.dart';
 
-//Pages
-export '../../pages/home_page.dart';
+//other pages
 export '../../pages/splash_page.dart';
-export '../../pages/events_page.dart';
-export '../../pages/help_page.dart';
 export '../../pages/login_page.dart';
+export '../../pages/home_page.dart';
 export '../../pages/profile_page.dart';
+
+//help pages
+export '../../pages/help/help_page.dart';
+export '../../pages/help/help_details_page.dart';
+export '../../pages/help/create_help_page.dart';
+
+
+//event pages
+export '../../pages/event/events_page.dart';
+export '../../pages/event/event_details_page.dart';
+export '../../pages/event/create_event_page.dart';
+
+//notice pages
+export '../../pages/notice/edit_notice_page.dart';
+export '../../pages/notice/create_notice_page.dart';
+
+
 
 //Widgets
 export "../../widgets/sized_text.dart";
@@ -30,3 +45,22 @@ export '../../widgets/post_button.dart';
 export '../../widgets/spaced_column.dart';
 export '../../widgets/spaced_row.dart';
 export '../../widgets/show_loading.dart';
+export '../../widgets/show_alert_dialog.dart';
+
+//button widgets
+export '../../widgets/button/expanded_btn.dart';
+export '../../widgets/button/main_button.dart';
+export '../../widgets/button/normal_button.dart';
+export '../../widgets/button/small_button.dart';
+
+//input widgets
+export '../../widgets/input/basic_input.dart';
+export '../../widgets/input/input_label.dart';
+export '../../widgets/input/post_create_input.dart';
+
+
+
+//validators
+export '../../../utils/common/validators.dart';
+
+

@@ -1,41 +1,28 @@
 import 'dart:io';
 
-import 'package:alien_mates/mgr/models/model_exporter.dart';
-import 'package:alien_mates/mgr/navigation/app_routes.dart';
-import 'package:alien_mates/mgr/redux/states/api_state.dart';
-import 'package:alien_mates/presentation/widgets/input/input_label.dart';
-import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
-import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
-import 'package:alien_mates/utils/common/validators.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:flutter/material.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:ionicons/ionicons.dart';
 
-class EditNoticePage extends StatefulWidget {
+class CreateNoticePage extends StatefulWidget {
   bool? isNotice;
 
-  EditNoticePage({this.isNotice});
+  CreateNoticePage({this.isNotice});
 
   @override
-  State<EditNoticePage> createState() => _EditNoticePageState();
+  State<CreateNoticePage> createState() => _CreateNoticePageState();
 }
 
-class _EditNoticePageState extends State<EditNoticePage> {
-  final GlobalKey<FormState> _formKeyEditNoticePage =
-      GlobalKey<FormState>(debugLabel: '_formKeyEditNoticePage');
+class _CreateNoticePageState extends State<CreateNoticePage> {
+  final GlobalKey<FormState> _formKeyCreateNoticePage =
+      GlobalKey<FormState>(debugLabel: '_formKeyCreateNoticePage');
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
 
-  File? noticeImage;
+  File? helpImage;
 
   @override
   void dispose() {
@@ -46,22 +33,19 @@ class _EditNoticePageState extends State<EditNoticePage> {
 
   @override
   Widget build(BuildContext context) {
+    logger(widget.isNotice, hint: 'ARGUMENT TEST');
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
-          titleController =
-              TextEditingController(text: state.apiState.postDetail.title);
-          descriptionController = TextEditingController(
-              text: state.apiState.postDetail.description);
           return DefaultBody(
             withNavigationBar: false,
             withTopBanner: false,
             withActionButton: false,
             titleIcon: _buildTitleIcon(),
             titleText:
-                SizedText(text: 'Edit Notice details', textStyle: latoM20),
+                SizedText(text: 'Create a Notice post', textStyle: latoM20),
             child: Form(
-              key: _formKeyEditNoticePage,
+              key: _formKeyCreateNoticePage,
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,15 +97,15 @@ class _EditNoticePageState extends State<EditNoticePage> {
                       onTap: _onChooseImage,
                       height: 200.h,
                       child: FittedBox(
-                          child: _getImageOrNotWidget(state.apiState)),
+                          child: helpImage == null
+                              ? const Icon(
+                                  Ionicons.add,
+                                  color: ThemeColors.borderDark,
+                                )
+                              : Image.file(helpImage!)),
                     ),
                     SizedBox(height: 40.h),
-                    ExpandedButton(
-                      text: 'Save',
-                      onPressed: () {
-                        _onUpdateEvent(state.apiState.postDetail.postId);
-                      },
-                    ),
+                    ExpandedButton(text: 'Post', onPressed: _onPostEvent),
                     SizedBox(height: 20.h),
                   ],
                 ),
@@ -131,38 +115,26 @@ class _EditNoticePageState extends State<EditNoticePage> {
         });
   }
 
-  Widget _getImageOrNotWidget(ApiState state) {
-    if (noticeImage != null) {
-      return Image.file(noticeImage!, fit: BoxFit.fitHeight);
-    }
-    if (state.postDetail.imageUrl != null) {
-      return CachedNetworkImage(
-          imageUrl: state.postDetail.imageUrl!, fit: BoxFit.fitHeight);
-    }
-    return const Icon(Ionicons.add, color: ThemeColors.borderDark);
-  }
-
   _onChooseImage() async {
     String? xImagePath = await appStore.dispatch(GetSelectImageAction());
     if (xImagePath != null) {
       setState(() {
-        noticeImage = File(xImagePath);
+        helpImage = File(xImagePath);
       });
     }
   }
 
-  _onUpdateEvent(String postId) async {
-    if (_formKeyEditNoticePage.currentState!.validate()) {
-      bool created = await appStore.dispatch(GetUpdatePostAction(
+  _onPostEvent() async {
+    if (_formKeyCreateNoticePage.currentState!.validate()) {
+      bool created = await appStore.dispatch(GetCreateNoticeAction(
           title: titleController.text,
           description: descriptionController.text,
-          imagePath: noticeImage?.path,
-          postId: postId));
+          imagePath: helpImage?.path));
 
       if (!created) {
         showAlertDialog(context,
             text:
-                'There was a problem while updating to server! Please, try again!');
+                'There was a problem while uploading to server! Please, try again!');
       } else {
         appStore.dispatch(NavigateToAction(to: 'up'));
       }

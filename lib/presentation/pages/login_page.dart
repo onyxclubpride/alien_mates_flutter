@@ -1,15 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/post_feed_sheet.dart';
-import 'package:alien_mates/presentation/widgets/bottom_sheet/sign_up_sheet.dart';
-import 'package:alien_mates/utils/common/global_widgets.dart';
-import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:flutter/material.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
 
 class LoginPage extends StatefulWidget {
   @override

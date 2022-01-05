@@ -1,7 +1,5 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
-import 'package:alien_mates/mgr/navigation/router.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:flutter_redux/flutter_redux.dart';

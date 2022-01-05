@@ -1,16 +1,9 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:alien_mates/presentation/widgets/open_image_popup.dart';
-import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 
 class HelpPage extends StatefulWidget {
   @override

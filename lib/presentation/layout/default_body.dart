@@ -1,7 +1,6 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/presentation/widgets/fab_2.dart';
 import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';

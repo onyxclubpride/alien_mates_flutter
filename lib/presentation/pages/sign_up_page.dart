@@ -1,12 +1,8 @@
 import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
-import 'package:alien_mates/presentation/widgets/input/basic_input.dart';
-import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
-import 'package:alien_mates/utils/common/validators.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';

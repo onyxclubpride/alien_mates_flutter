@@ -1,13 +1,7 @@
 import 'dart:io';
-import 'package:alien_mates/presentation/template/base/theme_color.dart';
-import 'package:alien_mates/presentation/widgets/button/expanded_btn.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:alien_mates/presentation/widgets/input/input_label.dart';
-import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
-import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
-import 'package:alien_mates/utils/common/validators.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
