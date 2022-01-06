@@ -160,7 +160,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   _onEditPress() {
     showModalBottomSheet(
-        backgroundColor: ThemeColors.bgDark,
+        backgroundColor: ThemeColors.componentBgDark,
         enableDrag: true,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.only(
