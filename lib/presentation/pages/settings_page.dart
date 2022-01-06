@@ -34,7 +34,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 children: [
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
+                        primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       appStore.dispatch(
                           NavigateToAction(to: AppRoutes.eventsPageRoute));
@@ -57,7 +57,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
+                        primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       appStore.dispatch(
                           NavigateToAction(to: AppRoutes.profilePageRoute));
@@ -84,7 +84,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
+                        primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       logger("HEllo world");
                     },
@@ -106,7 +106,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
+                        primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       logger("HEllo world");
                     },
@@ -132,7 +132,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
+                        primary: ThemeColors.black, elevation: 0),
                     onPressed: () async {
                       await appStore.dispatch(
                           NavigateToAction(to: AppRoutes.loginPageRoute));

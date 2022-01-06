@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 class MainTheme {
   static ThemeData get mainThemeDark {
     return ThemeData(
-        scaffoldBackgroundColor: ThemeColors.bgDark,
+        scaffoldBackgroundColor: ThemeColors.black,
         bottomSheetTheme: _bottomSheetDarkTheme(),
         appBarTheme: _appBarDarkTheme());
   }

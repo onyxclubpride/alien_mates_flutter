@@ -21,6 +21,7 @@ class _HelpPageState extends State<HelpPage> {
                 child: ListView(
               controller: _controller,
               children: [
+                SizedBox(height: 10.h),
                 DefaultBanner(
                   height: 90.h,
                   onTap: () {},

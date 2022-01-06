@@ -21,6 +21,7 @@ class _EventsPageState extends State<EventsPage> {
                 child: ListView(
               controller: _controller,
               children: [
+                SizedBox(height: 10.h),
                 DefaultBanner(
                   height: 90.h,
                   onTap: () {},

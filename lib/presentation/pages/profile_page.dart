@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, state) => DefaultBody(
             floatingAction: FloatingActionButton(
               child: Icon(Ionicons.add),
-              backgroundColor: ThemeColors.borderDark,
+              backgroundColor: ThemeColors.yellow,
               onPressed: _onEditPress,
             ),
             withTopBanner: false,
@@ -45,27 +45,31 @@ class _ProfilePageState extends State<ProfilePage> {
               textStyle: latoM20,
             ),
             titleIcon: _buildTitleIcon(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 10.h),
-                _buildUserInfoWidget(state.apiState),
-                SizedBox(height: 20.h),
-                Divider(thickness: 1.w, color: ThemeColors.borderDark),
-                SizedBox(height: 10.h),
-                SizedText(
-                    text: "My Feed",
-                    textStyle: latoM25.copyWith(color: ThemeColors.fontDark)),
-                SizedBox(height: 10.h),
-                SizedBox(
-                  height: 290.h,
-                  child: ListView(
-                    shrinkWrap: true,
-                    controller: _controller,
-                    children: [..._buildPostsWidgetList(state)],
-                  ),
-                )
-              ],
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 10.h),
+                  _buildUserInfoWidget(state.apiState),
+                  SizedBox(height: 20.h),
+                  Divider(thickness: 1.w, color: ThemeColors.borderDark),
+                  SizedBox(height: 10.h),
+                  SizedText(
+                      text: "My Feed",
+                      textStyle: latoM25.copyWith(color: ThemeColors.fontDark)),
+                  SizedBox(height: 10.h),
+                  SizedBox(
+                    height: 290.h,
+                    child: ListView(
+                      shrinkWrap: true,
+                      controller: _controller,
+                      children: [
+                        ..._buildPostsWidgetList(state),
+                      ],
+                    ),
+                  )
+                ],
+              ),
             )));
   }
 
@@ -110,7 +114,8 @@ class _ProfilePageState extends State<ProfilePage> {
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
       if (state.apiState.userMe.postIds!.contains(_item.postId)) {
-        _list.add(PostItemBanner(
+        _list.add(
+          PostItemBanner(
             height: 110.h,
             imageUrl: _item.imageUrl,
             leftWidget: InkWell(
@@ -133,7 +138,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 title: _item.title,
                 maxLines: 3,
                 imageUrl: _item.imageUrl,
-                description: _item.description)));
+                description: _item.description),
+          ),
+        );
+        _list.add(SizedBox(height: 20.h));
       }
     }
     return _list;

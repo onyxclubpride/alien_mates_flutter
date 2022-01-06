@@ -16,6 +16,9 @@ class AlienMatesApp extends StatefulWidget {
   _AlienMatesAppState createState() => _AlienMatesAppState();
 }
 
+// SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+//     statusBarColor: Colors.purple,
+//   ));
 class _AlienMatesAppState extends State<AlienMatesApp> {
   Locale? locale = Locale(AppLocalizations.languageCode.toString());
 

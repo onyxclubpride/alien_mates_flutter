@@ -69,6 +69,7 @@ class _HomePageState extends State<HomePage> {
                 desc: _item.description,
                 leftWidget: SizedText(
                   text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
+                  textStyle: latoM12.copyWith(color: ThemeColors.fontWhite),
                 ),
                 rightWidget: isliking
                     ? likingpostid == _item.postId
@@ -92,9 +93,12 @@ class _HomePageState extends State<HomePage> {
                     : IconButton(
                         splashColor: Colors.transparent,
                         iconSize: 15.h,
-                        icon: Icon(_item.likedUserIds!.contains(_userId)
-                            ? Ionicons.happy
-                            : Ionicons.happy_outline),
+                        icon: Icon(
+                          _item.likedUserIds!.contains(_userId)
+                              ? Ionicons.happy
+                              : Ionicons.happy_outline,
+                          color: ThemeColors.fontWhite,
+                        ),
                         onPressed: () {
                           if (!isliking) {
                             _onLikeTap(_item.postId, _item.likedUserIds!,
