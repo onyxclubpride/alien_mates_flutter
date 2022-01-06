@@ -48,6 +48,7 @@ class _ProfilePageState extends State<ProfilePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                SizedBox(height: 10.h),
                 _buildUserInfoWidget(state.apiState),
                 SizedBox(height: 20.h),
                 Divider(thickness: 1.w, color: ThemeColors.borderDark),

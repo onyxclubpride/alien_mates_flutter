@@ -37,29 +37,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         primary: ThemeColors.bgDark, elevation: 0),
                     onPressed: () {
                       appStore.dispatch(
-                          NavigateToAction(to: AppRoutes.profilePageRoute));
-                    },
-                    child: SpacedRow(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Ionicons.person,
-                            color: ThemeColors.gray1,
-                            size: 24.0,
-                          ),
-                          SizedBox(
-                            width: 10.h,
-                          ),
-                          SizedText(
-                              text: "My Profile",
-                              textStyle: latoM16.copyWith(color: Colors.white)),
-                        ]),
-                  ),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                        primary: ThemeColors.bgDark, elevation: 0),
-                    onPressed: () {
-                      appStore.dispatch(
                           NavigateToAction(to: AppRoutes.eventsPageRoute));
                     },
                     child: SpacedRow(
@@ -78,21 +55,18 @@ class _SettingsPageState extends State<SettingsPage> {
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),
-                  const Divider(
-                    thickness: 1,
-                    color: ThemeColors.gray1,
-                  ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.bgDark, elevation: 0),
                     onPressed: () {
-                      logger("HEllo world");
+                      appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.profilePageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Icon(
-                            Ionicons.moon,
+                            Ionicons.person,
                             color: ThemeColors.gray1,
                             size: 24.0,
                           ),
@@ -100,9 +74,13 @@ class _SettingsPageState extends State<SettingsPage> {
                             width: 10.h,
                           ),
                           SizedText(
-                              text: "Dark Mode",
+                              text: "My Profile",
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
+                  ),
+                  const Divider(
+                    thickness: 1,
+                    color: ThemeColors.gray1,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(

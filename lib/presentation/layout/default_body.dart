@@ -34,7 +34,7 @@ class DefaultBody extends StatelessWidget {
     required this.child,
     this.onRightButtonClick,
     this.bottomPadding = 0,
-    this.horizontalPadding = 20,
+    this.horizontalPadding = 12,
     this.topPadding = 0,
     this.rightIcon,
     this.titleText,
@@ -86,7 +86,7 @@ class DefaultBody extends StatelessWidget {
                 child: withTopBanner || withNavigationBar
                     ? SizedBox(
                         height: MediaQuery.of(context).size.height -
-                            90.h -
+                            10.h -
                             MediaQuery.of(context).padding.bottom,
                         child: child)
                     : child,

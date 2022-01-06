@@ -11,15 +11,18 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
   VoidCallback? onRightButtonClick;
   SizedText? titleText;
   bool withAction;
+  Color? bgColor;
 
-  DefaultHeader(
-      {this.centerTitle = false,
-      this.withAction = false,
-      this.titleIcon,
-      this.leftButton,
-      this.onRightButtonClick,
-      this.titleText,
-      this.rightIcon});
+  DefaultHeader({
+    this.centerTitle = false,
+    this.withAction = false,
+    this.titleIcon,
+    this.leftButton,
+    this.onRightButtonClick,
+    this.titleText,
+    this.rightIcon,
+    this.bgColor = ThemeColors.black,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +31,15 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
       title: _buildTitle(),
       leading: leftButton,
       automaticallyImplyLeading: false,
-      titleSpacing: 20.h,
-      toolbarHeight: 70.h,
+      titleSpacing: 20.w,
+      toolbarHeight: 40.h,
       actions: withAction ? _buildActions() : null,
+      backgroundColor: bgColor,
     );
   }
 
   @override
-  Size get preferredSize => Size(double.infinity, 50.h);
+  Size get preferredSize => Size(double.infinity, 45.h);
 
   Widget _buildTitle() {
     MainAxisAlignment mainAxisAlignment = MainAxisAlignment.start;
