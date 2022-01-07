@@ -113,7 +113,6 @@ class _ProfilePageState extends State<ProfilePage> {
   List<Widget> _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
-    logger(state.apiState.userMe.postIds, hint: 'USER POST IDS');
     for (int i = 0; i < postsList.length; i++) {
       ListPostModelRes _item = postsList[i];
       if (state.apiState.userMe.postIds!.contains(_item.postId)) {
@@ -131,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             rightWidget: InkWell(
               onTap: () {
-                _onEditPostPress(_item.postId);
+                _onEditPostPress(_item);
               },
               child: const SizedText(
                 text: 'Edit',
@@ -362,9 +361,23 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  _onEditPostPress(String postId) async {
-    appStore.dispatch(
-        GetPostByIdAction(postId, goToRoute: AppRoutes.editNoticePageRoute));
+  _onEditPostPress(ListPostModelRes item) async {
+    if (item.isNotice) {
+      appStore.dispatch(GetPostByIdAction(item.postId,
+          goToRoute: AppRoutes.editNoticePageRoute));
+    }
+    if (item.isEvent) {
+      appStore.dispatch(GetPostByIdAction(item.postId,
+          goToRoute: AppRoutes.editEventPageRoute));
+    }
+    if (item.isHelp) {
+      appStore.dispatch(GetPostByIdAction(item.postId,
+          goToRoute: AppRoutes.editHelpPageRoute));
+    }
+    if (item.isPost) {
+      appStore.dispatch(GetPostByIdAction(item.postId,
+          goToRoute: AppRoutes.editPostPageRoute));
+    }
   }
 
   _onDeletePress(String postId) {

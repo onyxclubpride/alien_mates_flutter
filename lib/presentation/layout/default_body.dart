@@ -96,6 +96,7 @@ class _DefaultBodyState extends State<DefaultBody> {
                             70.h -
                             MediaQuery.of(context).padding.bottom,
                         child: ListView(
+                          physics: const BouncingScrollPhysics(),
                           controller: _controller,
                           children: [
                             CarouselSlider.builder(

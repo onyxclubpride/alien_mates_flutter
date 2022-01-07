@@ -626,7 +626,6 @@ Future<String?> _getImageDownloadLinkAction(AppState state,
 Future<List<UnivModelRes>?> _getSearchUniversityAction(AppState state,
     GetSearchUniversityAction action, NextDispatcher next) async {
   try {
-    showLoading();
     List<UnivModelRes> _univs = [];
     final res =
         await _getClient().get(ApiQueries.querySearchUniv, queryParameters: {
@@ -645,10 +644,8 @@ Future<List<UnivModelRes>?> _getSearchUniversityAction(AppState state,
           ));
         }
         next(UpdateApiStateAction(univs: _univs));
-        closeLoading();
         return _univs;
       }
-      closeLoading();
     }
   } on DioError catch (e) {
     closeLoading();

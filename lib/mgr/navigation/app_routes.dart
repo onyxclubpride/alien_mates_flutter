@@ -1,5 +1,7 @@
+import 'package:alien_mates/presentation/pages/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/event/create_event_page.dart';
 import 'package:alien_mates/presentation/pages/help/create_help_page.dart';
+import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/notice/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/notice/edit_notice_page.dart';
 import 'package:alien_mates/presentation/pages/event/event_details_page.dart';
@@ -27,10 +29,9 @@ class AppRoutes {
   static const eventDetailsPageRoute = "/eventDetails";
   static const helpDetailsPageRoute = "/helpDetails";
   static const noticeDetailsRoute = "/noticeDetails";
+  static const editPostPageRoute = "/editPost";
   static const editEventPageRoute = "/editEvent";
   static const editHelpPageRoute = "/editHelp";
-  // static const editEventPageRoute = "/editEvent";
-  // static const editHelpPageRoute = "/editHelp";
   static const editNoticePageRoute = "/editNotice";
 
   static Map<String, WidgetBuilder> getRoutes() {
@@ -44,20 +45,18 @@ class AppRoutes {
       AppRoutes.profilePageRoute: (BuildContext context) => ProfilePage(),
       AppRoutes.settingsPageRoute: (BuildContext context) =>
           const SettingsPage(),
-
       AppRoutes.createEventPageRoute: (BuildContext context) =>
           CreateEventPage(),
       AppRoutes.createHelpPageRoute: (BuildContext context) => CreateHelpPage(),
       AppRoutes.createNoticePageRoute: (BuildContext context) =>
           CreateNoticePage(),
-
       AppRoutes.helpDetailsPageRoute: (BuildContext context) =>
           HelpDetailsPage(),
       AppRoutes.eventDetailsPageRoute: (BuildContext context) =>
           EventDetailsPage(),
-      // AppRoutes.noticeDetailRoute: (BuildContext context) => NoticeDetail(),
-
       AppRoutes.editNoticePageRoute: (BuildContext context) => EditNoticePage(),
+      AppRoutes.editHelpPageRoute: (BuildContext context) => EditHelpPage(),
+      AppRoutes.editPostPageRoute: (BuildContext context) => EditPostPage(),
     };
 
     return base;

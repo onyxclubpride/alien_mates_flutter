@@ -1,6 +1,8 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
+import 'package:alien_mates/presentation/pages/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/event/create_event_page.dart';
 import 'package:alien_mates/presentation/pages/help/create_help_page.dart';
+import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/notice/create_notice_page.dart';
 import 'package:alien_mates/presentation/pages/notice/edit_notice_page.dart';
 import 'package:alien_mates/presentation/pages/event/event_details_page.dart';
@@ -39,8 +41,10 @@ class AppRouter {
           return HelpDetailsPage();
         case (AppRoutes.eventDetailsPageRoute):
           return EventDetailsPage();
-        // case (AppRoutes.editEventPageRoute):
-        //   return EditNoticePage();
+        case (AppRoutes.editHelpPageRoute):
+          return EditHelpPage();
+        case (AppRoutes.editPostPageRoute):
+          return EditPostPage();
         default:
           return const SplashPage();
       }

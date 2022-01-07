@@ -1,5 +1,6 @@
 import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
+import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
@@ -25,7 +26,8 @@ class _SignUpPageState extends State<SignUpPage> {
   TextEditingController otpController = TextEditingController();
   TextEditingController uniNameController = TextEditingController();
 
-  int? sentOtp;
+  int? sentOtp = 12345;
+  String? verId;
 
   bool isOtpSent = false;
   bool isOtpCorrect = false;
@@ -69,6 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   verticalSpace: 21,
                   children: [
+
                     SizedText(
                         text: 'Sign Up',
                         textStyle: latoB45.copyWith(color: Colors.white)),
@@ -95,55 +98,57 @@ class _SignUpPageState extends State<SignUpPage> {
                         validator: Validator.validatePhoneNumber,
                         hintText: "Phone Number",
                         keyboardType: TextInputType.number,
-                        icon: Padding(
-                          padding: EdgeInsets.only(top: 12.h),
-                          child: const SizedText(text: '+82'),
+                        icon: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            SizedText(text: '+82'),
+                          ],
                         ),
                         controller: phoneNumberController,
                       ),
-                      // if (isOtpSent)
-                      BasicInput(
-                        hintText: "OTP",
-                        readOnly: isOtpCorrect,
-                        controller: otpController,
-                        onChanged: (value) {
-                          logger(value);
-                          logger(sentOtp);
-
-                          if (value.toString() == sentOtp.toString()) {
-                            setState(() {
-                              isOtpCorrect = true;
-                            });
-                          }
-                        },
-                        validator: Validator.validateOtp,
-                        keyboardType: TextInputType.number,
-                        suffixIcon: IconButton(
-                          onPressed: _onVerifyOtp,
-                          icon: Icon(
-                            Ionicons.checkmark_done_sharp,
-                            color: isOtpCorrect
-                                ? Colors.blueAccent
-                                : ThemeColors.transparent,
+                      if (isOtpSent)
+                        BasicInput(
+                          hintText: "OTP",
+                          readOnly: isOtpCorrect,
+                          controller: otpController,
+                          onChanged: (value) {
+                            PhoneAuthCredential credential =
+                                PhoneAuthProvider.credential(
+                                    verificationId: verId!, smsCode: value);
+                            if (value.toString() == sentOtp.toString()) {
+                              setState(() {
+                                isOtpCorrect = true;
+                              });
+                            }
+                          },
+                          validator: Validator.validateOtp,
+                          keyboardType: TextInputType.number,
+                          suffixIcon: IconButton(
+                            onPressed: _onVerifyOtp,
+                            icon: Icon(
+                              Ionicons.checkmark_done_sharp,
+                              color: isOtpCorrect
+                                  ? Colors.blueAccent
+                                  : ThemeColors.transparent,
+                            ),
                           ),
                         ),
-                      ),
-                      // if (isOtpCorrect)
-                      BasicInput(
-                        hintText: "University Name",
-                        textInputAction: TextInputAction.done,
-                        controller: uniNameController,
-                        validator: Validator.validateName,
-                        suffixIcon: IconButton(
-                          onPressed: _onSearchUniPress,
-                          icon: const Icon(
-                            Ionicons.search,
-                            color: ThemeColors.componentBgDark,
+                      if (isOtpCorrect)
+                        BasicInput(
+                          hintText: "University Name",
+                          textInputAction: TextInputAction.done,
+                          controller: uniNameController,
+                          validator: Validator.validateName,
+                          suffixIcon: IconButton(
+                            onPressed: _onSearchUniPress,
+                            icon: const Icon(
+                              Ionicons.search,
+                              color: ThemeColors.componentBgDark,
+                            ),
                           ),
+                          onTap: _onSearchUniPress,
+                          readOnly: true,
                         ),
-                        onTap: _onSearchUniPress,
-                        readOnly: true,
-                      ),
                       if (errorText.isNotEmpty)
                         SizedText(
                           text: errorText,
@@ -170,15 +175,19 @@ class _SignUpPageState extends State<SignUpPage> {
 
   _onSendOtp() async {
     if (phoneNumberController.text.isNotEmpty &&
-        phoneNumberController.text.length == 10) {
+        phoneNumberController.text.length > 10) {
       showLoading();
       setState(() {
         errorText = "";
       });
       try {
         await FirebaseAuth.instance.verifyPhoneNumber(
+          forceResendingToken: 12345,
           phoneNumber: "+82" + phoneNumberController.text,
-          verificationCompleted: (PhoneAuthCredential credential) {},
+          verificationCompleted: (PhoneAuthCredential credential) {
+            logger(credential.smsCode, hint: 'TOKEN');
+            logger(credential.token, hint: 'TOKEN');
+          },
           verificationFailed: (FirebaseAuthException e) {
             closeLoading();
             showAlertDialog(context, text: e.message.toString());
@@ -188,10 +197,11 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           codeSent: (String verificationId, int? resendToken) {
             closeLoading();
+            logger(resendToken);
             setState(() {
               isOtpSent = true;
               sentOtp = resendToken;
-              logger(sentOtp, hint: 'TOKEN');
+              verId = verificationId;
             });
           },
           codeAutoRetrievalTimeout: (String verificationId) {
@@ -298,9 +308,11 @@ class _UniversitiesWidgetState extends State<UniversitiesWidget> {
                     validator: Validator.validateName,
                     suffixIcon: IconButton(
                       onPressed: () async {
+                        showLoading();
                         List<UnivModelRes>? _univs = await appStore.dispatch(
                             GetSearchUniversityAction(
                                 name: uniNameController.text));
+                        appStore.dispatch(DismissPopupAction());
                         if (_univs != null) {
                           setState(() {
                             univs = _univs;
