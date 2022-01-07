@@ -89,10 +89,12 @@ class UpdateApiStateAction {
   String? selectedUni;
   List<UnivModelRes>? univs;
   UserModelRes? postDetailUser;
-  List<PostModelRes>? bannerPosts;
+  List<ListPostModelRes>? bannerPosts;
+  int? bannerIndex;
   UpdateApiStateAction(
       {this.posts,
       this.postOnly,
+      this.bannerIndex,
       this.users,
       this.userMe,
       this.postDetail,

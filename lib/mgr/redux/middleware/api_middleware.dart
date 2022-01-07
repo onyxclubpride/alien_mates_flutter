@@ -79,7 +79,11 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
 Future<bool> _getAllKindPostsAction(
     AppState state, GetAllKindPostsAction action, NextDispatcher next) async {
   List<ListPostModelRes> postsList = await _getPostsList();
-  next(UpdateApiStateAction(posts: postsList));
+  List<ListPostModelRes> bannerPosts = [];
+  bannerPosts.add(postsList.firstWhere((element) => element.isHelp));
+  bannerPosts.add(postsList.firstWhere((element) => element.isNotice));
+  bannerPosts.add(postsList.firstWhere((element) => element.isEvent));
+  next(UpdateApiStateAction(posts: postsList, bannerPosts: bannerPosts));
   return postsList.isNotEmpty;
 }
 
@@ -119,10 +123,11 @@ _logout(AppState state, GetLogoutUserAction action) async {
   appStore.dispatch(UpdateInitAction(token: ""));
   // appStore.dispatch(UpdateApiAction(restart: true));
   appStore.dispatch(UpdateNavigationAction(restart: true));
-  if (action.routeTo != null)
+  if (action.routeTo != null) {
     appStore.dispatch(NavigateToAction(
         to: action.routeTo,
         pushAndRemoveUntil: state.navigationState.history.first.name));
+  }
   return null;
 }
 

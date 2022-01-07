@@ -81,7 +81,8 @@ ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
       selectedUni: action.selectedUni ?? state.selectedUni,
       univs: action.univs ?? state.univs,
       postDetailUser: action.postDetailUser ?? state.postDetailUser,
-      bannerPosts: action.bannerPosts ?? state.bannerPosts);
+      bannerPosts: action.bannerPosts ?? state.bannerPosts,
+      bannerIndex: action.bannerIndex ?? state.bannerIndex);
 }
 
 ///

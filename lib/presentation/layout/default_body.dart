@@ -99,8 +99,12 @@ class _DefaultBodyState extends State<DefaultBody> {
                           controller: _controller,
                           children: [
                             CarouselSlider.builder(
-                              itemCount: 3,
+                              itemCount: state.apiState.bannerPosts.length,
                               options: CarouselOptions(
+                                  onPageChanged: (index, reason) {
+                                    appStore.dispatch(UpdateApiStateAction(
+                                        bannerIndex: index));
+                                  },
                                   enableInfiniteScroll: false,
                                   viewportFraction: 1,
                                   height: 90.h),
@@ -108,10 +112,14 @@ class _DefaultBodyState extends State<DefaultBody> {
                                   PostItemBanner(
                                 height: 90.h,
                                 child: CachedImageOrTextImageWidget(
-                                    imageUrl:
-                                        state.apiState.posts[index].imageUrl,
+                                    imageUrl: state
+                                        .apiState
+                                        .bannerPosts[state.apiState.bannerIndex]
+                                        .imageUrl,
                                     description: state
-                                        .apiState.posts[index].description),
+                                        .apiState
+                                        .bannerPosts[state.apiState.bannerIndex]
+                                        .description),
                               ),
                             ),
                             SizedBox(height: 5.h),
@@ -120,17 +128,23 @@ class _DefaultBodyState extends State<DefaultBody> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Icon(
-                                    Ionicons.stop_circle_outline,
+                                    state.apiState.bannerIndex == 0
+                                        ? Ionicons.stop_circle_outline
+                                        : Ionicons.ellipse_outline,
                                     color: Colors.white,
                                     size: 10.h,
                                   ),
                                   Icon(
-                                    Ionicons.ellipse_outline,
+                                    state.apiState.bannerIndex == 1
+                                        ? Ionicons.stop_circle_outline
+                                        : Ionicons.ellipse_outline,
                                     color: Colors.white,
                                     size: 10.h,
                                   ),
                                   Icon(
-                                    Ionicons.ellipse_outline,
+                                    state.apiState.bannerIndex == 2
+                                        ? Ionicons.stop_circle_outline
+                                        : Ionicons.ellipse_outline,
                                     color: Colors.white,
                                     size: 10.h,
                                   ),
