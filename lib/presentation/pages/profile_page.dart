@@ -30,7 +30,7 @@ class _ProfilePageState extends State<ProfilePage> {
         builder: (context, state) => DefaultBody(
             floatingAction: FloatingActionButton(
               child: Icon(Ionicons.add),
-              backgroundColor: ThemeColors.yellow,
+              backgroundColor: ThemeColors.bluegray700,
               onPressed: _onEditPress,
             ),
             withTopBanner: false,
