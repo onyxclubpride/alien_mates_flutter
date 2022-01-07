@@ -55,7 +55,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         titleText ??
             SizedText(
               text: 'Alien Mates',
-              textStyle: latoM30,
+              textStyle: latoB30,
             ),
       ],
     );

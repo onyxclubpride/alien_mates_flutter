@@ -56,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   SizedBox(height: 10.h),
                   SizedText(
                       text: "My Feed",
-                      textStyle: latoM25.copyWith(color: ThemeColors.fontDark)),
+                      textStyle: latoB25.copyWith(color: ThemeColors.fontDark)),
                   SizedBox(height: 10.h),
                   SizedBox(
                     height: 290.h,

@@ -20,7 +20,8 @@ class ThemeColors {
 
   // static const yellow = Color(0xFFEBFF00);
   //Yellow
-  static const yellow = Color(0xFF4C8C4A);
+  static const yellow = Color(0xFF64748B);
+  static const darkGreen = Color(0xFFCBD5E1);
 
   //Font Color
   static const fontDark = Color(0xFFFFFFFF);

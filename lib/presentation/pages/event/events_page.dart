@@ -44,9 +44,11 @@ class _EventsPageState extends State<EventsPage> {
       ListPostModelRes _item = postsList[i];
       if (_item.isEvent) {
         _list.add(PostItemBanner(
+          // withBorder: true,
           height: 180.h,
           leftWidget: SizedText(
-            text: 'Joined ${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+            text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+            textStyle: latoB14.copyWith(color: ThemeColors.bgDark),
           ),
           rightWidget: InkWell(
             onTap: () {
@@ -58,6 +60,7 @@ class _EventsPageState extends State<EventsPage> {
             },
             child: SizedText(
               text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+              textStyle: latoB14.copyWith(color: ThemeColors.darkGreen),
             ),
           ),
           imageUrl: _item.imageUrl,

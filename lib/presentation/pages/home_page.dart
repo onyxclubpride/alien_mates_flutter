@@ -55,6 +55,7 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.center,
           children: [
             PostItemBanner(
+                withBorder: true,
                 onDoubleTap: !isliking
                     ? () {
                         flareControls.play("like");
