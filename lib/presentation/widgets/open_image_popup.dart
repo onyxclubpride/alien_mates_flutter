@@ -9,9 +9,9 @@ Widget createPopupContentForDesc(String desc) => Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w),
     width: 300.w,
     height: 400.h,
-    padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+    padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 20.h),
     decoration: BoxDecoration(
-      color: ThemeColors.borderDark,
+      color: ThemeColors.gray800,
       borderRadius: BorderRadius.circular(16.r),
     ),
     child: SizedText(
@@ -22,9 +22,7 @@ Widget createPopupContentForDesc(String desc) => Container(
 // if(desc!= null)
 class AnimatedDialog extends StatefulWidget {
   const AnimatedDialog({required this.child});
-
   final Widget child;
-
   @override
   State<StatefulWidget> createState() => AnimatedDialogState();
 }

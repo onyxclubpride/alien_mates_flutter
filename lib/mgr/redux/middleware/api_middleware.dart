@@ -471,20 +471,20 @@ Future<bool> _getUpdatePostAction(
     }
     if (_postById != null) {
       PostModelRes _postModelRes = PostModelRes(
-        createdDate: action.createdDate ?? _postById.createdDate,
-        postId: action.postId,
-        isNotice: action.isNotice ?? _postById.isNotice,
-        isPost: action.isPost ?? _postById.isPost,
-        userId: action.userId ?? _postById.userId,
-        isEvent: action.isEvent ?? _postById.isEvent,
-        isHelp: action.isHelp ?? _postById.isHelp,
-        likedUserIds: action.likedUserIds ?? _postById.likedUserIds,
-        joinedUserIds: action.joinedUserIds ?? _postById.joinedUserIds,
-        description: action.description ?? _postById.description,
-        title: action.title ?? _postById.title,
-        joinLimit: action.joinLimit ?? _postById.joinLimit,
-        imageUrl: _downUrl ?? _postById.imageUrl,
-      );
+          createdDate: action.createdDate ?? _postById.createdDate,
+          postId: action.postId,
+          isNotice: action.isNotice ?? _postById.isNotice,
+          isPost: action.isPost ?? _postById.isPost,
+          userId: action.userId ?? _postById.userId,
+          isEvent: action.isEvent ?? _postById.isEvent,
+          isHelp: action.isHelp ?? _postById.isHelp,
+          likedUserIds: action.likedUserIds ?? _postById.likedUserIds,
+          joinedUserIds: action.joinedUserIds ?? _postById.joinedUserIds,
+          description: action.description ?? _postById.description,
+          title: action.title ?? _postById.title,
+          joinLimit: action.joinLimit ?? _postById.joinLimit,
+          imageUrl: _downUrl ?? _postById.imageUrl,
+          eventLocation: action.eventLocation ?? _postById.eventLocation);
       await postsCollection.doc(action.postId).update({
         "createdDate": _postModelRes.createdDate,
         "postId": _postModelRes.postId,
@@ -499,6 +499,7 @@ Future<bool> _getUpdatePostAction(
         "title": _postModelRes.title,
         "joinLimit": _postModelRes.joinLimit,
         "imageUrl": _postModelRes.imageUrl,
+        "eventLocation": _postModelRes.eventLocation
       });
       next(UpdateApiStateAction(postDetail: _postModelRes));
       await appStore

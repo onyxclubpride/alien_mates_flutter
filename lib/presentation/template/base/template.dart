@@ -25,17 +25,15 @@ export '../../pages/help/help_page.dart';
 export '../../pages/help/help_details_page.dart';
 export '../../pages/help/create_help_page.dart';
 
-
 //event pages
 export '../../pages/event/events_page.dart';
 export '../../pages/event/event_details_page.dart';
 export '../../pages/event/create_event_page.dart';
+export '../../pages/event/edit_event_page.dart';
 
 //notice pages
 export '../../pages/notice/edit_notice_page.dart';
 export '../../pages/notice/create_notice_page.dart';
-
-
 
 //Widgets
 export "../../widgets/sized_text.dart";
@@ -58,9 +56,5 @@ export '../../widgets/input/basic_input.dart';
 export '../../widgets/input/input_label.dart';
 export '../../widgets/input/post_create_input.dart';
 
-
-
 //validators
 export '../../../utils/common/validators.dart';
-
-

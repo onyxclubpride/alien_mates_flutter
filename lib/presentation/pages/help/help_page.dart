@@ -35,7 +35,7 @@ class _HelpPageState extends State<HelpPage> {
               withBorder: true,
               desc: _item.description,
               height: 160.h,
-              bgColor: ThemeColors.black,
+              bgColor: ThemeColors.bgDark,
               child: GestureDetector(
                 onTap: () {
                   _singlePostDetail(_item.postId);

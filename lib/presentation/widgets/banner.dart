@@ -68,7 +68,7 @@ class BodyNavigationBar extends StatelessWidget {
     return DefaultBanner(
       height: 30,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           _getNavText(
               currentRoute == AppRoutes.homePageRoute
@@ -97,11 +97,14 @@ class BodyNavigationBar extends StatelessWidget {
   }
 
   Widget _getNavText(Color textColor, String text, VoidCallback onTap) {
-    return InkWell(
+    return GestureDetector(
       onTap: onTap,
-      child: SizedText(
-        text: text,
-        textStyle: latoM16.copyWith(color: textColor),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: SizedText(
+          text: text,
+          textStyle: latoM16.copyWith(color: textColor),
+        ),
       ),
     );
   }
