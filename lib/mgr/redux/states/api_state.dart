@@ -15,6 +15,7 @@ class ApiState {
   final String selectedUni;
   final List<UnivModelRes> univs;
   final UserModelRes postDetailUser;
+  final List<PostModelRes> bannerPosts;
 
   ApiState(
       {required this.posts,
@@ -24,13 +25,15 @@ class ApiState {
       required this.selectedUni,
       required this.univs,
       required this.postDetail,
-      required this.postDetailUser});
+      required this.postDetailUser,
+      required this.bannerPosts});
 
   factory ApiState.initial() {
     return ApiState(
         posts: [],
         postOnly: [],
         users: [],
+        bannerPosts: [],
         postDetail: PostModelRes(
             createdDate: '',
             postId: "",
@@ -75,6 +78,7 @@ class ApiState {
     List<UnivModelRes>? univs,
     String? selectedUni,
     UserModelRes? postDetailUser,
+    List<PostModelRes>? bannerPosts,
   }) {
     return ApiState(
       posts: posts ?? this.posts,
@@ -85,6 +89,7 @@ class ApiState {
       selectedUni: selectedUni ?? this.selectedUni,
       univs: univs ?? this.univs,
       postDetailUser: postDetailUser ?? this.postDetailUser,
+      bannerPosts: bannerPosts ?? this.bannerPosts,
     );
   }
 }

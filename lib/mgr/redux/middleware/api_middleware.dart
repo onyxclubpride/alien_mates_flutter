@@ -85,7 +85,8 @@ Future<bool> _getAllKindPostsAction(
 
 Future<List<ListPostModelRes>> _getPostsList() async {
   try {
-    QuerySnapshot _querySnapshot = await postsCollection.get();
+    QuerySnapshot _querySnapshot =
+        await postsCollection.orderBy('createdDate', descending: true).get();
     List _snapshotList = _querySnapshot.docs;
     List<ListPostModelRes> _posts = [];
     for (int i = 0; i < _snapshotList.length; i++) {
