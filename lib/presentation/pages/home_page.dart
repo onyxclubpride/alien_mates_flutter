@@ -2,8 +2,10 @@ import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dar
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
@@ -17,17 +19,22 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FlareControls flareControls = FlareControls();
 
+  DateTime timeBackPressed = DateTime.now();
+
   bool isliking = false;
   String likingpostid = "";
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppState>(
-        converter: (store) => store.state,
-        builder: (context, state) => DefaultBody(
-            withNavigationBar: true,
-            withTopBanner: true,
-            child: _buildPostsWidgetList(state)));
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (context, state) => DefaultBody(
+              withNavigationBar: true,
+              withTopBanner: true,
+              child: _buildPostsWidgetList(state))),
+    );
   }
 
   Widget _buildPostsWidgetList(AppState state) {
@@ -41,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.center,
           children: [
             PostItemBanner(
-                withBorder: true,
+                // withBorder: true,
                 onDoubleTap: !isliking
                     ? () {
                         flareControls.play("like");
@@ -145,5 +152,25 @@ class _HomePageState extends State<HomePage> {
       likingpostid = "";
       isliking = false;
     });
+  }
+
+  Future<bool> _onWillPop() {
+    final difference = DateTime.now().difference(timeBackPressed);
+    final isExitWarning = difference >= Duration(seconds: 2);
+
+    timeBackPressed = DateTime.now();
+
+    if (isExitWarning) {
+      final message = 'Press again to exit';
+      Fluttertoast.showToast(
+          msg: message,
+          fontSize: 18,
+          backgroundColor: ThemeColors.white,
+          textColor: ThemeColors.bluegray800);
+      return Future.value(false);
+    } else {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      return Future.value(false);
+    }
   }
 }
