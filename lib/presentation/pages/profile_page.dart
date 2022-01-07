@@ -45,30 +45,33 @@ class _ProfilePageState extends State<ProfilePage> {
               textStyle: latoM20,
             ),
             titleIcon: _buildTitleIcon(),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SizedBox(height: 10.h),
-                  _buildUserInfoWidget(state.apiState),
-                  SizedBox(height: 20.h),
-                  Divider(thickness: 1.w, color: ThemeColors.borderDark),
-                  SizedBox(height: 10.h),
-                  SizedText(
-                      text: "My Feed",
-                      textStyle: latoB25.copyWith(color: ThemeColors.fontDark)),
-                  SizedBox(height: 10.h),
-                  SizedBox(
-                    height: 290.h,
-                    child: ListView(
-                      shrinkWrap: true,
-                      controller: _controller,
-                      children: [
-                        ..._buildPostsWidgetList(state),
-                      ],
-                    ),
-                  )
-                ],
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height,
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(height: 10.h),
+                    _buildUserInfoWidget(state.apiState),
+                    SizedBox(height: 20.h),
+                    Divider(thickness: 1.w, color: ThemeColors.borderDark),
+                    SizedBox(height: 10.h),
+                    SizedText(
+                        text: "My Feed",
+                        textStyle:
+                            latoB25.copyWith(color: ThemeColors.fontDark)),
+                    SizedBox(height: 10.h),
+                    SizedBox(
+                      child: ListView(
+                        shrinkWrap: true,
+                        controller: _controller,
+                        children: [
+                          ..._buildPostsWidgetList(state),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )));
   }
