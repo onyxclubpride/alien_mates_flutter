@@ -1,5 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
@@ -11,31 +13,15 @@ class EventsPage extends StatefulWidget {
 }
 
 class _EventsPageState extends State<EventsPage> {
-  final ScrollController _controller = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
-        builder: (context, state) => DefaultBody(
-                child: ListView(
-              controller: _controller,
-              children: [
-                SizedBox(height: 10.h),
-                DefaultBanner(
-                  height: 90.h,
-                  onTap: () {},
-                  // child: _buildBanners(state),
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 25.h),
-                    child: BodyNavigationBar()),
-                ..._buildPostsWidgetList(state)
-              ],
-            )));
+        builder: (context, state) =>
+            DefaultBody(child: _buildPostsWidgetList(state)));
   }
 
-  List<Widget> _buildPostsWidgetList(AppState state) {
+  Widget _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
     String _userId = state.apiState.userMe.userId;
@@ -78,7 +64,7 @@ class _EventsPageState extends State<EventsPage> {
         _list.add(SizedBox(height: 20.h));
       }
     }
-    return _list;
+    return Column(children: _list);
   }
 
   _singleEventDetails(eventId, userId) async {

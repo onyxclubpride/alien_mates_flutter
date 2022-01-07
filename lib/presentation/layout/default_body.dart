@@ -1,11 +1,12 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/presentation/widgets/input/post_create_input.dart';
-import 'package:alien_mates/utils/common/global_widgets.dart';
+import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ionicons/ionicons.dart';
 
-class DefaultBody extends StatelessWidget {
+class DefaultBody extends StatefulWidget {
   Widget child;
   bool? centerTitle;
   Widget? titleIcon;
@@ -21,8 +22,6 @@ class DefaultBody extends StatelessWidget {
   bool withActionButton;
   SizedText? titleText;
   Widget? footer;
-  bool? showFloatingButton;
-
   Widget? floatingAction;
 
   DefaultBody({
@@ -41,8 +40,16 @@ class DefaultBody extends StatelessWidget {
     this.withActionButton = true,
     this.withNavigationBar = true,
     this.withTopBanner = true,
-    this.floatingAction = null,
+    this.floatingAction,
   });
+
+  @override
+  State<DefaultBody> createState() => _DefaultBodyState();
+}
+
+class _DefaultBodyState extends State<DefaultBody> {
+  bool? showFloatingButton;
+  final ScrollController _controller = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,54 +59,91 @@ class DefaultBody extends StatelessWidget {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               resizeToAvoidBottomInset: true,
-              floatingActionButton: floatingAction,
-              appBar: showAppBar
+              floatingActionButton: widget.floatingAction,
+              appBar: widget.showAppBar
                   ? DefaultHeader(
-                      withAction: withActionButton,
-                      titleText: titleText,
-                      centerTitle: centerTitle,
-                      leftButton: leftButton,
-                      titleIcon: titleIcon,
-                      onRightButtonClick: onRightButtonClick,
-                      rightIcon: rightIcon,
+                      withAction: widget.withActionButton,
+                      titleText: widget.titleText,
+                      centerTitle: widget.centerTitle,
+                      leftButton: widget.leftButton,
+                      titleIcon: widget.titleIcon,
+                      onRightButtonClick: widget.onRightButtonClick,
+                      rightIcon: widget.rightIcon,
                     )
                   : null,
-              bottomSheet: footer != null
+              bottomSheet: widget.footer != null
                   ? showFab
                       ? Padding(
                           padding: EdgeInsets.only(
-                            left: horizontalPadding!.w,
-                            right: horizontalPadding!.w,
-                            bottom: bottomPadding!.h,
+                            left: widget.horizontalPadding!.w,
+                            right: widget.horizontalPadding!.w,
+                            bottom: widget.bottomPadding!.h,
                           ),
-                          child: footer)
+                          child: widget.footer)
                       : null
                   : null,
               body: SafeArea(
                   child: Padding(
                 padding: EdgeInsets.only(
-                  left: horizontalPadding!.w,
-                  right: horizontalPadding!.w,
-                  bottom: bottomPadding!.h,
-                  top: topPadding!.h,
+                  left: widget.horizontalPadding!.w,
+                  right: widget.horizontalPadding!.w,
+                  bottom: widget.bottomPadding!.h,
+                  top: widget.topPadding!.h,
                 ),
-                child: withTopBanner || withNavigationBar
+                child: widget.withTopBanner || widget.withNavigationBar
                     ? SizedBox(
                         height: MediaQuery.of(context).size.height -
-                            10.h -
+                            70.h -
                             MediaQuery.of(context).padding.bottom,
-                        child: child)
-                    : child,
+                        child: ListView(
+                          controller: _controller,
+                          children: [
+                            CarouselSlider.builder(
+                              itemCount: 3,
+                              options: CarouselOptions(
+                                  enableInfiniteScroll: false,
+                                  viewportFraction: 1,
+                                  height: 90.h),
+                              itemBuilder: (context, index, realIndex) =>
+                                  PostItemBanner(
+                                height: 90.h,
+                                child: CachedImageOrTextImageWidget(
+                                    imageUrl:
+                                        state.apiState.posts[index].imageUrl,
+                                    description: state
+                                        .apiState.posts[index].description),
+                              ),
+                            ),
+                            SizedBox(height: 5.h),
+                            SpacedRow(
+                                horizontalSpace: 5,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Ionicons.stop_circle_outline,
+                                    color: Colors.white,
+                                    size: 10.h,
+                                  ),
+                                  Icon(
+                                    Ionicons.ellipse_outline,
+                                    color: Colors.white,
+                                    size: 10.h,
+                                  ),
+                                  Icon(
+                                    Ionicons.ellipse_outline,
+                                    color: Colors.white,
+                                    size: 10.h,
+                                  ),
+                                ]),
+                            Container(
+                                margin: EdgeInsets.symmetric(vertical: 15.h),
+                                child: BodyNavigationBar()),
+                            widget.child
+                          ],
+                        ),
+                      )
+                    : widget.child,
               )),
             ));
-  }
-
-  Widget _buildBanners(AppState state) {
-    return Image.network(state.apiState.posts.first.imageUrl!,
-        fit: BoxFit.fill);
-  }
-
-  _onBannerTap() {
-    // appStore.dispatch(NavigateToAction(to: AppRoutes.createEventPageRoute));
   }
 }

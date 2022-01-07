@@ -1,4 +1,5 @@
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flare_flutter/flare_actor.dart';
 import 'package:flare_flutter/flare_controls.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -16,7 +17,6 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   final FlareControls flareControls = FlareControls();
 
-  final ScrollController _controller = ScrollController();
   bool isliking = false;
   String likingpostid = "";
 
@@ -25,26 +25,12 @@ class _HomePageState extends State<HomePage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
-                child: SizedBox(
-              child: ListView(
-                controller: _controller,
-                children: [
-                  SizedBox(height: 10.h),
-                  DefaultBanner(
-                    height: 90.h,
-                    onTap: () {},
-                    // child: _buildBanners(state),
-                  ),
-                  Container(
-                      margin: EdgeInsets.symmetric(vertical: 25.h),
-                      child: BodyNavigationBar()),
-                  ..._buildPostsWidgetList(state)
-                ],
-              ),
-            )));
+            withNavigationBar: true,
+            withTopBanner: true,
+            child: _buildPostsWidgetList(state)));
   }
 
-  List<Widget> _buildPostsWidgetList(AppState state) {
+  Widget _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
     String _userId = state.apiState.userMe.userId;
@@ -59,7 +45,6 @@ class _HomePageState extends State<HomePage> {
                 onDoubleTap: !isliking
                     ? () {
                         flareControls.play("like");
-
                         if (!isliking) {
                           _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
                               _item);
@@ -128,7 +113,7 @@ class _HomePageState extends State<HomePage> {
         _list.add(SizedBox(height: 20.h));
       }
     }
-    return _list;
+    return Column(children: _list);
   }
 
   _onLikeTap(

@@ -18,25 +18,12 @@ class _HelpPageState extends State<HelpPage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
-                child: ListView(
-              controller: _controller,
-              children: [
-                SizedBox(height: 10.h),
-                DefaultBanner(
-                  height: 90.h,
-                  onTap: () {},
-                  // child: _buildBanners(state),
-                ),
-                Container(
-                    margin: EdgeInsets.symmetric(vertical: 25.h),
-                    child: BodyNavigationBar()),
-                ..._buildPostsWidgetList(state)
-              ],
-            )));
+            withNavigationBar: true,
+            withTopBanner: true,
+            child: _buildPostsWidgetList(state)));
   }
 
-  List<Widget> _buildPostsWidgetList(AppState state) {
-    OverlayEntry _popupEntry;
+  Widget _buildPostsWidgetList(AppState state) {
     List<Widget> _list = [];
     List<ListPostModelRes> postsList = state.apiState.posts;
     for (int i = 0; i < postsList.length; i++) {
@@ -62,7 +49,7 @@ class _HelpPageState extends State<HelpPage> {
         _list.add(SizedBox(height: 20.h));
       }
     }
-    return _list;
+    return Column(children: _list);
   }
 
   _singlePostDetail(postId) async {
