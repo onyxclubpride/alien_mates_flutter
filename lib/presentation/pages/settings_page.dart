@@ -44,7 +44,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           const Icon(
                             Ionicons.home,
-                            color: ThemeColors.gray1,
+                            color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
                           SizedBox(
@@ -67,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           const Icon(
                             Ionicons.person,
-                            color: ThemeColors.gray1,
+                            color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
                           SizedBox(
@@ -80,7 +80,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const Divider(
                     thickness: 1,
-                    color: ThemeColors.gray1,
+                    color: ThemeColors.bluegray400,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -93,7 +93,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           const Icon(
                             Ionicons.clipboard,
-                            color: ThemeColors.gray1,
+                            color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
                           SizedBox(
@@ -115,7 +115,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           const Icon(
                             Ionicons.alert_circle,
-                            color: ThemeColors.gray1,
+                            color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
                           SizedBox(
@@ -128,7 +128,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                   const Divider(
                     thickness: 1,
-                    color: ThemeColors.gray1,
+                    color: ThemeColors.bluegray400,
                   ),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
@@ -142,7 +142,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         children: [
                           const Icon(
                             Ionicons.log_out,
-                            color: ThemeColors.gray1,
+                            color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
                           SizedBox(
