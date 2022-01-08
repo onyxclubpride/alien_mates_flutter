@@ -72,6 +72,9 @@ final _apiReducer = combineReducers<ApiState>([
 ]);
 
 ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
+  if (action.isRestart) {
+    return ApiState.initial();
+  }
   return state.copyWith(
       posts: action.posts ?? state.posts,
       postOnly: action.postOnly ?? state.postOnly,
@@ -93,5 +96,8 @@ final _initReducer = combineReducers<InitState>([
 ]);
 
 InitState _updateInitState(InitState state, UpdateInitStateAction action) {
+  if (action.isRestart) {
+    return InitState.initial();
+  }
   return state.copyWith(userId: action.userId ?? state.userId);
 }

@@ -68,8 +68,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getSearchUniversityAction(store.state, action, next);
       case GetUpdateUserAction:
         return _getUpdateUserAction(store.state, action, next);
-      case GetLogoutUserAction:
-        return _logout(store.state, action);
+      case GetLogoutAction:
+        return _getLogoutAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -769,6 +769,14 @@ Future<String?> _getSelectImageAction(
   } catch (e) {
     logger(e.toString(), hint: 'GET SELECT IMAGE CATCH ERROR');
   }
+}
+
+_getLogoutAction(AppState state, GetLogoutAction action, NextDispatcher next) {
+  appStore.dispatch(NavigateToAction(
+      to: AppRoutes.loginPageRoute, removeUntilPage: AppRoutes.loginPageRoute));
+  appStore.dispatch(RemoveLocalUserIdAction());
+  appStore.dispatch(UpdateApiStateAction(isRestart: true));
+  appStore.dispatch(UpdateInitStateAction(isRestart: true));
 }
 
 Dio _getClient(

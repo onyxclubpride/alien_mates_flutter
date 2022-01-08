@@ -81,6 +81,7 @@ class GetAllKindPostsAction {
 }
 
 class UpdateApiStateAction {
+  bool isRestart;
   List<ListPostModelRes>? posts;
   List<PostOnlyModel>? postOnly;
   List<UserModelRes>? users;
@@ -101,7 +102,8 @@ class UpdateApiStateAction {
       this.univs,
       this.selectedUni,
       this.bannerPosts,
-      this.postDetailUser});
+      this.postDetailUser,
+      this.isRestart = false});
 }
 
 class GetStateInitAction {}
@@ -267,6 +269,8 @@ class GetLogoutUserAction {
 
 ///----------------- Init -----------------
 
+class GetLogoutAction {}
+
 class GetLocalUserIdAction {}
 
 class SetLocalUserIdAction {
@@ -279,18 +283,17 @@ class RemoveLocalUserIdAction {}
 
 class UpdateInitStateAction {
   String? userId;
+  bool isRestart;
 
-  UpdateInitStateAction({this.userId});
+  UpdateInitStateAction({this.userId, this.isRestart = false});
 }
 
 class UpdateInitAction {
+  bool isRestart;
   String? token;
   String? deviceToken;
 
-  UpdateInitAction({
-    this.token,
-    this.deviceToken,
-  });
+  UpdateInitAction({this.token, this.deviceToken, this.isRestart = false});
 }
 
 class GetRemoveLocalTokenAction {}

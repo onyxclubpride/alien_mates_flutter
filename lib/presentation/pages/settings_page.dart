@@ -134,8 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.black, elevation: 0),
                     onPressed: () async {
-                      await appStore.dispatch(
-                          NavigateToAction(to: AppRoutes.loginPageRoute));
+                      appStore.dispatch(GetLogoutAction());
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,

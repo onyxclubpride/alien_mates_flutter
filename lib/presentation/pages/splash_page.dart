@@ -25,9 +25,7 @@ class _SplashPageState extends State<SplashPage> {
       withNavigationBar: false,
       withTopBanner: false,
       child: InkWell(
-        onTap: () {
-          appStore.dispatch(RemoveLocalUserIdAction());
-        },
+        onTap: () {},
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
