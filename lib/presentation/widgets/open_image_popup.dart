@@ -3,7 +3,11 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 Widget createPopupContent(String url) => ClipRRect(
     borderRadius: BorderRadius.circular(16.r),
-    child: CachedNetworkImage(imageUrl: url, height: 400.h));
+    child: CachedNetworkImage(
+      imageUrl: url,
+      fit: BoxFit.fitWidth,
+      width: double.infinity,
+    ));
 
 Widget createPopupContentForDesc(String desc) => Container(
     margin: EdgeInsets.symmetric(horizontal: 20.w),

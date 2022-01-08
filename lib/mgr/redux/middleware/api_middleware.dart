@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -8,9 +9,8 @@ import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:images_picker/images_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -739,7 +739,7 @@ showError(String? error, {VoidCallback? onTap}) {
     buttonText: 'Ok',
     onPress: onTap ??
         () {
-          appStore.dispatch(DismissPopupAction(all: true));
+          appStore.dispatch(DismissPopupAction());
         },
   );
 }
@@ -747,13 +747,24 @@ showError(String? error, {VoidCallback? onTap}) {
 Future<String?> _getSelectImageAction(
     AppState state, GetSelectImageAction action, NextDispatcher next) async {
   try {
-    final ImagePicker _picker = ImagePicker();
-    XFile? xImage;
-    xImage = await _picker.pickImage(
-        source: action.withCamera ? ImageSource.camera : ImageSource.gallery);
-
-    if (xImage != null) {
-      return xImage.path;
+    List<Media>? res = await ImagesPicker.pick(
+      pickType: PickType.image,
+      language: Language.System,
+      gif: true,
+      count: 1,
+      cropOpt: CropOption(
+        aspectRatio: CropAspectRatio.wh4x3,
+      ),
+    );
+    if (res != null) {
+      res.map((e) => e.path).toList();
+      if (res.first.size > 3000) {
+        showError('File size cannot exceed 3.0 Mb');
+        return null;
+      }
+    }
+    if (res != null) {
+      return res.first.path;
     }
   } catch (e) {
     logger(e.toString(), hint: 'GET SELECT IMAGE CATCH ERROR');
