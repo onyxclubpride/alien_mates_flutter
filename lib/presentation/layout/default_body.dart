@@ -48,8 +48,38 @@ class DefaultBody extends StatefulWidget {
 }
 
 class _DefaultBodyState extends State<DefaultBody> {
+  bool _showBackToTopButton = false;
+
   bool? showFloatingButton;
-  final ScrollController _controller = ScrollController();
+  ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = ScrollController()
+      ..addListener(() {
+        setState(() {
+          if (_controller.offset >= 400) {
+            _showBackToTopButton = true; // show the back-to-top button
+          } else {
+            _showBackToTopButton = false; // hide the back-to-top button
+          }
+        });
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose(); // dispose the controller
+    super.dispose();
+  }
+
+  // This function is triggered when the user presses the back-to-top button
+  void _scrollToTop() {
+    _controller.animateTo(0,
+        duration: const Duration(milliseconds: 300), curve: Curves.linear);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,7 +89,14 @@ class _DefaultBodyState extends State<DefaultBody> {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               resizeToAvoidBottomInset: true,
-              floatingActionButton: widget.floatingAction,
+              floatingActionButton: widget.floatingAction != null
+                  ? widget.floatingAction
+                  : _showBackToTopButton == false
+                      ? null
+                      : FloatingActionButton(
+                          onPressed: _scrollToTop,
+                          child: Icon(Icons.arrow_upward),
+                        ),
               appBar: widget.showAppBar
                   ? DefaultHeader(
                       withAction: widget.withActionButton,
