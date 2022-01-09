@@ -15,13 +15,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
   final GlobalKey<FormState> _formKeyEditProfilePage =
       GlobalKey<FormState>(debugLabel: '_formKeyEditProfilePage');
 
-  TextEditingController descriptionController = TextEditingController();
+  TextEditingController userName = TextEditingController();
+
+  TextEditingController currentPass = TextEditingController();
+  TextEditingController newPass = TextEditingController();
+  TextEditingController confirmNewPass = TextEditingController();
 
   File? noticeImage;
 
+  String? pwErrorText;
+
   @override
   void dispose() {
-    descriptionController.dispose();
+    userName.dispose();
     super.dispose();
   }
 
@@ -30,8 +36,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
-          descriptionController = TextEditingController(
-              text: state.apiState.postDetail.description);
+          userName = TextEditingController(text: state.apiState.userMe.name);
           return DefaultBody(
             withNavigationBar: false,
             withTopBanner: false,
@@ -48,7 +53,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // if (descriptionController.text.isNotEmpty)
+                      // if (userName.text.isNotEmpty)
                       DefaultBanner(
                         bgColor: ThemeColors.black,
                         child: Container(
@@ -69,29 +74,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               SpacedColumn(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      InputLabel(label: 'User Name'),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
+                                    InputLabel(label: 'User Name'),
+                                    if (state.apiState.userMe.name != null)
                                       PostCreateInput(
                                         maxlines: 1,
                                         validator: Validator.validateText,
-                                        controller: descriptionController,
+                                        controller: userName,
                                       ),
                                     SizedBox(
                                       height: 25.h,
                                     ),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      InputLabel(label: 'Kakao Id'),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      PostCreateInput(
-                                        maxlines: 1,
-                                        validator: Validator.validateText,
-                                        controller: descriptionController,
-                                      ),
                                   ]),
                             ],
                           ),
@@ -120,43 +112,42 @@ class _EditProfilePageState extends State<EditProfilePage> {
                               SpacedColumn(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      InputLabel(label: 'Current Password'),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      PostCreateInput(
-                                        maxlines: 1,
-                                        validator: Validator.validateText,
-                                        controller: descriptionController,
-                                      ),
+                                    InputLabel(label: 'Current Password'),
+                                    PostCreateInput(
+                                      isObscured: true,
+                                      keyboardType:
+                                          TextInputType.visiblePassword,
+                                      maxlines: 1,
+                                      validator: Validator.validatePassword,
+                                      controller: currentPass,
+                                    ),
                                     SizedBox(
                                       height: 25.h,
                                     ),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      InputLabel(label: 'New Password'),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      PostCreateInput(
-                                        maxlines: 1,
-                                        validator: Validator.validateText,
-                                        controller: descriptionController,
-                                      ),
+                                    InputLabel(label: 'New Password'),
+                                    PostCreateInput(
+                                      isObscured: true,
+                                      maxlines: 1,
+                                      validator: Validator.validatePassword,
+                                      controller: newPass,
+                                    ),
                                     SizedBox(
                                       height: 25.h,
                                     ),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      InputLabel(label: 'Confirm Password'),
-                                    if (state.apiState.postDetail.description !=
-                                        null)
-                                      PostCreateInput(
-                                        maxlines: 1,
-                                        validator: Validator.validateText,
-                                        controller: descriptionController,
-                                      ),
+                                    InputLabel(label: 'Confirm Password'),
+                                    PostCreateInput(
+                                      isObscured: true,
+                                      maxlines: 1,
+                                      controller: confirmNewPass,
+                                    ),
                                   ]),
+                              // if (pwErrorText != null)
+                              SizedText(
+                                text: pwErrorText,
+                                textAlign: TextAlign.center,
+                                textStyle:
+                                    latoM14.copyWith(color: ThemeColors.red400),
+                              )
                             ],
                           ),
                         ),
@@ -169,7 +160,8 @@ class _EditProfilePageState extends State<EditProfilePage> {
             footer: ExpandedButton(
               text: 'Save',
               onPressed: () {
-                _onUpdateEvent(state.apiState.postDetail.postId);
+                _validateConfirmNumber(newPass, confirmNewPass);
+                // _onUpdateEvent(state.apiState.postDetail.postId);
               },
             ),
           );
@@ -199,7 +191,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   _onUpdateEvent(String postId) async {
     if (_formKeyEditProfilePage.currentState!.validate()) {
       bool created = await appStore.dispatch(GetUpdatePostAction(
-          description: descriptionController.text,
+          description: userName.text,
           imagePath: noticeImage?.path,
           postId: postId));
 
@@ -222,5 +214,19 @@ class _EditProfilePageState extends State<EditProfilePage> {
         appStore.dispatch(NavigateToAction(to: 'up'));
       },
     );
+  }
+
+  _validateConfirmNumber(newPass, confirmNewPass) {
+    if (newPass != confirmNewPass) {
+      setState(() {
+        pwErrorText = 'Password did not match';
+      });
+      return false;
+    } else {
+      setState(() {
+        pwErrorText = null;
+      });
+      return true;
+    }
   }
 }
