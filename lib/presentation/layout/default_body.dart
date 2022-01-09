@@ -84,7 +84,6 @@ class _DefaultBodyState extends State<DefaultBody> {
   @override
   Widget build(BuildContext context) {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
-
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
@@ -94,6 +93,7 @@ class _DefaultBodyState extends State<DefaultBody> {
                   : _showBackToTopButton == false
                       ? null
                       : FloatingActionButton(
+                          backgroundColor: ThemeColors.bluegray700,
                           onPressed: _scrollToTop,
                           child: Icon(Icons.arrow_upward),
                         ),

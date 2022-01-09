@@ -63,20 +63,23 @@ class _HomePageState extends State<HomePage> {
                 desc: _item.description,
                 leftWidget: SizedText(
                   text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
-                  textStyle: latoM12.copyWith(color: ThemeColors.fontWhite),
+                  textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
                 ),
                 rightWidget: isliking
                     ? likingpostid == _item.postId
                         ? SpinKitThreeBounce(
-                            color: Colors.black,
+                            color: Colors.white,
                             size: 10.h,
                           )
                         : IconButton(
                             splashColor: Colors.transparent,
                             iconSize: 15.h,
-                            icon: Icon(_item.likedUserIds!.contains(_userId)
-                                ? Ionicons.happy
-                                : Ionicons.happy_outline),
+                            icon: Icon(
+                              _item.likedUserIds!.contains(_userId)
+                                  ? Ionicons.happy
+                                  : Ionicons.happy_outline,
+                              color: ThemeColors.fontWhite,
+                            ),
                             onPressed: () {
                               if (!isliking) {
                                 _onLikeTap(_item.postId, _item.likedUserIds!,
@@ -104,7 +107,7 @@ class _HomePageState extends State<HomePage> {
                     imageUrl: _item.imageUrl, description: _item.description)),
             isliking
                 ? likingpostid == _item.postId
-                    ? Container(
+                    ? SizedBox(
                         height: 100,
                         width: 100,
                         child: FlareActor(

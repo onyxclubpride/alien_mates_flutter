@@ -31,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
             floatingAction: FloatingActionButton(
-              child: Icon(Ionicons.add),
+              child: const Icon(Ionicons.add),
               backgroundColor: ThemeColors.bluegray700,
               onPressed: _onEditPress,
             ),
@@ -126,16 +126,18 @@ class _ProfilePageState extends State<ProfilePage> {
               onTap: () {
                 _onDeletePress(_item.postId);
               },
-              child: const SizedText(
+              child: SizedText(
                 text: 'Delete',
+                textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
               ),
             ),
             rightWidget: InkWell(
               onTap: () {
                 _onEditPostPress(_item);
               },
-              child: const SizedText(
+              child: SizedText(
                 text: 'Edit',
+                textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
               ),
             ),
             child: CachedImageOrTextImageWidget(
@@ -452,7 +454,6 @@ class _ImagesContainerForSheetState extends State<ImagesContainerForSheet> {
   }
 
   _onChooseImage() async {
-
     String? xImagePath = await appStore.dispatch(GetSelectImageAction());
     if (xImagePath != null) {
       setState(() {
