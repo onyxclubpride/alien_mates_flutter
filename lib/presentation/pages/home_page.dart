@@ -48,7 +48,7 @@ class _HomePageState extends State<HomePage> {
           alignment: Alignment.center,
           children: [
             PostItemBanner(
-                height: 200,
+                height: 200.h,
                 // withBorder: true,
                 onDoubleTap: !isliking
                     ? () {

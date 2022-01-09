@@ -25,6 +25,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
             titleIcon: _buildTitleIcon(state),
             titleText: SizedText(text: 'Back', textStyle: latoM20),
             child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: 50.h),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 SpacedColumn(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -32,128 +33,117 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   children: [
                     if (state.apiState.postDetail.imageUrl != null)
                       PostItemBanner(
+                          height: 200.h,
                           imageUrl: state.apiState.postDetail.imageUrl,
                           child: CachedNetworkImage(
                             imageUrl: state.apiState.postDetail.imageUrl!,
                             fit: BoxFit.cover,
                           )),
                     SpacedColumn(verticalSpace: 25, children: [
-                      Container(
-                          height: MediaQuery.of(context).size.height / 2,
-                          alignment: Alignment.topLeft,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                      Column(
+                        children: [
+                          SizedText(
+                              textAlign: TextAlign.start,
+                              text: state.apiState.postDetail.title,
+                              textStyle: latoB25.copyWith(color: Colors.white)),
+                          SizedBox(height: 20.h),
+                          SizedText(
+                            text: state.apiState.postDetail.description,
+                            textStyle: latoR16.copyWith(color: Colors.white),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(height: 20.h),
+                          Column(children: [
+                            SpacedRow(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedText(
-                                    text: state.apiState.postDetail.title,
-                                    textStyle:
-                                        latoB45.copyWith(color: Colors.white)),
-                                SizedBox(height: 20.h),
-                                SizedText(
-                                  text: state.apiState.postDetail.description,
-                                  textStyle:
-                                      latoR16.copyWith(color: Colors.white),
-                                  textAlign: TextAlign.left,
+                                  text: 'Phone Number\t:\t',
+                                  textStyle: latoB20.copyWith(
+                                      color: ThemeColors.fontWhite),
                                 ),
-                                SizedBox(height: 20.h),
-                                Column(children: [
-                                  SpacedRow(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedText(
-                                        text: 'Phone Number\t:\t',
-                                        textStyle: latoB20.copyWith(
-                                            color: ThemeColors.fontWhite),
-                                      ),
-                                      SizedText(
-                                        isSelectable: true,
-                                        text: state.apiState.postDetailUser
-                                            .phoneNumber,
-                                        textStyle: latoM16.copyWith(
-                                            color: ThemeColors.fontWhite),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 20.h),
-                                  SpacedRow(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedText(
-                                        text: 'Location\t:\t',
-                                        textStyle: latoB20.copyWith(
-                                            color: ThemeColors.fontWhite),
-                                      ),
-                                      SizedText(
-                                        isSelectable: true,
-                                        text: state
-                                            .apiState.postDetail.eventLocation,
-                                        textStyle: latoM16.copyWith(
-                                            color: ThemeColors.fontWhite),
-                                      )
-                                    ],
-                                  ),
-                                  SizedBox(height: 30.h),
-                                  Container(
-                                    width: MediaQuery.of(context).size.width -
-                                        100.w,
-                                    padding: EdgeInsets.all(10.w),
-                                    decoration: BoxDecoration(
-                                        borderRadius:
-                                            BorderRadius.circular(12.r),
-                                        color: ThemeColors.borderDark),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        const Text(
-                                          'Max : ',
-                                          style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: ThemeColors.fontWhite),
-                                        ),
-                                        (postDetail.joinedUserIds!.isNotEmpty)
-                                            ? Text(
-                                                postDetail.joinedUserIds!.length
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              )
-                                            : const Text(
-                                                '0',
-                                                style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                        const Text(
-                                          '|',
-                                          style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: ThemeColors.fontWhite),
-                                        ),
-                                        Text(
-                                          state.apiState.postDetail.joinLimit
-                                              .toString(),
-                                          style: const TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: ThemeColors.fontWhite),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ]),
-                                SizedBox(height: 25.h)
+                                SizedText(
+                                  isSelectable: true,
+                                  text:
+                                      state.apiState.postDetailUser.phoneNumber,
+                                  textStyle: latoM16.copyWith(
+                                      color: ThemeColors.fontWhite),
+                                )
                               ],
                             ),
-                          )),
+                            SizedBox(height: 20.h),
+                            SpacedRow(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                SizedText(
+                                  text: 'Location\t:\t',
+                                  textStyle: latoB20.copyWith(
+                                      color: ThemeColors.fontWhite),
+                                ),
+                                SizedText(
+                                  isSelectable: true,
+                                  text: state.apiState.postDetail.eventLocation,
+                                  textStyle: latoM16.copyWith(
+                                      color: ThemeColors.fontWhite),
+                                )
+                              ],
+                            ),
+                            SizedBox(height: 30.h),
+                            Container(
+                              width: MediaQuery.of(context).size.width - 100.w,
+                              padding: EdgeInsets.all(10.w),
+                              decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(12.r),
+                                  color: ThemeColors.borderDark),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  const Text(
+                                    'Max : ',
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: ThemeColors.fontWhite),
+                                  ),
+                                  (postDetail.joinedUserIds!.isNotEmpty)
+                                      ? Text(
+                                          postDetail.joinedUserIds!.length
+                                              .toString(),
+                                          style: const TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        )
+                                      : const Text(
+                                          '0',
+                                          style: TextStyle(
+                                            fontSize: 30,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                  const Text(
+                                    '|',
+                                    style: TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: ThemeColors.fontWhite),
+                                  ),
+                                  Text(
+                                    state.apiState.postDetail.joinLimit
+                                        .toString(),
+                                    style: const TextStyle(
+                                        fontSize: 30,
+                                        fontWeight: FontWeight.bold,
+                                        color: ThemeColors.fontWhite),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ]),
+                          SizedBox(height: 25.h)
+                        ],
+                      ),
                     ]),
                   ],
                 ),
