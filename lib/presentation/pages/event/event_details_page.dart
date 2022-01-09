@@ -32,16 +32,18 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                   children: [
                     if (state.apiState.postDetail.imageUrl != null)
                       PostItemBanner(
+                          imageUrl: state.apiState.postDetail.imageUrl,
                           child: CachedNetworkImage(
-                        imageUrl: state.apiState.postDetail.imageUrl!,
-                        fit: BoxFit.cover,
-                      )),
+                            imageUrl: state.apiState.postDetail.imageUrl!,
+                            fit: BoxFit.cover,
+                          )),
                     SpacedColumn(verticalSpace: 25, children: [
                       Container(
                           height: MediaQuery.of(context).size.height / 2,
                           alignment: Alignment.topLeft,
                           child: SingleChildScrollView(
                             child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 SizedText(
                                     text: state.apiState.postDetail.title,
@@ -66,6 +68,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                             color: ThemeColors.fontWhite),
                                       ),
                                       SizedText(
+                                        isSelectable: true,
                                         text: state.apiState.postDetailUser
                                             .phoneNumber,
                                         textStyle: latoM16.copyWith(
@@ -84,6 +87,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                             color: ThemeColors.fontWhite),
                                       ),
                                       SizedText(
+                                        isSelectable: true,
                                         text: state
                                             .apiState.postDetail.eventLocation,
                                         textStyle: latoM16.copyWith(
@@ -111,6 +115,29 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                               fontWeight: FontWeight.bold,
                                               color: ThemeColors.fontWhite),
                                         ),
+                                        (postDetail.joinedUserIds!.isNotEmpty)
+                                            ? Text(
+                                                postDetail.joinedUserIds!.length
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              )
+                                            : const Text(
+                                                '0',
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                        const Text(
+                                          '|',
+                                          style: TextStyle(
+                                              fontSize: 30,
+                                              fontWeight: FontWeight.bold,
+                                              color: ThemeColors.fontWhite),
+                                        ),
                                         Text(
                                           state.apiState.postDetail.joinLimit
                                               .toString(),
@@ -119,29 +146,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                               fontWeight: FontWeight.bold,
                                               color: ThemeColors.fontWhite),
                                         ),
-                                        const Text(
-                                          '|',
-                                          style: TextStyle(
-                                              fontSize: 30,
-                                              fontWeight: FontWeight.bold,
-                                              color: ThemeColors.fontWhite),
-                                        ),
-                                        (postDetail.joinedUserIds!.isNotEmpty)
-                                            ? Text(
-                                                postDetail.joinedUserIds!.length
-                                                    .toString(),
-                                                style: const TextStyle(
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: ThemeColors.yellow),
-                                              )
-                                            : const Text(
-                                                '0',
-                                                style: TextStyle(
-                                                    fontSize: 30,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: ThemeColors.yellow),
-                                              )
                                       ],
                                     ),
                                   ),
@@ -155,28 +159,23 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                 ),
               ]),
             ),
-            footer: Container(
-              margin: EdgeInsets.only(bottom: 15.h),
-              child: ExpandedButton(
-                text: (postDetail.joinedUserIds!.contains(_userId) == true)
-                    ? 'UNDO'
-                    : 'JOIN',
-                onPressed: () {
-                  //Change to update
-                  postDetail.joinedUserIds!.contains(_userId)
-                      ? _onUnJoinTap(
-                          postDetail.postId,
-                          postDetail.joinedUserIds!,
-                          postDetail.joinLimit!,
-                          state.initState.userId)
-                      : _onJoinTap(
-                          postDetail.postId,
-                          postDetail.joinedUserIds!,
-                          postDetail.joinLimit!,
-                          state.initState.userId,
-                        );
-                },
-              ),
+            bottomPadding: 15,
+            footer: ExpandedButton(
+              text: (postDetail.joinedUserIds!.contains(_userId) == true)
+                  ? 'UNDO'
+                  : 'JOIN',
+              onPressed: () {
+                //Change to update
+                postDetail.joinedUserIds!.contains(_userId)
+                    ? _onUnJoinTap(postDetail.postId, postDetail.joinedUserIds!,
+                        postDetail.joinLimit!, state.initState.userId)
+                    : _onJoinTap(
+                        postDetail.postId,
+                        postDetail.joinedUserIds!,
+                        postDetail.joinLimit!,
+                        state.initState.userId,
+                      );
+              },
             ),
           );
         });

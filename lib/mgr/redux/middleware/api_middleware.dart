@@ -338,6 +338,7 @@ Future<List<UserModelRes>> _getUsersList() async {
       var item = _snapshotList[i];
       UserModelRes userModelRes = UserModelRes(
         createdDate: item['createdDate'],
+        isAdmin: item['isAdmin'],
         userId: item['userId'],
         phoneNumber: item['phoneNumber'],
         name: item['name'],
@@ -523,6 +524,7 @@ Future<bool> _getUpdateUserAction(
     //Saving old user info
     UserModelRes _oldUserData = UserModelRes(
       name: state.apiState.userMe.name,
+      isAdmin: state.apiState.userMe.isAdmin,
       userId: state.apiState.userMe.userId,
       createdDate: state.apiState.userMe.createdDate,
       password: state.apiState.userMe.password,
@@ -536,6 +538,7 @@ Future<bool> _getUpdateUserAction(
       "name": state.apiState.userMe.name,
       "userId": state.apiState.userMe.userId,
       "createdDate": state.apiState.userMe.createdDate,
+      "isAdmin": state.apiState.userMe.isAdmin,
       "password": state.apiState.userMe.password,
       "phoneNumber": state.apiState.userMe.phoneNumber,
       "uniName": state.apiState.userMe.uniName,
@@ -551,6 +554,7 @@ Future<bool> _getUpdateUserAction(
       await usersCollection.doc(state.apiState.userMe.userId).update({
         "name": _oldUserData.name,
         "userId": _oldUserData.userId,
+        "isAdmin": _oldUserData.isAdmin,
         "createdDate": _oldUserData.createdDate,
         "password": _oldUserData.password,
         "phoneNumber": _oldUserData.phoneNumber,
@@ -667,6 +671,7 @@ Future<UserModelRes?> _getUserByIdAction(
     UserModelRes _userModel = UserModelRes(
       name: _userDetail['name'],
       userId: _userDetail['userId'],
+      isAdmin: _userDetail['isAdmin'],
       createdDate: _userDetail['createdDate'],
       password: _userDetail['password'],
       phoneNumber: _userDetail['phoneNumber'],

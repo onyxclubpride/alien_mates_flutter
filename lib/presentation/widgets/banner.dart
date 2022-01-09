@@ -120,6 +120,7 @@ class PostItemBanner extends StatefulWidget {
   String? imageUrl;
   String? desc;
   VoidCallback? onDoubleTap;
+  VoidCallback? onTap;
   PostItemBanner({
     required this.child,
     this.height = 145,
@@ -130,6 +131,7 @@ class PostItemBanner extends StatefulWidget {
     this.imageUrl,
     this.desc,
     this.rightWidget,
+    this.onTap,
   });
 
   @override
@@ -142,6 +144,7 @@ class _PostItemBannerState extends State<PostItemBanner> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: widget.onTap,
       onDoubleTap: widget.onDoubleTap,
       onLongPress: widget.imageUrl != null
           ? () {

@@ -30,7 +30,9 @@ class _EventsPageState extends State<EventsPage> {
       ListPostModelRes _item = postsList[i];
       if (_item.isEvent) {
         _list.add(PostItemBanner(
-          // withBorder: true,
+          onTap: () {
+            _singleEventDetails(_item.postId, _item.userId);
+          },
           height: 180.h,
           leftWidget: SizedText(
               text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
@@ -50,15 +52,10 @@ class _EventsPageState extends State<EventsPage> {
           ),
           imageUrl: _item.imageUrl,
           desc: _item.description,
-          child: GestureDetector(
-            onTap: () {
-              _singleEventDetails(_item.postId, _item.userId);
-            },
-            child: CachedImageOrTextImageWidget(
-                title: _item.title,
-                imageUrl: _item.imageUrl,
-                description: _item.description),
-          ),
+          child: CachedImageOrTextImageWidget(
+              title: _item.title,
+              imageUrl: _item.imageUrl,
+              description: _item.description),
         ));
         _list.add(SizedBox(height: 20.h));
       }

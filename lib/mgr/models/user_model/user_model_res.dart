@@ -6,6 +6,7 @@ class UserModelRes {
   String uniName;
   String createdDate;
   List? postIds;
+  bool isAdmin;
 
   UserModelRes({
     required this.userId,
@@ -14,6 +15,7 @@ class UserModelRes {
     this.password,
     required this.uniName,
     required this.createdDate,
+    required this.isAdmin,
     this.postIds,
   });
 }

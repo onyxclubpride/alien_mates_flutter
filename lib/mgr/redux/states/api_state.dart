@@ -53,6 +53,7 @@ class ApiState {
             imageUrl: "",
             eventLocation: ""),
         postDetailUser: UserModelRes(
+            isAdmin: false,
             userId: "",
             phoneNumber: "",
             name: "",
@@ -61,6 +62,7 @@ class ApiState {
             uniName: '',
             postIds: []),
         userMe: UserModelRes(
+            isAdmin: false,
             userId: "",
             phoneNumber: "",
             name: "",
