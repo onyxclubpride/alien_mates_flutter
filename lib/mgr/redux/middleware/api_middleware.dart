@@ -94,9 +94,9 @@ Future<bool> _getAllKindPostsAction(
     AppState state, GetAllKindPostsAction action, NextDispatcher next) async {
   List<ListPostModelRes> postsList = await _getPostsList();
   List<ListPostModelRes> bannerPosts = [];
-  bannerPosts.add(postsList.firstWhere((element) => element.isHelp));
-  bannerPosts.add(postsList.firstWhere((element) => element.isNotice));
-  bannerPosts.add(postsList.firstWhere((element) => element.isEvent));
+  // bannerPosts.add(postsList.firstWhere((element) => element.isHelp));
+  // bannerPosts.add(postsList.firstWhere((element) => element.isNotice));
+  // bannerPosts.add(postsList.firstWhere((element) => element.isEvent));
   next(UpdateApiStateAction(posts: postsList, bannerPosts: bannerPosts));
   return postsList.isNotEmpty;
 }
