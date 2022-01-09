@@ -41,6 +41,8 @@ class AppRouter {
           return EditPostPage();
         case (AppRoutes.editHelpPageRoute):
           return EditHelpPage();
+        case (AppRoutes.editProfilePageRoute):
+          return EditProfilePage();
         default:
           return const SplashPage();
       }

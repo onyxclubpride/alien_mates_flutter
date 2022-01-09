@@ -60,13 +60,13 @@ class _SettingsPageState extends State<SettingsPage> {
                         primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       appStore.dispatch(
-                          NavigateToAction(to: AppRoutes.profilePageRoute));
+                          NavigateToAction(to: AppRoutes.editProfilePageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           const Icon(
-                            Ionicons.person,
+                            Ionicons.create_outline,
                             color: ThemeColors.bluegray400,
                             size: 24.0,
                           ),
@@ -74,7 +74,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             width: 10.h,
                           ),
                           SizedText(
-                              text: "My Profile",
+                              text: "Edit My Profile",
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),

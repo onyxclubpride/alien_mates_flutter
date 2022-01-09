@@ -33,7 +33,9 @@ class _ProfilePageState extends State<ProfilePage> {
             floatingAction: FloatingActionButton(
               child: const Icon(Ionicons.add),
               backgroundColor: ThemeColors.bluegray700,
-              onPressed: _onEditPress,
+              onPressed: () {
+                _onEditPress(state);
+              },
             ),
             withTopBanner: false,
             withNavigationBar: false,
@@ -164,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  _onEditPress() {
+  _onEditPress(AppState state) {
     showModalBottomSheet(
         backgroundColor: ThemeColors.componentBgDark,
         enableDrag: true,
@@ -177,7 +179,7 @@ class _ProfilePageState extends State<ProfilePage> {
         isScrollControlled: true,
         builder: (context) {
           return Container(
-            height: 300.h,
+            height: state.apiState.userMe.isAdmin == true ? 300.h : 240.h,
             margin: EdgeInsets.all(25.w),
             child: SpacedColumn(children: [
               SizedBox(height: 0.h),
@@ -216,13 +218,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
               ),
               SizedBox(height: 27.h),
-              ExpandedButton(
-                text: 'Notice',
-                onPressed: () {
-                  appStore.dispatch(
-                      NavigateToAction(to: AppRoutes.createNoticePageRoute));
-                },
-              ),
+              if (state.apiState.userMe.isAdmin == true)
+                ExpandedButton(
+                  text: 'Notice',
+                  onPressed: () {
+                    appStore.dispatch(
+                        NavigateToAction(to: AppRoutes.createNoticePageRoute));
+                  },
+                ),
             ]),
           );
         });

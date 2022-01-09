@@ -26,6 +26,7 @@ class AppRoutes {
   static const editEventPageRoute = "/editEvent";
   static const editHelpPageRoute = "/editHelp";
   static const editNoticePageRoute = "/editNotice";
+  static const editProfilePageRoute = "/editProfile";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -50,6 +51,8 @@ class AppRoutes {
       AppRoutes.editNoticePageRoute: (BuildContext context) => EditNoticePage(),
       AppRoutes.editHelpPageRoute: (BuildContext context) => EditHelpPage(),
       AppRoutes.editPostPageRoute: (BuildContext context) => EditPostPage(),
+      AppRoutes.editProfilePageRoute: (BuildContext context) =>
+          EditProfilePage(),
     };
 
     return base;
