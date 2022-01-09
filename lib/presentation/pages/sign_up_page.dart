@@ -71,7 +71,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   verticalSpace: 21,
                   children: [
-
                     SizedText(
                         text: 'Sign Up',
                         textStyle: latoB45.copyWith(color: Colors.white)),
@@ -97,6 +96,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       BasicInput(
                         validator: Validator.validatePhoneNumber,
                         hintText: "Phone Number",
+                        readOnly: isOtpCorrect,
                         keyboardType: TextInputType.number,
                         icon: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -111,20 +111,11 @@ class _SignUpPageState extends State<SignUpPage> {
                           hintText: "OTP",
                           readOnly: isOtpCorrect,
                           controller: otpController,
-                          onChanged: (value) {
-                            PhoneAuthCredential credential =
-                                PhoneAuthProvider.credential(
-                                    verificationId: verId!, smsCode: value);
-                            if (value.toString() == sentOtp.toString()) {
-                              setState(() {
-                                isOtpCorrect = true;
-                              });
-                            }
-                          },
+                          onChanged: _enteringSmsCode,
                           validator: Validator.validateOtp,
                           keyboardType: TextInputType.number,
                           suffixIcon: IconButton(
-                            onPressed: _onVerifyOtp,
+                            onPressed: null,
                             icon: Icon(
                               Ionicons.checkmark_done_sharp,
                               color: isOtpCorrect
@@ -163,6 +154,34 @@ class _SignUpPageState extends State<SignUpPage> {
         });
   }
 
+  _enteringSmsCode(value) async {
+    String phoneNumber = "+82${phoneNumberController.text}";
+    if (phoneNumberController.text.startsWith("0")) {
+      phoneNumber = "+82${phoneNumberController.text.substring(1)}";
+    }
+    if (value.toString().length == 6) {
+      // Update the UI - wait for the user to enter the SMS code
+      String smsCode = value;
+      // Create a PhoneAuthCredential with the code
+      PhoneAuthCredential credential = PhoneAuthProvider.credential(
+          verificationId: verId!, smsCode: smsCode);
+      // Sign the user in (or link) with the credential
+      final res = await FirebaseAuth.instance.signInWithCredential(credential);
+      logger(phoneNumberController.text);
+      if (res.user != null) {
+        if (res.user!.phoneNumber == phoneNumber) {
+          bool userExists = await appStore
+              .dispatch(GetCheckPhoneNumberExistsAction(phoneNumber));
+          if (!userExists) {
+            setState(() {
+              isOtpCorrect = true;
+            });
+          }
+        }
+      }
+    }
+  }
+
   _onSearchUniPress() {
     showModalBottomSheet(
       context: context,
@@ -182,11 +201,9 @@ class _SignUpPageState extends State<SignUpPage> {
       });
       try {
         await FirebaseAuth.instance.verifyPhoneNumber(
-          forceResendingToken: 12345,
           phoneNumber: "+82" + phoneNumberController.text,
-          verificationCompleted: (PhoneAuthCredential credential) {
-            logger(credential.smsCode, hint: 'TOKEN');
-            logger(credential.token, hint: 'TOKEN');
+          verificationCompleted: (PhoneAuthCredential credential) async {
+            // await FirebaseAuth.instance.signInWithCredential(credential);
           },
           verificationFailed: (FirebaseAuthException e) {
             closeLoading();
@@ -195,9 +212,10 @@ class _SignUpPageState extends State<SignUpPage> {
               isOtpSent = false;
             });
           },
-          codeSent: (String verificationId, int? resendToken) {
+          forceResendingToken: sentOtp,
+          timeout: Duration(milliseconds: 20000),
+          codeSent: (String verificationId, int? resendToken) async {
             closeLoading();
-            logger(resendToken);
             setState(() {
               isOtpSent = true;
               sentOtp = resendToken;
@@ -206,6 +224,9 @@ class _SignUpPageState extends State<SignUpPage> {
           },
           codeAutoRetrievalTimeout: (String verificationId) {
             closeLoading();
+            setState(() {
+              verId = verificationId;
+            });
           },
         );
       } catch (e) {
@@ -221,8 +242,6 @@ class _SignUpPageState extends State<SignUpPage> {
       });
     }
   }
-
-  _onVerifyOtp() async {}
 
   _signUpPress() async {
     if (_formKeySignUpPage.currentState!.validate()) {

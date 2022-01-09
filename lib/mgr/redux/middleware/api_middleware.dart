@@ -1,7 +1,4 @@
-import 'dart:developer';
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/rest/api_service_client.dart';
@@ -9,6 +6,7 @@ import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
 import 'package:alien_mates/utils/common/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
+import 'package:encrypt/encrypt.dart' as enc;
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:redux/redux.dart';
@@ -20,6 +18,11 @@ import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:uuid/uuid.dart';
+
+final key = enc.Key.fromUtf8(Constants.ENCRYTORKEY);
+final iv = enc.IV.fromLength(16);
+final aes = enc.AES(key, padding: null);
+final encryptor = enc.Encrypter(aes);
 
 FirebaseKit firebaseKit = FirebaseKit();
 final postsCollection = firebaseKit.postsCollection;
@@ -70,10 +73,21 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getUpdateUserAction(store.state, action, next);
       case GetLogoutAction:
         return _getLogoutAction(store.state, action, next);
+      case GetCheckPhoneNumberExistsAction:
+        return _getCheckPhoneNumberExistsAction(store.state, action, next);
+
       default:
         return next(action);
     }
   }
+}
+
+String _decryptToken(String encrypted) {
+  return encryptor.decrypt(enc.Encrypted.from64(encrypted), iv: iv);
+}
+
+String _encryptToken(String token) {
+  return encryptor.encrypt(token, iv: iv).base64;
 }
 
 Future<bool> _getAllKindPostsAction(
@@ -116,19 +130,6 @@ Future<List<ListPostModelRes>> _getPostsList() async {
     logger(e.toString(), hint: 'GET POSTS LIST CATCH ERROR');
     return [];
   }
-}
-
-_logout(AppState state, GetLogoutUserAction action) async {
-  await appStore.dispatch(GetRemoveLocalTokenAction());
-  appStore.dispatch(UpdateInitAction(token: ""));
-  // appStore.dispatch(UpdateApiAction(restart: true));
-  appStore.dispatch(UpdateNavigationAction(restart: true));
-  if (action.routeTo != null) {
-    appStore.dispatch(NavigateToAction(
-        to: action.routeTo,
-        pushAndRemoveUntil: state.navigationState.history.first.name));
-  }
-  return null;
 }
 
 Future<bool> _getCreatePostAction(
@@ -304,7 +305,7 @@ Future<bool> _getCreateUserAction(
         "userId": _userUid,
         "name": action.name,
         "phoneNumber": action.phoneNumber,
-        "password": action.password,
+        "password": _encryptToken(action.password),
         "uniName": action.uniName,
         "postIds": [],
         "createdDate": currentDateAndTime,
@@ -327,6 +328,17 @@ Future<List<UserModelRes>> _getAllUsersAction(
   List<UserModelRes> usersList = await _getUsersList();
   next(UpdateApiStateAction(users: usersList));
   return usersList;
+}
+
+Future<bool> _getCheckPhoneNumberExistsAction(AppState state,
+    GetCheckPhoneNumberExistsAction action, NextDispatcher next) async {
+  QuerySnapshot _querySnapshot = await usersCollection.get();
+  List _snapshotList = _querySnapshot.docs;
+  for (int i = 0; i < _snapshotList.length; i++) {
+    var item = _snapshotList[i]['phoneNumber'];
+    return item == action.phoneNumber;
+  }
+  return false;
 }
 
 Future<List<UserModelRes>> _getUsersList() async {
@@ -359,17 +371,22 @@ Future<void> _getUserIdExistAction(
     AppState state, GetUserIdExistAction action, NextDispatcher next) async {
   try {
     final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
-    if (postsFetched) {
-      for (int i = 0; i < state.apiState.users.length; i++) {
-        UserModelRes _userInst = state.apiState.users[i];
-        if (_userInst.userId == action.userId) {
-          next(UpdateApiStateAction(userMe: _userInst));
-          next(UpdateInitStateAction(userId: _userInst.userId));
-        }
-      }
-      appStore.dispatch(
-          NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
-    }
+    final item = await usersCollection.doc(action.userId).get();
+    UserModelRes userModelRes = UserModelRes(
+        createdDate: item['createdDate'],
+        isAdmin: item['isAdmin'],
+        userId: item['userId'],
+        phoneNumber: item['phoneNumber'],
+        name: item['name'],
+        password: item['password'],
+        uniName: item['uniName'],
+        postIds: item['postIds']);
+    next(UpdateApiStateAction(userMe: userModelRes));
+    next(UpdateInitStateAction(userId: userModelRes.userId));
+    logger(userModelRes.userId);
+    appStore
+        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+    // }
   } catch (e) {
     logger(e.toString(), hint: 'GET USER ID CATCH ERROR');
   }
@@ -384,8 +401,10 @@ Future<bool> _getLoginAction(
     if (users.isNotEmpty) {
       for (int i = 0; i < users.length; i++) {
         UserModelRes? _userInst = users[i];
+
         bool _matched = _userInst.phoneNumber == action.phoneNumber &&
             _userInst.password == action.password;
+        //_decryptToken(_userInst.password!)
         if (_matched) {
           next(UpdateApiStateAction(userMe: _userInst));
           next(UpdateInitStateAction(userId: _userInst.userId));

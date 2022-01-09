@@ -271,6 +271,11 @@ class GetLogoutUserAction {
 
 class GetLogoutAction {}
 
+class GetCheckPhoneNumberExistsAction {
+  String phoneNumber;
+  GetCheckPhoneNumberExistsAction(this.phoneNumber);
+}
+
 class GetLocalUserIdAction {}
 
 class SetLocalUserIdAction {

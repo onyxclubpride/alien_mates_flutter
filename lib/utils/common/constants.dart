@@ -5,4 +5,6 @@ class Constants {
   static const firebaseUsersCollection = "USERS";
   static const firebaseStorageImagesFolderName = "POSTS_IMAGES";
   static const localUserIdKey = "USERIDKEY";
+  static const ENCRYTORKEY = "N7YI4KQ3UETGOEMOBTEG3BDJACI0LW==";
+
 }
