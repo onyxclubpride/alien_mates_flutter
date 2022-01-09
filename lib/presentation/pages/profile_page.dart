@@ -83,15 +83,16 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget _buildUserInfoWidget(ApiState state) {
     UserModelRes userModelRes = state.userMe;
     return DefaultBanner(
-      height: 140.h,
+      // height: 150.h,
       child: Padding(
         padding: EdgeInsets.all(15.w),
         child: SpacedColumn(
+          verticalSpace: 12.h,
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             _buildUserInfoItem(valueText: userModelRes.name),
             _buildUserInfoItem(
-                icon: Ionicons.chatbox, valueText: userModelRes.uniName),
+                icon: Ionicons.school, valueText: userModelRes.uniName),
             _buildUserInfoItem(
                 icon: Ionicons.call, valueText: userModelRes.phoneNumber),
           ],
@@ -104,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
       {IconData icon = Ionicons.person, String? valueText = 'User134'}) {
     return SpacedRow(
       crossAxisAlignment: CrossAxisAlignment.center,
-      horizontalSpace: 10.w,
+      horizontalSpace: 15.w,
       children: [
         Icon(icon, color: ThemeColors.fontDark, size: 25.w),
         SizedText(
