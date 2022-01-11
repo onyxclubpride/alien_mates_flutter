@@ -33,7 +33,6 @@ class _EventsPageState extends State<EventsPage> {
           onTap: () {
             _singleEventDetails(_item.postId, _item.userId);
           },
-          height: 180.h,
           leftWidget: SizedText(
               text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
               textStyle: latoM14.copyWith(color: ThemeColors.fontWhite)),

@@ -17,7 +17,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
         builder: (context, state) {
           var postDetail = state.apiState.postDetail;
           String _userId = state.apiState.userMe.userId;
-
           return DefaultBody(
             withTopBanner: false,
             withNavigationBar: false,
@@ -29,7 +28,7 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 SpacedColumn(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  verticalSpace: 21,
+                  verticalSpace: 21.h,
                   children: [
                     if (state.apiState.postDetail.imageUrl != null)
                       PostItemBanner(

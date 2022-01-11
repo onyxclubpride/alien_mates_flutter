@@ -12,7 +12,6 @@ class HelpDetailsPage extends StatefulWidget {
 class _HelpDetailsPageState extends State<HelpDetailsPage> {
   @override
   Widget build(BuildContext context) {
-    print("IN HELP DETAIL PAGE");
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
@@ -23,6 +22,7 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
             titleIcon: _buildTitleIcon(),
             titleText: SizedText(text: 'Back', textStyle: latoM20),
             child: SingleChildScrollView(
+              padding: EdgeInsets.only(bottom: 50.h),
               child: Column(mainAxisSize: MainAxisSize.min, children: [
                 SpacedColumn(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,32 +30,26 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
                   children: [
                     if (state.apiState.postDetail.imageUrl != null)
                       PostItemBanner(
+                          height: 200.h,
                           child: CachedNetworkImage(
-                        imageUrl: state.apiState.postDetail.imageUrl!,
-                        fit: BoxFit.cover,
-                      )),
-                    SpacedColumn(verticalSpace: 25, children: [
-                      Container(
-                          height: MediaQuery.of(context).size.height / 2,
-                          alignment: Alignment.topLeft,
-                          child: SingleChildScrollView(
-                            child: Column(
-                              children: [
-                                SizedText(
-                                    text: state.apiState.postDetail.title,
-                                    textStyle:
-                                        latoB45.copyWith(color: Colors.white)),
-                                SizedBox(height: 20.h),
-                                SizedText(
-                                  text: state.apiState.postDetail.description,
-                                  textStyle:
-                                      latoR16.copyWith(color: Colors.white),
-                                  textAlign: TextAlign.left,
-                                ),
-                                SizedBox(height: 20.h),
-                              ],
-                            ),
+                            imageUrl: state.apiState.postDetail.imageUrl!,
+                            fit: BoxFit.cover,
                           )),
+                    SpacedColumn(verticalSpace: 25, children: [
+                      Column(
+                        children: [
+                          SizedText(
+                              text: state.apiState.postDetail.title,
+                              textStyle: latoB25.copyWith(color: Colors.white)),
+                          SizedBox(height: 20.h),
+                          SizedText(
+                            text: state.apiState.postDetail.description,
+                            textStyle: latoR16.copyWith(color: Colors.white),
+                            textAlign: TextAlign.left,
+                          ),
+                          SizedBox(height: 20.h),
+                        ],
+                      ),
                     ]),
                   ],
                 ),

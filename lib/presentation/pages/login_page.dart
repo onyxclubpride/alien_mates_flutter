@@ -34,6 +34,7 @@ class _LoginPageState extends State<LoginPage> {
             withTopBanner: false,
             showAppBar: false,
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Form(
