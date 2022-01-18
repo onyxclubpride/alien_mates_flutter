@@ -23,25 +23,26 @@ class DefaultBody extends StatefulWidget {
   SizedText? titleText;
   Widget? footer;
   Widget? floatingAction;
+  VoidCallback? onRefresh;
 
-  DefaultBody({
-    this.centerTitle = false,
-    this.showAppBar = true,
-    this.titleIcon,
-    this.footer,
-    this.leftButton,
-    required this.child,
-    this.onRightButtonClick,
-    this.bottomPadding = 0,
-    this.horizontalPadding = 12,
-    this.topPadding = 0,
-    this.rightIcon,
-    this.titleText,
-    this.withActionButton = true,
-    this.withNavigationBar = true,
-    this.withTopBanner = true,
-    this.floatingAction,
-  });
+  DefaultBody(
+      {this.centerTitle = false,
+      this.showAppBar = true,
+      this.titleIcon,
+      this.footer,
+      this.leftButton,
+      required this.child,
+      this.onRightButtonClick,
+      this.bottomPadding = 0,
+      this.horizontalPadding = 12,
+      this.topPadding = 0,
+      this.rightIcon,
+      this.titleText,
+      this.withActionButton = true,
+      this.withNavigationBar = true,
+      this.withTopBanner = true,
+      this.floatingAction,
+      this.onRefresh});
 
   @override
   State<DefaultBody> createState() => _DefaultBodyState();
@@ -132,66 +133,76 @@ class _DefaultBodyState extends State<DefaultBody> {
                         height: MediaQuery.of(context).size.height -
                             70.h -
                             MediaQuery.of(context).padding.bottom,
-                        child: ListView(
-                          physics: const BouncingScrollPhysics(),
-                          controller: _controller,
-                          children: [
-                            CarouselSlider.builder(
-                              itemCount: state.apiState.bannerPosts.length,
-                              options: CarouselOptions(
-                                  onPageChanged: (index, reason) {
-                                    appStore.dispatch(UpdateApiStateAction(
-                                        bannerIndex: index));
-                                  },
-                                  enableInfiniteScroll: false,
-                                  viewportFraction: 1,
-                                  height: 90.h),
-                              itemBuilder: (context, index, realIndex) =>
-                                  PostItemBanner(
-                                height: 90.h,
-                                child: CachedImageOrTextImageWidget(
-                                    imageUrl: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .imageUrl,
-                                    description: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .description),
+                        child: RefreshIndicator(
+                          color: ThemeColors.yellow,
+                          backgroundColor: ThemeColors.coolgray300,
+                          onRefresh: () {
+                            return Future.delayed(
+                                const Duration(seconds: 1), widget.onRefresh);
+                          },
+                          child: ListView(
+                            physics: const BouncingScrollPhysics(),
+                            controller: _controller,
+                            children: [
+                              CarouselSlider.builder(
+                                itemCount: state.apiState.bannerPosts.length,
+                                options: CarouselOptions(
+                                    onPageChanged: (index, reason) {
+                                      appStore.dispatch(UpdateApiStateAction(
+                                          bannerIndex: index));
+                                    },
+                                    enableInfiniteScroll: false,
+                                    viewportFraction: 1,
+                                    height: 90.h),
+                                itemBuilder: (context, index, realIndex) =>
+                                    PostItemBanner(
+                                  height: 90.h,
+                                  child: CachedImageOrTextImageWidget(
+                                      imageUrl: state
+                                          .apiState
+                                          .bannerPosts[
+                                              state.apiState.bannerIndex]
+                                          .imageUrl,
+                                      description: state
+                                          .apiState
+                                          .bannerPosts[
+                                              state.apiState.bannerIndex]
+                                          .description),
+                                ),
                               ),
-                            ),
-                            SizedBox(height: 5.h),
-                            SpacedRow(
-                                horizontalSpace: 5,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    state.apiState.bannerIndex == 0
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                  Icon(
-                                    state.apiState.bannerIndex == 1
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                  Icon(
-                                    state.apiState.bannerIndex == 2
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                ]),
-                            Container(
-                                margin: EdgeInsets.symmetric(vertical: 15.h),
-                                child: BodyNavigationBar()),
-                            widget.child
-                          ],
+                              SizedBox(height: 5.h),
+                              SpacedRow(
+                                  horizontalSpace: 5,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      state.apiState.bannerIndex == 0
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                    Icon(
+                                      state.apiState.bannerIndex == 1
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                    Icon(
+                                      state.apiState.bannerIndex == 2
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                  ]),
+                              Container(
+                                  margin: EdgeInsets.symmetric(vertical: 15.h),
+                                  child: BodyNavigationBar()),
+                              widget.child
+                            ],
+                          ),
                         ),
                       )
                     : widget.child,

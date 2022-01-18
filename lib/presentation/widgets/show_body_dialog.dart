@@ -19,13 +19,13 @@ Future showBodyDialog(
         backgroundColor: color,
         title: Column(
           children: [
-            text != null ? Text(text, style: latoM16) : SizedBox(),
+            text != null ? Text(text, style: latoB18) : const SizedBox(),
             SizedBox(height: 16.h),
             Padding(
               padding: EdgeInsets.all(20.w),
               child: SpacedRow(
                 mainAxisAlignment: MainAxisAlignment.center,
-                horizontalSpace: 20.w,
+                horizontalSpace: 15.w,
                 children: [
                   NormalButton(
                     text: 'Cancel',

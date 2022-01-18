@@ -46,11 +46,6 @@ final latoR16 = GoogleFonts.lato(
   fontSize: 16.0,
 );
 
-final latoB14 = GoogleFonts.lato(
-  fontWeight: FontWeight.w700,
-  fontSize: 14.0,
-);
-
 final latoM16 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
   fontSize: 16.0,
@@ -61,29 +56,9 @@ final latoM20 = GoogleFonts.lato(
   fontSize: 20.0,
 );
 
-final latoB34 = GoogleFonts.lato(
-  fontWeight: FontWeight.w700,
-  fontSize: 34.0,
-);
-
 final latoM25 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
   fontSize: 25.0,
-);
-
-final latoB25 = GoogleFonts.lato(
-  fontWeight: FontWeight.w700,
-  fontSize: 25.0,
-);
-
-final latoB45 = GoogleFonts.lato(
-  fontWeight: FontWeight.w700,
-  fontSize: 45.0,
-);
-
-final latoM36 = GoogleFonts.lato(
-  fontWeight: FontWeight.w500,
-  fontSize: 36.0,
 );
 
 final latoM30 = GoogleFonts.lato(
@@ -91,12 +66,46 @@ final latoM30 = GoogleFonts.lato(
   fontSize: 30.0,
 );
 
+final latoM36 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 36.0,
+);
+
+final latoB14 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 14.0,
+);
+
+final latoB16 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 16.0,
+);
+
+final latoB18 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 18.0,
+);
+final latoB20 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 20.0,
+);
+
+final latoB25 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 25.0,
+);
+
 final latoB30 = GoogleFonts.lato(
   fontWeight: FontWeight.w700,
   fontSize: 30.0,
 );
 
-final latoB20 = GoogleFonts.lato(
+final latoB34 = GoogleFonts.lato(
   fontWeight: FontWeight.w700,
-  fontSize: 20.0,
+  fontSize: 34.0,
+);
+
+final latoB45 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 45.0,
 );
