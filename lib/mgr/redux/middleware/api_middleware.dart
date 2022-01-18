@@ -772,6 +772,7 @@ Future<String?> _getSelectImageAction(
     AppState state, GetSelectImageAction action, NextDispatcher next) async {
   try {
     List<Media>? res = await ImagesPicker.pick(
+      quality: .50,
       pickType: PickType.image,
       language: Language.System,
       gif: true,
