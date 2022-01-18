@@ -16,10 +16,10 @@ export '../../layout/default_body.dart';
 
 //other pages
 export '../../pages/splash_page.dart';
-export '../../pages/login_page.dart';
+export '../../pages/auth/login_page.dart';
 export '../../pages/home_page.dart';
-export '../../pages/profile_page.dart';
-export '../../pages/edit_profile_page.dart';
+export '../../pages/profile/profile_page.dart';
+export '../../pages/profile/edit_profile_page.dart';
 
 //help pages
 export '../../pages/help/help_page.dart';
