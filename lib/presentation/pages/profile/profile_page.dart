@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:images_picker/images_picker.dart';
 // import 'package:images_picker/images_picker.dart';
@@ -115,13 +116,19 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   List<Widget> _buildPostsWidgetList(AppState state) {
+    // logger(appStore.state.apiState.posts?.contains(appStore.state.apiState.userMe.postIds));
     List<Widget> _list = [];
+    int myPostCount = 0;
+
     List<ListPostModelRes> postsList = state.apiState.posts;
-    print(postsList.length);
+    // logger(myPostCount, hint: "MY POSTS");
     if (postsList.isNotEmpty) {
       for (int i = 0; i < postsList.length; i++) {
         ListPostModelRes _item = postsList[i];
         if (state.apiState.userMe.postIds!.contains(_item.postId)) {
+          myPostCount += 1;
+          logger(myPostCount);
+
           _list.add(
             PostItemBanner(
               height: 110.h,
@@ -154,31 +161,30 @@ class _ProfilePageState extends State<ProfilePage> {
           _list.add(SizedBox(height: 20.h));
         }
       }
-    } else {
-      _list.add(Positioned(
-        bottom: 200,
-        child: SpacedColumn(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 70.h,
-              ),
-              SizedText(
-                text: 'There are no post available',
-                textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              ExpandedButton(
-                  width: MediaQuery.of(context).size.width / 2,
-                  text: 'Post ',
-                  onPressed: () {
-                    _onEditPress(state);
-                  }),
-            ]),
-      ));
+    }
+
+    if (myPostCount == 0) {
+      _list.add(SpacedColumn(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 70.h,
+            ),
+            SizedText(
+              text: 'There are no post available',
+              textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            ExpandedButton(
+                width: MediaQuery.of(context).size.width / 2,
+                text: 'Post ',
+                onPressed: () {
+                  _onEditPress(state);
+                }),
+          ]));
     }
     return _list;
   }
