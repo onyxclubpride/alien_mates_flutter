@@ -10,6 +10,7 @@ import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:lottie/lottie.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -51,7 +52,7 @@ class _HomePageState extends State<HomePage> {
                 // withBorder: true,
                 onDoubleTap: !isliking
                     ? () {
-                        flareControls.play("like");
+                        // flareControls.play("like");
                         if (!isliking) {
                           _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
                               _item);
@@ -107,13 +108,10 @@ class _HomePageState extends State<HomePage> {
             isliking
                 ? likingpostid == _item.postId
                     ? SizedBox(
-                        height: 100,
-                        width: 100,
-                        child: FlareActor(
-                          'assets/instagram_like.flr',
-                          controller: flareControls,
-                          color: Colors.white,
-                          animation: 'idle',
+                        height: 150.w,
+                        width: 150.w,
+                        child: LottieBuilder.asset(
+                          'assets/lotties/like_heart_lottie.json',
                         ),
                       )
                     : Container()
@@ -151,6 +149,7 @@ class _HomePageState extends State<HomePage> {
           postId: postId,
           likedUserIds: _list));
     }
+    await Future.delayed(Duration(milliseconds: 500));
     setState(() {
       likingpostid = "";
       isliking = false;
@@ -164,7 +163,7 @@ class _HomePageState extends State<HomePage> {
     timeBackPressed = DateTime.now();
 
     if (isExitWarning) {
-      final message = 'Press again to exit';
+      final message = 'Press back again to exit';
       Fluttertoast.showToast(
           msg: message,
           fontSize: 18,
