@@ -1,8 +1,10 @@
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class EventDetailsPage extends StatefulWidget {
   @override
@@ -44,11 +46,13 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                           SizedText(
                               textAlign: TextAlign.start,
                               text: state.apiState.postDetail.title,
-                              textStyle: latoB25.copyWith(color: Colors.white)),
+                              textStyle: latoB25.copyWith(
+                                  color: ThemeColors.coolgray300)),
                           SizedBox(height: 20.h),
                           SizedText(
                             text: state.apiState.postDetail.description,
-                            textStyle: latoR16.copyWith(color: Colors.white),
+                            textStyle: latoR16.copyWith(
+                                color: ThemeColors.coolgray400),
                             textAlign: TextAlign.left,
                           ),
                           SizedBox(height: 20.h),
@@ -57,16 +61,21 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedText(
-                                  text: 'Phone Number\t:\t',
-                                  textStyle: latoB20.copyWith(
-                                      color: ThemeColors.fontWhite),
-                                ),
-                                SizedText(
-                                  isSelectable: true,
-                                  text:
-                                      state.apiState.postDetailUser.phoneNumber,
+                                  text: '\u200d☎️\t\tPhone Number\t:\t',
                                   textStyle: latoM16.copyWith(
-                                      color: ThemeColors.fontWhite),
+                                      color: ThemeColors.coolgray300),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    launch(
+                                        "tel://${state.apiState.postDetailUser.phoneNumber}");
+                                  },
+                                  child: SizedText(
+                                    text: state
+                                        .apiState.postDetailUser.phoneNumber,
+                                    textStyle: latoB16.copyWith(
+                                        color: ThemeColors.coolgray200),
+                                  ),
                                 )
                               ],
                             ),
@@ -75,16 +84,16 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
                                 SizedText(
-                                  text: 'Location\t:\t',
-                                  textStyle: latoB20.copyWith(
-                                      color: ThemeColors.fontWhite),
+                                  text: '\u200d📍\t\tLocation\t:\t',
+                                  textStyle: latoM16.copyWith(
+                                      color: ThemeColors.coolgray300),
                                 ),
                                 SizedText(
-                                  isSelectable: true,
-                                  text: state.apiState.postDetail.eventLocation,
-                                  textStyle: latoM16.copyWith(
-                                      color: ThemeColors.fontWhite),
-                                )
+                                    isSelectable: true,
+                                    text:
+                                        state.apiState.postDetail.eventLocation,
+                                    textStyle: latoM16.copyWith(
+                                        color: ThemeColors.coolgray300))
                               ],
                             ),
                             SizedBox(height: 30.h),

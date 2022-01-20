@@ -131,7 +131,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
           _list.add(
             PostItemBanner(
-              height: 110.h,
+              height: 130.h,
               imageUrl: _item.imageUrl,
               leftWidget: InkWell(
                 onTap: () {
@@ -139,7 +139,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 child: SizedText(
                   text: 'Delete',
-                  textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
+                  textStyle: latoR14.copyWith(color: ThemeColors.coolgray300),
                 ),
               ),
               rightWidget: InkWell(
@@ -148,7 +148,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 },
                 child: SizedText(
                   text: 'Edit',
-                  textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
+                  textStyle: latoB14.copyWith(color: ThemeColors.coolgray300),
                 ),
               ),
               child: CachedImageOrTextImageWidget(

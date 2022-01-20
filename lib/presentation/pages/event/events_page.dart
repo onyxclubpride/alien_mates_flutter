@@ -33,9 +33,14 @@ class _EventsPageState extends State<EventsPage> {
           onTap: () {
             _singleEventDetails(_item.postId, _item.userId);
           },
-          leftWidget: SizedText(
-              text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
-              textStyle: latoM14.copyWith(color: ThemeColors.fontWhite)),
+          leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
+              ? SizedText(
+                  text: 'YAY! \u200D🥳',
+                  textStyle: latoB14.copyWith(color: ThemeColors.white),
+                )
+              : SizedText(
+                  text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+                  textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
           rightWidget: InkWell(
             onTap: () {
               _item.joinedUserIds!.contains(_userId)
@@ -45,8 +50,8 @@ class _EventsPageState extends State<EventsPage> {
                       _item.joinLimit!, _userId);
             },
             child: SizedText(
-              text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
-              textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
+              text: _item.joinedUserIds!.contains(_userId) ? "\u200D✅" : 'JOIN',
+              textStyle: latoB14.copyWith(color: ThemeColors.white),
             ),
           ),
           imageUrl: _item.imageUrl,

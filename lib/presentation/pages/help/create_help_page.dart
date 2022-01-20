@@ -68,6 +68,8 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                   children: [
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
+                                      hintText:
+                                          'ex: Support Needed, Help me!!!',
                                       controller: titleController,
                                       validator: Validator.validateTitle,
                                     ),
@@ -77,6 +79,8 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                   children: [
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
+                                      hintText:
+                                          'Add your KakaoTalk or contact number to let them contact you..  ',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,

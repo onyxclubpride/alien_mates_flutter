@@ -16,7 +16,7 @@ class PostButton extends StatelessWidget {
               alignment: Alignment.center,
               child: _buildChild(),
               decoration: BoxDecoration(
-                color: ThemeColors.yellow,
+                color: ThemeColors.yellow.withOpacity(.4),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10.r),
                     bottomRight: Radius.circular(10.r)),
@@ -29,7 +29,7 @@ class PostButton extends StatelessWidget {
   Widget _buildChild() {
     if (rightChild != null) {
       return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        Container(width: 60.w, child: leftChild),
+        SizedBox(width: 60.w, child: leftChild),
         Container(
             height: 25.h,
             width: 2.w,
@@ -37,7 +37,7 @@ class PostButton extends StatelessWidget {
               color: ThemeColors.bgDark,
               borderRadius: BorderRadius.circular(10000),
             )),
-        Container(width: 50.w, child: rightChild!),
+        SizedBox(width: 50.w, child: rightChild!),
       ]);
     } else {
       return leftChild;

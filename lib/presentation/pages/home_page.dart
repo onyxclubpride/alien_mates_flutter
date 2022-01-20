@@ -62,56 +62,57 @@ class _HomePageState extends State<HomePage> {
                 imageUrl: _item.imageUrl,
                 desc: _item.description,
                 leftWidget: SizedText(
-                  text: '${_item.likedUserIds!.length}\thaha'.toUpperCase(),
+                  text:
+                      '${_item.likedUserIds!.length}\t\t\u200d🤣'.toUpperCase(),
                   textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
                 ),
-                rightWidget: isliking
-                    ? likingpostid == _item.postId
-                        ? SpinKitThreeBounce(
-                            color: Colors.white,
-                            size: 10.h,
-                          )
-                        : IconButton(
-                            splashColor: Colors.transparent,
-                            iconSize: 15.h,
-                            icon: Icon(
-                              _item.likedUserIds!.contains(_userId)
-                                  ? Ionicons.happy
-                                  : Ionicons.happy_outline,
-                              color: ThemeColors.fontWhite,
-                            ),
-                            onPressed: () {
-                              if (!isliking) {
-                                _onLikeTap(_item.postId, _item.likedUserIds!,
-                                    _userId, _item);
-                              }
-                            },
-                          )
-                    : IconButton(
-                        splashColor: Colors.transparent,
-                        iconSize: 15.h,
-                        icon: Icon(
-                          _item.likedUserIds!.contains(_userId)
-                              ? Ionicons.happy
-                              : Ionicons.happy_outline,
-                          color: ThemeColors.fontWhite,
-                        ),
-                        onPressed: () {
-                          if (!isliking) {
-                            _onLikeTap(_item.postId, _item.likedUserIds!,
-                                _userId, _item);
-                          }
-                        },
-                      ),
+                // rightWidget: isliking
+                //     ? likingpostid == _item.postId
+                //         ? SpinKitThreeBounce(
+                //             color: Colors.white,
+                //             size: 10.h,
+                //           )
+                //         : IconButton(
+                //             splashColor: Colors.transparent,
+                //             iconSize: 15.h,
+                //             icon: Icon(
+                //               _item.likedUserIds!.contains(_userId)
+                //                   ? Ionicons.happy
+                //                   : Ionicons.happy_outline,
+                //               color: ThemeColors.fontWhite,
+                //             ),
+                //             onPressed: () {
+                //               if (!isliking) {
+                //                 _onLikeTap(_item.postId, _item.likedUserIds!,
+                //                     _userId, _item);
+                //               }
+                //             },
+                //           )
+                //     : IconButton(
+                //         splashColor: Colors.transparent,
+                //         iconSize: 15.h,
+                //         icon: Icon(
+                //           _item.likedUserIds!.contains(_userId)
+                //               ? Ionicons.happy
+                //               : Ionicons.happy_outline,
+                //           color: ThemeColors.fontWhite,
+                //         ),
+                //         onPressed: () {
+                //           if (!isliking) {
+                //             _onLikeTap(_item.postId, _item.likedUserIds!,
+                //                 _userId, _item);
+                //           }
+                //         },
+                //       ),
                 child: CachedImageOrTextImageWidget(
                     imageUrl: _item.imageUrl, description: _item.description)),
             isliking
                 ? likingpostid == _item.postId
                     ? SizedBox(
-                        height: 150.w,
+                        height: 100.w,
                         width: 150.w,
                         child: LottieBuilder.asset(
-                          'assets/lotties/like_heart_lottie.json',
+                          'assets/lotties/haha_lottie.json',
                         ),
                       )
                     : Container()

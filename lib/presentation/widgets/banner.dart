@@ -72,21 +72,21 @@ class BodyNavigationBar extends StatelessWidget {
         children: [
           _getNavText(
               currentRoute == AppRoutes.homePageRoute
-                  ? ThemeColors.bgLight
+                  ? ThemeColors.coolgray300
                   : ThemeColors.borderDark,
               'Posts', () {
             appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
           }),
           _getNavText(
               currentRoute == AppRoutes.eventsPageRoute
-                  ? ThemeColors.bgLight
+                  ? ThemeColors.coolgray300
                   : ThemeColors.borderDark,
               'Events', () {
             appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
           }),
           _getNavText(
               currentRoute == AppRoutes.helpPageRoute
-                  ? ThemeColors.bgLight
+                  ? ThemeColors.coolgray300
                   : ThemeColors.borderDark,
               'Support', () {
             appStore.dispatch(NavigateToAction(to: AppRoutes.helpPageRoute));
@@ -125,7 +125,7 @@ class PostItemBanner extends StatefulWidget {
   VoidCallback? onTap;
   PostItemBanner({
     required this.child,
-    this.height = 145,
+    this.height = 170,
     this.leftWidget,
     this.onDoubleTap,
     this.withBorder = false,
@@ -162,13 +162,14 @@ class _PostItemBannerState extends State<PostItemBanner> {
       onLongPressEnd: (details) {
         _popupDialog?.remove();
       },
-      child: Column(
+      child: Stack(
+        alignment: Alignment.bottomLeft,
         children: [
           DefaultBanner(
               bgColor: widget.bgColor,
               withBorder: widget.withBorder,
-              withBottomLeftRadius: widget.leftWidget == null,
-              withBottomRightRadius: widget.leftWidget == null,
+              // withBottomLeftRadius: widget.leftWidget == null,
+              // withBottomRightRadius: widget.leftWidget == null,
               child: widget.child,
               height: widget.height),
           if (widget.leftWidget != null || widget.rightWidget != null)

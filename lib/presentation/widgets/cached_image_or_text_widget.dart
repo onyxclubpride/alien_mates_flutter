@@ -16,9 +16,24 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (imageUrl != null) {
-      return CachedNetworkImage(
-        imageUrl: imageUrl!,
-        fit: BoxFit.cover,
+      return Container(
+        foregroundDecoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              ThemeColors.transparent,
+              ThemeColors.transparent,
+              ThemeColors.transparent,
+              ThemeColors.black,
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: [0, 0, .9, 1],
+          ),
+        ),
+        child: CachedNetworkImage(
+          imageUrl: imageUrl!,
+          fit: BoxFit.cover,
+        ),
       );
     } else {
       return Padding(

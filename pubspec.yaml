@@ -37,6 +37,7 @@ dependencies:
   images_picker: ^1.2.4
   encrypt: ^5.0.1
   lottie: ^1.2.1
+  url_launcher: ^6.0.18
 
 dev_dependencies:
   flutter_test:

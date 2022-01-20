@@ -84,7 +84,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       hintText:
-                                          'Add you KakaoTalk or contact number to let them contact you..  ',
+                                          'Add your KakaoTalk or contact number to let them contact you..  ',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,
