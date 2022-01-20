@@ -30,37 +30,36 @@ class _EventsPageState extends State<EventsPage> {
       ListPostModelRes _item = postsList[i];
       if (_item.isEvent) {
         _list.add(PostItemBanner(
-          onTap: () {
-            _singleEventDetails(_item.postId, _item.userId);
-          },
-          leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
-              ? SizedText(
-                  text: 'YAY! \u200D🥳',
-                  textStyle: latoB14.copyWith(color: ThemeColors.white),
-                )
-              : SizedText(
-                  text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
-                  textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
-          rightWidget: InkWell(
             onTap: () {
-              _item.joinedUserIds!.contains(_userId)
-                  ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                      _item.joinLimit!, _userId)
-                  : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                      _item.joinLimit!, _userId);
+              _singleEventDetails(_item.postId, _item.userId);
             },
-            child: SizedText(
-              text: _item.joinedUserIds!.contains(_userId) ? "\u200D✅" : 'JOIN',
-              textStyle: latoB14.copyWith(color: ThemeColors.white),
+            leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
+                ? SizedText(
+                    text: 'YAY! \u200D🥳',
+                    textStyle: latoB14.copyWith(color: ThemeColors.white),
+                  )
+                : SizedText(
+                    text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+                    textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
+            rightWidget: InkWell(
+              onTap: () {
+                _item.joinedUserIds!.contains(_userId)
+                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId)
+                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId);
+              },
+              child: SizedText(
+                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+                textStyle: latoB14.copyWith(color: ThemeColors.white),
+              ),
             ),
-          ),
-          imageUrl: _item.imageUrl,
-          desc: _item.description,
-          child: CachedImageOrTextImageWidget(
-              title: _item.title,
-              imageUrl: _item.imageUrl,
-              description: _item.description),
-        ));
+            imageUrl: _item.imageUrl,
+            desc: _item.description,
+            child: CachedImageOrTextImageWidget(
+                title: _item.title,
+                imageUrl: _item.imageUrl,
+                description: _item.description)));
         _list.add(SizedBox(height: 20.h));
       }
     }

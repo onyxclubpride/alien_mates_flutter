@@ -55,7 +55,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         titleText ??
             SizedText(
               text: 'Alien Mates',
-              textStyle: latoB30,
+              textStyle: latoB30.copyWith(color: ThemeColors.coolgray300),
             ),
       ],
     );
@@ -69,7 +69,8 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         margin: EdgeInsets.only(right: 10.w),
         child: IconButton(
           padding: EdgeInsets.zero,
-          icon: const Icon(Ionicons.person, color: ThemeColors.bgLight),
+          icon: const Icon(Ionicons.person_outline,
+              color: ThemeColors.coolgray300),
           iconSize: 25.h,
           onPressed: () {
             // appStore.dispatch(GetCreateEventAction(

@@ -9,7 +9,7 @@ class ThemeColors {
 
   //Bg
   static const bgDark = Color(0xFF181A1B);
-  static const bgLight = Color(0xFFF3F3F3);
+  static const bgLight = Color(0xFFD1D5DB);
 
   //Border
   static const borderDark = Color(0xFF707070);
@@ -24,10 +24,10 @@ class ThemeColors {
   static const darkGreen = Color(0xFFCBD5E1);
 
   //Font Color
-  static const fontDark = Color(0xFFFFFFFF);
+  static const fontDark = Color(0xFFD1D5DB);
   static const fontLight = Color(0xFF222222);
 
-  static const fontWhite = Color(0xFFFFFFFF);
+  static const fontWhite = Color(0xFFD1D5DB);
   static const fontBlack = Color(0XFF000000);
 
   static const red = Color(0xFFDC000C);

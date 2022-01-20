@@ -33,72 +33,78 @@ class _LoginPageState extends State<LoginPage> {
             withNavigationBar: false,
             withTopBanner: false,
             showAppBar: false,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Form(
-                  key: _formKeyLoginPage,
-                  child: SpacedColumn(
-                    verticalSpace: 21,
-                    children: [
-                      SizedText(
-                          text: 'Alien Mates',
-                          textStyle: latoB45.copyWith(color: Colors.white)),
-                      SizedBox(
-                        height: 25.h,
-                      ),
-                      SpacedColumn(verticalSpace: 25, children: [
-                        BasicInput(
-                          validator: Validator.validatePhoneNumber,
-                          hintText: "Phone Number",
-                          controller: phoneNumController,
-                        ),
-                        BasicInput(
-                          hintText: "Password",
-                          controller: pwController,
-                          textInputAction: TextInputAction.done,
-                          isObscured: true,
-                        ),
-                        if (errorText.isNotEmpty)
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Form(
+                      key: _formKeyLoginPage,
+                      child: SpacedColumn(
+                        verticalSpace: 21,
+                        children: [
                           SizedText(
-                            text: errorText,
-                            textStyle:
-                                latoM16.copyWith(color: ThemeColors.fontWhite),
+                              text: 'Alien Mates',
+                              textStyle: latoB45.copyWith(
+                                  color: ThemeColors.coolgray300)),
+                          SizedBox(
+                            height: 20.h,
                           ),
-                        ExpandedButton(
-                          text: 'LOGIN',
-                          onPressed: _onLoginPress,
-                        )
-                      ]),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        InkWell(
-                            child: SizedText(
-                              text: 'Forget Password',
-                              textStyle: latoB14.apply(
-                                  color:
-                                      ThemeColors.fontWhite.withOpacity(0.5)),
+                          SpacedColumn(verticalSpace: 25, children: [
+                            BasicInput(
+                              validator: Validator.validatePhoneNumber,
+                              hintText: "Phone Number",
+                              keyboardType: TextInputType.number,
+                              controller: phoneNumController,
                             ),
-                            onTap: null),
-                        InkWell(
-                          child: SizedText(
-                            text: 'Sign Up',
-                            textStyle:
-                                latoB14.apply(color: ThemeColors.fontWhite),
-                          ),
-                          onTap: _signUp,
-                        ),
-                      ]),
-                )
-              ],
+                            BasicInput(
+                              hintText: "Password",
+                              controller: pwController,
+                              textInputAction: TextInputAction.done,
+                              isObscured: true,
+                            ),
+                            if (errorText.isNotEmpty)
+                              SizedText(
+                                text: errorText,
+                                textStyle: latoM16.copyWith(
+                                    color: ThemeColors.fontWhite),
+                              ),
+                            ExpandedButton(
+                              text: 'LOGIN',
+                              onPressed: _onLoginPress,
+                            )
+                          ]),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: 10.h),
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            InkWell(
+                                child: SizedText(
+                                  text: 'Forget Password',
+                                  textStyle: latoB14.apply(
+                                      color: ThemeColors.fontWhite
+                                          .withOpacity(0.5)),
+                                ),
+                                onTap: null),
+                            InkWell(
+                              child: SizedText(
+                                text: 'Sign Up',
+                                textStyle:
+                                    latoB14.apply(color: ThemeColors.fontWhite),
+                              ),
+                              onTap: _signUp,
+                            ),
+                          ]),
+                    )
+                  ],
+                ),
+              ),
             ),
           );
         });
