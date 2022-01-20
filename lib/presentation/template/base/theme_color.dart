@@ -5,7 +5,7 @@ class ThemeColors {
   static const transparent = Color(0x00000000);
 
   //Black
-  static const black = Color(0xFF000000);
+  static const black = Color(0xFF121212);
 
   //Bg
   static const bgDark = Color(0xFF181A1B);

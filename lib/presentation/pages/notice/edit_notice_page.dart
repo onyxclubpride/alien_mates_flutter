@@ -87,7 +87,7 @@ class _EditNoticePageState extends State<EditNoticePage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       maxlines: 10,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateDescription,
                                       controller: descriptionController,
                                     ),
                                   ]),

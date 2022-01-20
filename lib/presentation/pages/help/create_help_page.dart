@@ -69,7 +69,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
                                       controller: titleController,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateTitle,
                                     ),
                                   ]),
                               SpacedColumn(
@@ -78,7 +78,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       maxlines: 10,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateDescription,
                                       controller: descriptionController,
                                     ),
                                   ]),
@@ -93,9 +93,23 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                       height: 200.h,
                       child: FittedBox(
                           child: helpImage == null
-                              ? const Icon(
-                                  Ionicons.add,
-                                  color: ThemeColors.borderDark,
+                              ? Column(
+                                  children: [
+                                    const Icon(
+                                      Ionicons.add,
+                                      size: 120,
+                                      color: ThemeColors.coolgray600,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10.0),
+                                      child: SizedText(
+                                        text: "Add images or GIF",
+                                        textStyle: latoR12.copyWith(
+                                            color: ThemeColors.coolgray500),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               : Image.file(helpImage!)),
                     ),

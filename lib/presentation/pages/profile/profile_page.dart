@@ -369,13 +369,15 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(height: 10.h),
               Divider(thickness: 1.w, color: ThemeColors.borderDark),
               SizedBox(height: 10.h),
-              Form(
-                key: _formKeyCreatePostPage,
-                child: PostCreateInput(
-                  maxlines: 10,
-                  hintText: 'Type something...',
-                  validator: Validator.validateText,
-                  controller: descriptionController,
+              Flexible(
+                child: Form(
+                  key: _formKeyCreatePostPage,
+                  child: PostCreateInput(
+                    maxlines: 10,
+                    hintText: 'What is going on today...? ⊙_0  \u200d👀 ',
+                    validator: Validator.validateDescription,
+                    controller: descriptionController,
+                  ),
                 ),
               ),
               SizedBox(height: 30.h),
@@ -383,6 +385,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 text: 'POST',
                 onPressed: _onPostPost,
               ),
+              SizedBox(height: 30.h),
             ]),
           );
         });
@@ -475,9 +478,22 @@ class _ImagesContainerForSheetState extends State<ImagesContainerForSheet> {
           height: 200.h,
           child: FittedBox(
               child: postImage == null
-                  ? const Icon(
-                      Ionicons.add,
-                      color: ThemeColors.borderDark,
+                  ? Column(
+                      children: [
+                        const Icon(
+                          Ionicons.add,
+                          size: 120,
+                          color: ThemeColors.coolgray600,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 10.0),
+                          child: SizedText(
+                            text: "Add images or GIF",
+                            textStyle: latoR12.copyWith(
+                                color: ThemeColors.coolgray500),
+                          ),
+                        ),
+                      ],
                     )
                   : Image.file(postImage!)),
         ),

@@ -72,11 +72,11 @@ class Validator {
     if (value != null) {
       if (value.isEmpty) {
         // enter_phone_number
-        return '전화번호를 입력 해 주세요.';
+        return 'Please enter your phone number';
       }
       if (!regex.hasMatch(value)) {
         // number_must_be_between_10_and_11
-        return "number_must_be_between_10_and_11";
+        return "Number must be between 10 or 11";
       }
     } else {
       return null;
@@ -142,7 +142,39 @@ class Validator {
 
   static String? validateText(String? value) {
     if (value != null && value.length < 6) {
-      return 'Value length must be more than 6 characters';
+      return '\u200d⚠️  At least 6 characters please\u200d‼️';
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateTitle(String? value) {
+    if (value != null && value.length < 10) {
+      return '\u200d⚠️  At least 10 characters please\u200d‼️\u200d😐';
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateDescription(String? value) {
+    if (value != null && value.length < 60) {
+      return '\u200d⚠️  At least 30 words please\u200d‼️️\u200d😑';
+    } else {
+      return null;
+    }
+  }
+
+  static String? validateMaxPeople(String? value) {
+    if (value != null) {
+      int val = int.parse(value);
+      if (val < 0) return 'BRUH\u200d‼️‼️😑';
+      if (val == 0) return null;
+      if (val < 3 && val > 0) {
+        return 'A group of 3 friends is always the best. \u200d💛';
+      }
+      if (val > 6) {
+        return 'Already forgot about COVID? \u200d🚫\u200d💉\u200d😷 ';
+      }
     } else {
       return null;
     }

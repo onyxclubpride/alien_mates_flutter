@@ -74,7 +74,7 @@ class _EditHelpPageState extends State<EditHelpPage> {
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
                                       controller: titleController,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateTitle,
                                     ),
                                   ]),
                               SpacedColumn(
@@ -83,7 +83,7 @@ class _EditHelpPageState extends State<EditHelpPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       maxlines: 10,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateDescription,
                                       controller: descriptionController,
                                     ),
                                   ]),

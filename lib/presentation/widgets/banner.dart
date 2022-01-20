@@ -99,11 +99,13 @@ class BodyNavigationBar extends StatelessWidget {
   Widget _getNavText(Color textColor, String text, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: SizedText(
-          text: text,
-          textStyle: latoM16.copyWith(color: textColor),
+      child: InkWell(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: SizedText(
+            text: text,
+            textStyle: latoB18.copyWith(color: textColor),
+          ),
         ),
       ),
     );

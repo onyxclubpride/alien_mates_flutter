@@ -38,6 +38,7 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
                     SpacedColumn(verticalSpace: 25, children: [
                       Column(
                         children: [
+                          SizedBox(height: 20.h),
                           SizedText(
                               text: state.apiState.postDetail.title,
                               textStyle: latoB25.copyWith(color: Colors.white)),

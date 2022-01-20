@@ -78,6 +78,9 @@ class _EditPostPageState extends State<EditPostPage> {
                                     ),
                                   if (state.apiState.postDetail.imageUrl !=
                                       null)
+                                    InputLabel(label: '  Tap on Image'),
+                                  if (state.apiState.postDetail.imageUrl !=
+                                      null)
                                     DefaultBanner(
                                       onTap: _onChooseImage,
                                       height: 200.h,
@@ -94,11 +97,14 @@ class _EditPostPageState extends State<EditPostPage> {
                 ),
               ),
             ),
-            footer: ExpandedButton(
-              text: 'Save',
-              onPressed: () {
-                _onUpdateEvent(state.apiState.postDetail.postId);
-              },
+            footer: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: ExpandedButton(
+                text: 'Save',
+                onPressed: () {
+                  _onUpdateEvent(state.apiState.postDetail.postId);
+                },
+              ),
             ),
           );
         });

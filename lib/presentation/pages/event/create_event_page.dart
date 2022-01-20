@@ -17,8 +17,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
 
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
-  TextEditingController maxPplController = TextEditingController(text: "0");
-  TextEditingController locationController = TextEditingController();
+  TextEditingController maxPplController = TextEditingController(text: "");
+  TextEditingController locationController = TextEditingController(text: "");
 
   File? postImage;
 
@@ -75,7 +75,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
                                       controller: titleController,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateTitle,
                                     ),
                                   ]),
                               SpacedColumn(
@@ -83,8 +83,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   children: [
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
+                                      hintText:
+                                          'Add you KakaoTalk or contact number to let them contact you..  ',
                                       maxlines: 10,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateDescription,
                                       controller: descriptionController,
                                     ),
                                   ]),
@@ -93,8 +95,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   children: [
                                     InputLabel(label: 'Maximum people'),
                                     PostCreateInput(
+                                      regexPattern: RegExp(r'^[0-9]*$'),
                                       hintText: 'Leave 0 if none',
                                       controller: maxPplController,
+                                      validator: Validator.validateMaxPeople,
                                       keyboardType: TextInputType.number,
                                     ),
                                   ]),
@@ -103,8 +107,9 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   children: [
                                     InputLabel(label: 'Location'),
                                     PostCreateInput(
-                                      controller: locationController,
+                                      hintText: 'Add the Location',
                                       validator: Validator.validateText,
+                                      controller: locationController,
                                     ),
                                   ]),
                             ]),
@@ -118,9 +123,23 @@ class _CreateEventPageState extends State<CreateEventPage> {
                       height: 200.h,
                       child: FittedBox(
                           child: postImage == null
-                              ? const Icon(
-                                  Ionicons.add,
-                                  color: ThemeColors.borderDark,
+                              ? Column(
+                                  children: [
+                                    const Icon(
+                                      Ionicons.add,
+                                      size: 120,
+                                      color: ThemeColors.coolgray600,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.only(bottom: 10.0),
+                                      child: SizedText(
+                                        text: "Add images or GIF",
+                                        textStyle: latoR12.copyWith(
+                                            color: ThemeColors.coolgray500),
+                                      ),
+                                    ),
+                                  ],
                                 )
                               : Image.file(postImage!)),
                     ),

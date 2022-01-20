@@ -68,7 +68,7 @@ class _EditEventPageState extends State<EditEventPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             SizedText(
-                                text: 'Notice details',
+                                text: 'Edit Event details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
                             Container(
@@ -84,7 +84,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
                                       controller: titleController,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateTitle,
                                     ),
                                   ]),
                               SpacedColumn(
@@ -92,8 +92,10 @@ class _EditEventPageState extends State<EditEventPage> {
                                   children: [
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
+                                      hintText:
+                                          'Add you KakaoTalk or contact number to let them contact you..  ',
                                       maxlines: 10,
-                                      validator: Validator.validateText,
+                                      validator: Validator.validateDescription,
                                       controller: descriptionController,
                                     ),
                                   ]),
@@ -104,6 +106,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                     PostCreateInput(
                                       hintText: 'Leave 0 if none',
                                       controller: maxPplController,
+                                      validator: Validator.validateMaxPeople,
                                       keyboardType: TextInputType.number,
                                     ),
                                   ]),
@@ -112,8 +115,9 @@ class _EditEventPageState extends State<EditEventPage> {
                                   children: [
                                     InputLabel(label: 'Location'),
                                     PostCreateInput(
-                                      controller: locationController,
+                                      hintText: 'Add the Location',
                                       validator: Validator.validateText,
+                                      controller: locationController,
                                     ),
                                   ]),
                             ]),

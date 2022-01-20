@@ -26,6 +26,11 @@ final futuraB45 = GoogleFonts.lato(
   fontSize: 45.0,
 );
 
+final latoR12 = GoogleFonts.lato(
+  fontWeight: FontWeight.w400,
+  fontSize: 12.0,
+);
+
 final latoR14 = GoogleFonts.lato(
   fontWeight: FontWeight.w400,
   fontSize: 14.0,
@@ -49,6 +54,11 @@ final latoR16 = GoogleFonts.lato(
 final latoM16 = GoogleFonts.lato(
   fontWeight: FontWeight.w500,
   fontSize: 16.0,
+);
+
+final latoM18 = GoogleFonts.lato(
+  fontWeight: FontWeight.w500,
+  fontSize: 18.0,
 );
 
 final latoM20 = GoogleFonts.lato(

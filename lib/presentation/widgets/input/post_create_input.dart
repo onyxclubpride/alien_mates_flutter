@@ -19,22 +19,23 @@ class PostCreateInput extends StatelessWidget {
   int? maxlines;
   double? height;
 
-  PostCreateInput(
-      {this.hintText,
-      this.validator,
-      this.onTap,
-      this.height,
-      this.controller,
-      this.errorText,
-      this.readOnly = false,
-      this.suffixIcon,
-      this.keyboardType = TextInputType.text,
-      this.maxlines,
-      this.textInputAction = TextInputAction.next,
-      this.isObscured = false,
-      this.regexPattern,
-      this.onChanged,
-      this.isFocusBorderEnabled = true});
+  PostCreateInput({
+    this.hintText,
+    this.validator,
+    this.onTap,
+    this.height,
+    this.controller,
+    this.errorText,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.keyboardType = TextInputType.text,
+    this.maxlines,
+    this.textInputAction = TextInputAction.next,
+    this.isObscured = false,
+    this.regexPattern,
+    this.onChanged,
+    this.isFocusBorderEnabled = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -61,16 +62,16 @@ class PostCreateInput extends StatelessWidget {
           hintText: hintText ?? '',
           errorText: errorText,
           suffixIcon: suffixIcon,
-          errorStyle: latoR14.copyWith(color: ThemeColors.red),
+          errorStyle: latoR14.copyWith(color: ThemeColors.coolgray300),
           errorMaxLines: 2,
           hintStyle: latoR14.copyWith(color: ThemeColors.gray1),
-          contentPadding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+          contentPadding: EdgeInsets.all(10.h),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.r)),
               borderSide: BorderSide(width: 1.w, color: ThemeColors.gray1)),
           errorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.r)),
-              borderSide: BorderSide(width: 1.w, color: ThemeColors.red)),
+              borderSide: BorderSide(width: 1.w, color: ThemeColors.yellow300)),
           focusedErrorBorder: OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.r)),
               borderSide: BorderSide(width: 1.w, color: ThemeColors.red)),
