@@ -11,6 +11,7 @@ import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:lottie/lottie.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -64,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         text: "My Feed",
                         textStyle:
                             latoB25.copyWith(color: ThemeColors.fontDark)),
-                    SizedBox(height: 10.h),
+                    SizedBox(height: 20.h),
                     SizedBox(
                       child: ListView(
                         shrinkWrap: true,
@@ -133,6 +134,7 @@ class _ProfilePageState extends State<ProfilePage> {
             PostItemBanner(
               height: 130.h,
               imageUrl: _item.imageUrl,
+              desc: _item.description,
               leftWidget: InkWell(
                 onTap: () {
                   _onDeletePress(_item.postId);
@@ -169,7 +171,17 @@ class _ProfilePageState extends State<ProfilePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-              height: 70.h,
+              height: 30.h,
+            ),
+            SizedBox(
+              height: 100.w,
+              width: 150.w,
+              child: LottieBuilder.asset(
+                'assets/lotties/empty_page_lottie.json',
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
             ),
             SizedText(
               text: 'There are no post available',

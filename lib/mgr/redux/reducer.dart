@@ -99,5 +99,7 @@ InitState _updateInitState(InitState state, UpdateInitStateAction action) {
   if (action.isRestart) {
     return InitState.initial();
   }
-  return state.copyWith(userId: action.userId ?? state.userId);
+  return state.copyWith(
+      userId: action.userId ?? state.userId,
+      isDarkTheme: action.isDarkTheme ?? state.isDarkTheme);
 }

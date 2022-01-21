@@ -186,7 +186,6 @@ class _SignUpState extends State<SignUp> {
       setState(() {
         isOtpSent = false;
       });
-      logger(e.toString());
     }
   }
 

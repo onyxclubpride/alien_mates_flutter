@@ -288,17 +288,11 @@ class RemoveLocalUserIdAction {}
 
 class UpdateInitStateAction {
   String? userId;
+  bool? isDarkTheme;
   bool isRestart;
 
-  UpdateInitStateAction({this.userId, this.isRestart = false});
-}
-
-class UpdateInitAction {
-  bool isRestart;
-  String? token;
-  String? deviceToken;
-
-  UpdateInitAction({this.token, this.deviceToken, this.isRestart = false});
+  UpdateInitStateAction(
+      {this.userId, this.isDarkTheme, this.isRestart = false});
 }
 
 class GetRemoveLocalTokenAction {}

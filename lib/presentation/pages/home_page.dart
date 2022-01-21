@@ -66,55 +66,25 @@ class _HomePageState extends State<HomePage> {
                       '${_item.likedUserIds!.length}\t\t\u200d🤣'.toUpperCase(),
                   textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
                 ),
-                // rightWidget: isliking
-                //     ? likingpostid == _item.postId
-                //         ? SpinKitThreeBounce(
-                //             color: Colors.white,
-                //             size: 10.h,
-                //           )
-                //         : IconButton(
-                //             splashColor: Colors.transparent,
-                //             iconSize: 15.h,
-                //             icon: Icon(
-                //               _item.likedUserIds!.contains(_userId)
-                //                   ? Ionicons.happy
-                //                   : Ionicons.happy_outline,
-                //               color: ThemeColors.fontWhite,
-                //             ),
-                //             onPressed: () {
-                //               if (!isliking) {
-                //                 _onLikeTap(_item.postId, _item.likedUserIds!,
-                //                     _userId, _item);
-                //               }
-                //             },
-                //           )
-                //     : IconButton(
-                //         splashColor: Colors.transparent,
-                //         iconSize: 15.h,
-                //         icon: Icon(
-                //           _item.likedUserIds!.contains(_userId)
-                //               ? Ionicons.happy
-                //               : Ionicons.happy_outline,
-                //           color: ThemeColors.fontWhite,
-                //         ),
-                //         onPressed: () {
-                //           if (!isliking) {
-                //             _onLikeTap(_item.postId, _item.likedUserIds!,
-                //                 _userId, _item);
-                //           }
-                //         },
-                //       ),
                 child: CachedImageOrTextImageWidget(
                     imageUrl: _item.imageUrl, description: _item.description)),
             isliking
                 ? likingpostid == _item.postId
-                    ? SizedBox(
-                        height: 100.w,
-                        width: 150.w,
-                        child: LottieBuilder.asset(
-                          'assets/lotties/haha_lottie.json',
-                        ),
-                      )
+                    ? _item.likedUserIds!.contains(state.apiState.userMe.userId)
+                        ? SizedBox(
+                            height: 100.w,
+                            width: 150.w,
+                            child: LottieBuilder.asset(
+                              'assets/lotties/haha_lottie.json',
+                            ),
+                          )
+                        : SizedBox(
+                            height: 100.w,
+                            width: 150.w,
+                            child: LottieBuilder.asset(
+                              'assets/lotties/unlike_lottie.json',
+                            ),
+                          )
                     : Container()
                 : Container(),
           ],
@@ -150,7 +120,7 @@ class _HomePageState extends State<HomePage> {
           postId: postId,
           likedUserIds: _list));
     }
-    await Future.delayed(Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 500));
     setState(() {
       likingpostid = "";
       isliking = false;
@@ -159,12 +129,12 @@ class _HomePageState extends State<HomePage> {
 
   Future<bool> _onWillPop() {
     final difference = DateTime.now().difference(timeBackPressed);
-    final isExitWarning = difference >= Duration(seconds: 2);
+    final isExitWarning = difference >= const Duration(seconds: 2);
 
     timeBackPressed = DateTime.now();
 
     if (isExitWarning) {
-      final message = 'Press back again to exit';
+      const message = 'Press back again to exit';
       Fluttertoast.showToast(
           msg: message,
           fontSize: 18,

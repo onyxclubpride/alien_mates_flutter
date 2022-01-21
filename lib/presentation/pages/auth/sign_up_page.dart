@@ -167,7 +167,6 @@ class _SignUpPageState extends State<SignUpPage> {
           verificationId: verId!, smsCode: smsCode);
       // Sign the user in (or link) with the credential
       final res = await FirebaseAuth.instance.signInWithCredential(credential);
-      logger(phoneNumberController.text);
       if (res.user != null) {
         if (res.user!.phoneNumber == phoneNumber) {
           bool userExists = await appStore
