@@ -1,6 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -17,8 +18,22 @@ class _EventsPageState extends State<EventsPage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
-        builder: (context, state) =>
-            DefaultBody(child: _buildPostsWidgetList(state)));
+        builder: (context, state) => DefaultBody(
+            onRefresh: _onRefresh,
+            child: Column(
+              children: [
+                _buildPostsWidgetList(state),
+                MainButton(
+                  onPressed: _onRefresh,
+                  text: "Load more",
+                ),
+                SizedBox(height: 20.h)
+              ],
+            )));
+  }
+
+  _onRefresh() {
+    appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
   }
 
   Widget _buildPostsWidgetList(AppState state) {
@@ -41,19 +56,19 @@ class _EventsPageState extends State<EventsPage> {
                 : SizedText(
                     text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
                     textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
-            rightWidget: InkWell(
-              onTap: () {
-                _item.joinedUserIds!.contains(_userId)
-                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId)
-                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId);
-              },
-              child: SizedText(
-                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
-                textStyle: latoB14.copyWith(color: ThemeColors.white),
-              ),
-            ),
+            // rightWidget: InkWell(
+            //   onTap: () {
+            //     _item.joinedUserIds!.contains(_userId)
+            //         ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+            //             _item.joinLimit!, _userId)
+            //         : _onJoinTap(_item.postId, _item.joinedUserIds!,
+            //             _item.joinLimit!, _userId);
+            //   },
+            //   child: SizedText(
+            //     text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+            //     textStyle: latoB14.copyWith(color: ThemeColors.white),
+            //   ),
+            // ),
             imageUrl: _item.imageUrl,
             desc: _item.description,
             child: CachedImageOrTextImageWidget(
@@ -83,6 +98,7 @@ class _EventsPageState extends State<EventsPage> {
     } else {
       showAlertDialog(context, text: "Guests limit is full!");
     }
+    setState(() {});
   }
 
   _onUnJoinTap(String postId, List userIds, int joinLimit, userId) {
@@ -90,5 +106,6 @@ class _EventsPageState extends State<EventsPage> {
     _list.remove(userId);
     appStore
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
+    setState(() {});
   }
 }

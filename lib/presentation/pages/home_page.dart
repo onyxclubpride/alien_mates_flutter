@@ -34,8 +34,22 @@ class _HomePageState extends State<HomePage> {
           builder: (context, state) => DefaultBody(
               withNavigationBar: true,
               withTopBanner: true,
-              child: _buildPostsWidgetList(state))),
+              onRefresh: _onRefresh,
+              child: Column(
+                children: [
+                  _buildPostsWidgetList(state),
+                  MainButton(
+                    onPressed: _onRefresh,
+                    text: "Load more",
+                  ),
+                  SizedBox(height: 20.h)
+                ],
+              ))),
     );
+  }
+
+  _onRefresh() {
+    appStore.dispatch(GetFetchMorePostsAction(isPostOnly: true));
   }
 
   Widget _buildPostsWidgetList(AppState state) {

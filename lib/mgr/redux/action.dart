@@ -267,6 +267,19 @@ class GetLogoutUserAction {
   GetLogoutUserAction({this.routeTo});
 }
 
+class GetFetchMorePostsAction {
+  bool isPostOnly;
+  bool isHelpOnly;
+  bool isEventOnly;
+  bool isNoticeOnly;
+
+  GetFetchMorePostsAction(
+      {this.isNoticeOnly = false,
+      this.isEventOnly = false,
+      this.isPostOnly = false,
+      this.isHelpOnly = false});
+}
+
 ///----------------- Init -----------------
 
 class GetLogoutAction {}

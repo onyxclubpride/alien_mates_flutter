@@ -3,8 +3,6 @@ import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dar
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:images_picker/images_picker.dart';
-// import 'package:images_picker/images_picker.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';

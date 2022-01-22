@@ -87,61 +87,62 @@ class _DefaultBodyState extends State<DefaultBody> {
     final bool showFab = MediaQuery.of(context).viewInsets.bottom == 0.0;
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
-        builder: (context, state) => Scaffold(
-              resizeToAvoidBottomInset: true,
-              floatingActionButton: widget.floatingAction != null
-                  ? widget.floatingAction
-                  : _showBackToTopButton == false
-                      ? null
-                      : FloatingActionButton(
-                          backgroundColor: ThemeColors.bluegray700,
-                          onPressed: _scrollToTop,
-                          child: Icon(Icons.arrow_upward),
-                        ),
-              appBar: widget.showAppBar
-                  ? DefaultHeader(
-                      withAction: widget.withActionButton,
-                      titleText: widget.titleText,
-                      centerTitle: widget.centerTitle,
-                      leftButton: widget.leftButton,
-                      titleIcon: widget.titleIcon,
-                      onRightButtonClick: widget.onRightButtonClick,
-                      rightIcon: widget.rightIcon,
-                    )
-                  : null,
-              bottomSheet: widget.footer != null
-                  ? showFab
-                      ? Padding(
-                          padding: EdgeInsets.only(
-                            left: widget.horizontalPadding!.w,
-                            right: widget.horizontalPadding!.w,
-                            bottom: widget.bottomPadding!.h,
+        builder: (context, state) => RefreshIndicator(
+              color: ThemeColors.yellow,
+              backgroundColor: ThemeColors.coolgray300,
+              edgeOffset: 8,
+              onRefresh: () {
+                return Future.delayed(
+                    const Duration(seconds: 1), widget.onRefresh);
+              },
+              child: Scaffold(
+                resizeToAvoidBottomInset: true,
+                floatingActionButton: widget.floatingAction != null
+                    ? widget.floatingAction
+                    : _showBackToTopButton == false
+                        ? null
+                        : FloatingActionButton(
+                            backgroundColor: ThemeColors.bluegray700,
+                            onPressed: _scrollToTop,
+                            child: Icon(Icons.arrow_upward),
                           ),
-                          child: widget.footer)
-                      : null
-                  : null,
-              body: SafeArea(
-                  child: Padding(
-                padding: EdgeInsets.only(
-                  left: widget.horizontalPadding!.w,
-                  right: widget.horizontalPadding!.w,
-                  bottom: widget.bottomPadding!.h,
-                  top: widget.topPadding!.h,
-                ),
-                child: widget.withTopBanner || widget.withNavigationBar
-                    ? SizedBox(
-                        height: MediaQuery.of(context).size.height -
-                            70.h -
-                            MediaQuery.of(context).padding.bottom,
-                        child: RefreshIndicator(
-                          color: ThemeColors.yellow,
-                          backgroundColor: ThemeColors.coolgray300,
-                          onRefresh: () {
-                            return Future.delayed(
-                                const Duration(seconds: 1), widget.onRefresh);
-                          },
+                appBar: widget.showAppBar
+                    ? DefaultHeader(
+                        withAction: widget.withActionButton,
+                        titleText: widget.titleText,
+                        centerTitle: widget.centerTitle,
+                        leftButton: widget.leftButton,
+                        titleIcon: widget.titleIcon,
+                        onRightButtonClick: widget.onRightButtonClick,
+                        rightIcon: widget.rightIcon,
+                      )
+                    : null,
+                bottomSheet: widget.footer != null
+                    ? showFab
+                        ? Padding(
+                            padding: EdgeInsets.only(
+                              left: widget.horizontalPadding!.w,
+                              right: widget.horizontalPadding!.w,
+                              bottom: widget.bottomPadding!.h,
+                            ),
+                            child: widget.footer)
+                        : null
+                    : null,
+                body: SafeArea(
+                    child: Padding(
+                  padding: EdgeInsets.only(
+                    left: widget.horizontalPadding!.w,
+                    right: widget.horizontalPadding!.w,
+                    bottom: widget.bottomPadding!.h,
+                    top: widget.topPadding!.h,
+                  ),
+                  child: widget.withTopBanner || widget.withNavigationBar
+                      ? SizedBox(
+                          height: MediaQuery.of(context).size.height -
+                              70.h -
+                              MediaQuery.of(context).padding.bottom,
                           child: ListView(
-                            physics: const BouncingScrollPhysics(),
+                            physics: const AlwaysScrollableScrollPhysics(),
                             controller: _controller,
                             children: [
                               CarouselSlider.builder(
@@ -203,10 +204,10 @@ class _DefaultBodyState extends State<DefaultBody> {
                               widget.child
                             ],
                           ),
-                        ),
-                      )
-                    : widget.child,
-              )),
+                        )
+                      : widget.child,
+                )),
+              ),
             ));
   }
 }

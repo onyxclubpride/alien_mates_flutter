@@ -11,16 +11,28 @@ class HelpPage extends StatefulWidget {
 }
 
 class _HelpPageState extends State<HelpPage> {
-  final ScrollController _controller = ScrollController();
-
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
+            onRefresh: _onRefresh,
             withNavigationBar: true,
             withTopBanner: true,
-            child: _buildPostsWidgetList(state)));
+            child: Column(
+              children: [
+                _buildPostsWidgetList(state),
+                MainButton(
+                  onPressed: _onRefresh,
+                  text: "Load more",
+                ),
+                SizedBox(height: 20.h)
+              ],
+            )));
+  }
+
+  _onRefresh() {
+    appStore.dispatch(GetFetchMorePostsAction(isHelpOnly: true));
   }
 
   Widget _buildPostsWidgetList(AppState state) {
