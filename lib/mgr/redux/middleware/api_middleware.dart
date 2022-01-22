@@ -103,7 +103,7 @@ Future<bool> _getAllKindPostsAction(
 }
 
 Future<List<ListPostModelRes>> _getPostsList(
-    {int limit = 1,
+    {int limit = 20,
     bool isPostOnly = false,
     bool isHelpOnly = false,
     bool isEventOnly = false,
