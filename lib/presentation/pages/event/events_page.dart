@@ -32,7 +32,7 @@ class _EventsPageState extends State<EventsPage> {
             )));
   }
 
-  _onRefresh() {
+  _onRefresh() async {
     appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
   }
 
@@ -56,19 +56,19 @@ class _EventsPageState extends State<EventsPage> {
                 : SizedText(
                     text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
                     textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
-            // rightWidget: InkWell(
-            //   onTap: () {
-            //     _item.joinedUserIds!.contains(_userId)
-            //         ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-            //             _item.joinLimit!, _userId)
-            //         : _onJoinTap(_item.postId, _item.joinedUserIds!,
-            //             _item.joinLimit!, _userId);
-            //   },
-            //   child: SizedText(
-            //     text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
-            //     textStyle: latoB14.copyWith(color: ThemeColors.white),
-            //   ),
-            // ),
+            rightWidget: InkWell(
+              onTap: () {
+                _item.joinedUserIds!.contains(_userId)
+                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId)
+                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                        _item.joinLimit!, _userId);
+              },
+              child: SizedText(
+                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+                textStyle: latoB14.copyWith(color: ThemeColors.white),
+              ),
+            ),
             imageUrl: _item.imageUrl,
             desc: _item.description,
             child: CachedImageOrTextImageWidget(
@@ -87,25 +87,25 @@ class _EventsPageState extends State<EventsPage> {
     appStore.dispatch(NavigateToAction(to: AppRoutes.eventDetailsPageRoute));
   }
 
-  _onJoinTap(String postId, List userIds, int joinLimit, userId) {
+  _onJoinTap(String postId, List userIds, int joinLimit, userId) async {
     if (joinLimit > userIds.length) {
       if (!userIds.contains(userId)) {
-        appStore.dispatch(GetUpdatePostAction(
+        await appStore.dispatch(GetUpdatePostAction(
             postId: postId, joinedUserIds: [...userIds, userId]));
+        _onRefresh();
       } else {
         showAlertDialog(context, text: "You have already joined!");
       }
     } else {
       showAlertDialog(context, text: "Guests limit is full!");
     }
-    setState(() {});
   }
 
-  _onUnJoinTap(String postId, List userIds, int joinLimit, userId) {
+  _onUnJoinTap(String postId, List userIds, int joinLimit, userId) async {
     List _list = userIds;
     _list.remove(userId);
-    appStore
+    await appStore
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
-    setState(() {});
+    _onRefresh();
   }
 }

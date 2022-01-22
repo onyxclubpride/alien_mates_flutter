@@ -898,7 +898,7 @@ _getFetchMorePostsAction(
   final allPosts = [...oldPosts, ...newPosts];
 
   for (var element in sortedIds) {
-    allPosts.firstWhere((e) {
+    allPosts.lastWhere((e) {
       if (e.postId == element) {
         sortedPosts.add(e);
       }

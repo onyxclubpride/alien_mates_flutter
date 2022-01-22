@@ -66,7 +66,6 @@ class _HomePageState extends State<HomePage> {
                 // withBorder: true,
                 onDoubleTap: !isliking
                     ? () {
-                        // flareControls.play("like");
                         if (!isliking) {
                           _onLikeTap(_item.postId, _item.likedUserIds!, _userId,
                               _item);

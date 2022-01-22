@@ -41,60 +41,53 @@ class _EditPostPageState extends State<EditPostPage> {
             titleText: SizedText(text: 'Edit Post details', textStyle: latoM20),
             child: Form(
               key: _formKeyEditPostPage,
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    // if (descriptionController.text.isNotEmpty)
-                    DefaultBanner(
-                      bgColor: ThemeColors.black,
-                      child: Container(
-                        padding: EdgeInsets.all(12.w),
-                        child: SpacedColumn(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            SizedText(
-                                text: 'Post details',
-                                textStyle: latoR14.copyWith(
-                                    color: ThemeColors.fontWhite)),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 6.h),
-                              child: Divider(
-                                  thickness: 1.w,
-                                  color: ThemeColors.borderDark),
-                            ),
-                            SpacedColumn(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  if (state.apiState.postDetail.description !=
-                                      null)
-                                    InputLabel(label: 'Description'),
-                                  if (state.apiState.postDetail.description !=
-                                      null)
-                                    PostCreateInput(
-                                      maxlines: 10,
-                                      validator: Validator.validateText,
-                                      controller: descriptionController,
-                                    ),
-                                  if (state.apiState.postDetail.imageUrl !=
-                                      null)
-                                    InputLabel(label: '  Tap on Image'),
-                                  if (state.apiState.postDetail.imageUrl !=
-                                      null)
-                                    DefaultBanner(
-                                      onTap: _onChooseImage,
-                                      height: 200.h,
-                                      child: FittedBox(
-                                          child: _getImageOrNotWidget(
-                                              state.apiState)),
-                                    ),
-                                ]),
-                          ],
-                        ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // if (descriptionController.text.isNotEmpty)
+                  DefaultBanner(
+                    bgColor: ThemeColors.black,
+                    child: Container(
+                      padding: EdgeInsets.all(12.w),
+                      child: SpacedColumn(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedText(
+                              text: 'Post details',
+                              textStyle: latoR14.copyWith(
+                                  color: ThemeColors.fontWhite)),
+                          Container(
+                            margin: EdgeInsets.symmetric(vertical: 6.h),
+                            child: Divider(
+                                thickness: 1.w, color: ThemeColors.borderDark),
+                          ),
+                          SpacedColumn(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                if (state.apiState.postDetail.description !=
+                                    null)
+                                  InputLabel(label: 'Description'),
+                                if (state.apiState.postDetail.description !=
+                                    null)
+                                  PostCreateInput(
+                                    maxlines: 10,
+                                    validator: Validator.validateText,
+                                    controller: descriptionController,
+                                  ),
+                                if (state.apiState.postDetail.imageUrl != null)
+                                  InputLabel(label: '  Tap on Image'),
+                                if (state.apiState.postDetail.imageUrl != null)
+                                  DefaultBanner(
+                                    onTap: _onChooseImage,
+                                    // height: 200.h,
+                                    child: _getImageOrNotWidget(state.apiState),
+                                  ),
+                              ]),
+                        ],
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
             footer: Padding(
@@ -122,6 +115,7 @@ class _EditPostPageState extends State<EditPostPage> {
   }
 
   _onChooseImage() async {
+    print('sdfsdfsdf');
     String? xImagePath = await appStore.dispatch(GetSelectImageAction());
     if (xImagePath != null) {
       setState(() {
@@ -133,7 +127,9 @@ class _EditPostPageState extends State<EditPostPage> {
   _onUpdateEvent(String postId) async {
     if (_formKeyEditPostPage.currentState!.validate()) {
       bool created = await appStore.dispatch(GetUpdatePostAction(
-          description: descriptionController.text,
+          description: descriptionController.text.isEmpty
+              ? null
+              : descriptionController.text,
           imagePath: noticeImage?.path,
           postId: postId));
 
@@ -142,6 +138,7 @@ class _EditPostPageState extends State<EditPostPage> {
             text:
                 'There was a problem while updating to server! Please, try again!');
       } else {
+        appStore.dispatch(GetFetchMorePostsAction(isPostOnly: true));
         appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }

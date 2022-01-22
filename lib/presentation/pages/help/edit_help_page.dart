@@ -148,6 +148,7 @@ class _EditHelpPageState extends State<EditHelpPage> {
             text:
                 'There was a problem while updating to server! Please, try again!');
       } else {
+        appStore.dispatch(GetFetchMorePostsAction(isHelpOnly: true));
         appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }

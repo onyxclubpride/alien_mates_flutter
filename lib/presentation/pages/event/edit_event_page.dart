@@ -183,6 +183,7 @@ class _EditEventPageState extends State<EditEventPage> {
             text:
                 'There was a problem while updating to server! Please, try again!');
       } else {
+        appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
         appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }

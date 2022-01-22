@@ -190,11 +190,12 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     );
   }
 
-  _onJoinTap(String postId, List userIds, int joinLimit, userId) {
+  _onJoinTap(String postId, List userIds, int joinLimit, userId) async {
     if (joinLimit > userIds.length) {
       if (!userIds.contains(userId)) {
-        appStore.dispatch(GetUpdatePostAction(
+        await appStore.dispatch(GetUpdatePostAction(
             postId: postId, joinedUserIds: [...userIds, userId]));
+        appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
       } else {
         showAlertDialog(context, text: "You have already joined!");
       }
@@ -203,10 +204,11 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     }
   }
 
-  _onUnJoinTap(String postId, List userIds, int joinLimit, userId) {
+  _onUnJoinTap(String postId, List userIds, int joinLimit, userId) async {
     List _list = userIds;
     _list.remove(userId);
-    appStore
+    await appStore
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
+    appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
   }
 }
