@@ -77,6 +77,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getCheckPhoneNumberExistsAction(store.state, action, next);
       case GetFetchMorePostsAction:
         return _getFetchMorePostsAction(store.state, action, next);
+      case GetChangePasswordAction:
+        return _getChangePasswordAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -913,6 +915,9 @@ String _generatePostUuid({String? type}) {
   String postIdFormat = "${type ?? "POST_POST"}_${currentDate}_$uid";
   return postIdFormat;
 }
+
+_getChangePasswordAction(
+    AppState state, GetChangePasswordAction action, NextDispatcher next) {}
 
 String _generateUserUuid() {
   final uid = uuid.v1();

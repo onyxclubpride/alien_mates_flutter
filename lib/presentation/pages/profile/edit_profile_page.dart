@@ -168,42 +168,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         });
   }
 
-  Widget _getImageOrNotWidget(ApiState state) {
-    if (noticeImage != null) {
-      return Image.file(noticeImage!, fit: BoxFit.fitHeight);
-    }
-    if (state.postDetail.imageUrl != null) {
-      return CachedNetworkImage(
-          imageUrl: state.postDetail.imageUrl!, fit: BoxFit.fitHeight);
-    }
-    return const Icon(Ionicons.add, color: ThemeColors.borderDark);
-  }
-
-  _onChooseImage() async {
-    String? xImagePath = await appStore.dispatch(GetSelectImageAction());
-    if (xImagePath != null) {
-      setState(() {
-        noticeImage = File(xImagePath);
-      });
-    }
-  }
-
-  _onUpdateEvent(String postId) async {
-    if (_formKeyEditProfilePage.currentState!.validate()) {
-      bool created = await appStore.dispatch(GetUpdatePostAction(
-          description: userName.text,
-          imagePath: noticeImage?.path,
-          postId: postId));
-
-      if (!created) {
-        showAlertDialog(context,
-            text:
-                'There was a problem while updating to server! Please, try again!');
-      } else {
-        appStore.dispatch(NavigateToAction(to: 'up'));
-      }
-    }
-  }
+  _onUpdateUser(String postId) async {}
 
   Widget _buildTitleIcon() {
     return IconButton(

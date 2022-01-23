@@ -262,6 +262,12 @@ class GetUpdateUserAction {
   });
 }
 
+class GetChangePasswordAction {
+  String newPassword;
+
+  GetChangePasswordAction({required this.newPassword});
+}
+
 class GetLogoutUserAction {
   String? routeTo;
   GetLogoutUserAction({this.routeTo});

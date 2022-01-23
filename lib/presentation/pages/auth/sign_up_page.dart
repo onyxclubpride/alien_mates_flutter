@@ -35,9 +35,12 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void dispose() {
+    nameController.dispose();
     passController.dispose();
     confirmPassController.dispose();
     otpController.dispose();
+    phoneNumberController.dispose();
+    uniNameController.dispose();
     super.dispose();
   }
 
@@ -62,7 +65,13 @@ class _SignUpPageState extends State<SignUpPage> {
             bottomPadding: 20,
             footer: ExpandedButton(
               text: isOtpSent ? 'Sign Up' : "Send Otp",
-              onPressed: isOtpSent ? _signUpPress : _onSendOtp,
+              onPressed: () {
+                if (isOtpSent) {
+                  _signUpPress();
+                } else {
+                  _onSendOtp(state);
+                }
+              },
             ),
             child: SingleChildScrollView(
               child: Form(
@@ -191,54 +200,62 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  _onSendOtp() async {
+  _onSendOtp(AppState state) async {
+    List<String> phoneNums = [];
+    for (var e in state.apiState.users) {
+      phoneNums.add(e.phoneNumber);
+    }
     if (phoneNumberController.text.isNotEmpty &&
         phoneNumberController.text.length > 10) {
-      showLoading();
-      setState(() {
-        errorText = "";
-      });
-      try {
-        await FirebaseAuth.instance.verifyPhoneNumber(
-          phoneNumber: "+82" + phoneNumberController.text,
-          verificationCompleted: (PhoneAuthCredential credential) async {
-            // await FirebaseAuth.instance.signInWithCredential(credential);
-          },
-          verificationFailed: (FirebaseAuthException e) {
-            closeLoading();
-            showAlertDialog(context, text: e.message.toString());
-            setState(() {
-              isOtpSent = false;
-            });
-          },
-          forceResendingToken: sentOtp,
-          timeout: Duration(milliseconds: 20000),
-          codeSent: (String verificationId, int? resendToken) async {
-            closeLoading();
-            setState(() {
-              isOtpSent = true;
-              sentOtp = resendToken;
-              verId = verificationId;
-            });
-          },
-          codeAutoRetrievalTimeout: (String verificationId) {
-            closeLoading();
-            setState(() {
-              verId = verificationId;
-            });
-          },
-        );
-      } catch (e) {
-        closeLoading();
+      if (!phoneNums.contains(phoneNumberController.text)) {
+        showLoading();
         setState(() {
-          isOtpSent = false;
+          errorText = "";
         });
-        logger(e.toString());
+        try {
+          await FirebaseAuth.instance.verifyPhoneNumber(
+            phoneNumber: "+82" + phoneNumberController.text,
+            verificationCompleted: (PhoneAuthCredential credential) async {
+              // await FirebaseAuth.instance.signInWithCredential(credential);
+            },
+            verificationFailed: (FirebaseAuthException e) {
+              closeLoading();
+              showAlertDialog(context, text: e.message.toString());
+              setState(() {
+                isOtpSent = false;
+              });
+            },
+            forceResendingToken: sentOtp,
+            timeout: Duration(milliseconds: 20000),
+            codeSent: (String verificationId, int? resendToken) async {
+              closeLoading();
+              setState(() {
+                isOtpSent = true;
+                sentOtp = resendToken;
+                verId = verificationId;
+              });
+            },
+            codeAutoRetrievalTimeout: (String verificationId) {
+              closeLoading();
+              setState(() {
+                verId = verificationId;
+              });
+            },
+          );
+        } catch (e) {
+          closeLoading();
+          setState(() {
+            isOtpSent = false;
+          });
+          logger(e.toString());
+        }
+      } else {
+        setState(() {
+          errorText = 'Phone number must be 10 digits!';
+        });
       }
     } else {
-      setState(() {
-        errorText = 'Phone number must be 10 digits!';
-      });
+      //TODO: IF USER PHONE NUMBER EXISTS DO!
     }
   }
 
