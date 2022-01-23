@@ -93,7 +93,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       BasicInput(
                         hintText: "Password",
                         controller: passController,
-                        validator: Validator.validatePassword,
+                        // validator: Validator.validatePassword,
                         isObscured: true,
                       ),
                       BasicInput(
@@ -201,13 +201,12 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _onSendOtp(AppState state) async {
-    List<String> phoneNums = [];
-    for (var e in state.apiState.users) {
-      phoneNums.add(e.phoneNumber);
-    }
-    if (phoneNumberController.text.isNotEmpty &&
+    bool userExists = await appStore
+        .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
+    if (_formKeySignUpPage.currentState!.validate() &&
+        phoneNumberController.text.isNotEmpty &&
         phoneNumberController.text.length > 10) {
-      if (!phoneNums.contains(phoneNumberController.text)) {
+      if (!userExists) {
         showLoading();
         setState(() {
           errorText = "";
@@ -226,7 +225,7 @@ class _SignUpPageState extends State<SignUpPage> {
               });
             },
             forceResendingToken: sentOtp,
-            timeout: Duration(milliseconds: 20000),
+            timeout: const Duration(milliseconds: 20000),
             codeSent: (String verificationId, int? resendToken) async {
               closeLoading();
               setState(() {
@@ -251,11 +250,9 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       } else {
         setState(() {
-          errorText = 'Phone number must be 10 digits!';
+          errorText = 'The above phone number has already been registered!';
         });
       }
-    } else {
-      //TODO: IF USER PHONE NUMBER EXISTS DO!
     }
   }
 

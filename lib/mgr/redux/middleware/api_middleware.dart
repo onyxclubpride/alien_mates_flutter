@@ -79,6 +79,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getFetchMorePostsAction(store.state, action, next);
       case GetChangePasswordAction:
         return _getChangePasswordAction(store.state, action, next);
+      case GetCheckPhoneNumExistsAction:
+        return _getCheckPhoneNumExistsAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -520,28 +522,58 @@ Future<void> _getUserIdExistAction(
 Future<bool> _getLoginAction(
     AppState state, GetLoginAction action, NextDispatcher next) async {
   try {
-    bool _matched = false;
     showLoading();
-    List<UserModelRes> users = await appStore.dispatch(GetAllUsersAction());
-    if (users.isNotEmpty) {
-      for (int i = 0; i < users.length; i++) {
-        UserModelRes? _userInst = users[i];
-
-        bool _matched = _userInst.phoneNumber == action.phoneNumber &&
-            _userInst.password == action.password;
-        //_decryptToken(_userInst.password!)
-        if (_matched) {
-          next(UpdateApiStateAction(userMe: _userInst));
-          next(UpdateInitStateAction(userId: _userInst.userId));
-          await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
-          await appStore.dispatch(GetAllKindPostsAction());
-          appStore.dispatch(
-              NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
-        }
-      }
+    bool _matched = false;
+    QuerySnapshot _querySnapshot = await usersCollection
+        .where('phoneNumber', isEqualTo: action.phoneNumber)
+        .where('password', isEqualTo: action.password)
+        .get();
+    List _snapshotList = _querySnapshot.docs;
+    if (_snapshotList.isNotEmpty) {
+      UserModelRes _userData = UserModelRes(
+        name: _snapshotList.first["name"],
+        isAdmin: _snapshotList.first["isAdmin"],
+        userId: _snapshotList.first["userId"],
+        createdDate: _snapshotList.first["createdDate"],
+        password: _snapshotList.first["password"],
+        phoneNumber: _snapshotList.first["phoneNumber"],
+        uniName: _snapshotList.first["uniName"],
+        postIds: _snapshotList.first["postIds"],
+      );
+      next(UpdateApiStateAction(userMe: _userData));
+      next(UpdateInitStateAction(userId: _userData.userId));
+      await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
+      await appStore.dispatch(GetAllKindPostsAction());
+      closeLoading();
+      appStore.dispatch(
+          NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+      _matched = true;
+      return _matched;
+    } else {
+      closeLoading();
+      return _matched;
     }
+    // showLoading();
+    // List<UserModelRes> users = await appStore.dispatch(GetAllUsersAction());
+    // if (users.isNotEmpty) {
+    //   for (int i = 0; i < users.length; i++) {
+    //     UserModelRes? _userInst = users[i];
+    //
+    //     bool _matched = _userInst.phoneNumber == action.phoneNumber &&
+    //         _userInst.password == action.password;
+    //     //_decryptToken(_userInst.password!)
+    //     if (_matched) {
+    //       next(UpdateApiStateAction(userMe: _userInst));
+    //       next(UpdateInitStateAction(userId: _userInst.userId));
+    //       await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
+    //       await appStore.dispatch(GetAllKindPostsAction());
+    //       appStore.dispatch(
+    //           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+    //     }
+    //   }
+    // }
     closeLoading();
-    return _matched;
+    // return _matched;
   } catch (e) {
     logger(e.toString(), hint: 'GET LOGIN CATCH ERROR');
     return false;
@@ -712,6 +744,19 @@ Future<bool> _getUpdateUserAction(
     logger(e.toString(), hint: 'GET UPDATE POST CATCH ERROR');
     return false;
   }
+}
+
+Future<bool> _getCheckPhoneNumExistsAction(AppState state,
+    GetCheckPhoneNumExistsAction action, NextDispatcher next) async {
+  QuerySnapshot _querySnapshot = await usersCollection
+      .where('phoneNumber', isEqualTo: action.phoneNum)
+      .get();
+  List _snapshotList = _querySnapshot.docs;
+  bool isExist = true;
+  if (_snapshotList.isEmpty) {
+    isExist = false;
+  }
+  return isExist;
 }
 
 Future<void> _getDeletePostAction(

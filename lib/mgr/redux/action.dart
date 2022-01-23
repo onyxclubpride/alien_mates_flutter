@@ -262,6 +262,12 @@ class GetUpdateUserAction {
   });
 }
 
+class GetCheckPhoneNumExistsAction {
+  String phoneNum;
+
+  GetCheckPhoneNumExistsAction(this.phoneNum);
+}
+
 class GetChangePasswordAction {
   String newPassword;
 
