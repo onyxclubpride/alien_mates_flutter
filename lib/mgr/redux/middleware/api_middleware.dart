@@ -77,12 +77,12 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getCheckPhoneNumberExistsAction(store.state, action, next);
       case GetFetchMorePostsAction:
         return _getFetchMorePostsAction(store.state, action, next);
-      case GetChangePasswordAction:
-        return _getChangePasswordAction(store.state, action, next);
       case GetCheckPhoneNumExistsAction:
         return _getCheckPhoneNumExistsAction(store.state, action, next);
       case GetUserPostsAction:
         return _getUserPostsAction(store.state, action, next);
+      case GetChangeUserInfoAction:
+        return _getChangeUserInfoAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -525,11 +525,13 @@ Future<void> _getUserIdExistAction(
 Future<bool> _getLoginAction(
     AppState state, GetLoginAction action, NextDispatcher next) async {
   try {
+    String encPass = _encryptToken(action.password);
+    logger(encPass, hint: 'ENC PASS');
     showLoading();
     bool _matched = false;
     QuerySnapshot _querySnapshot = await usersCollection
         .where('phoneNumber', isEqualTo: action.phoneNumber)
-        .where('password', isEqualTo: action.password)
+        .where('password', isEqualTo: encPass)
         .get();
     List _snapshotList = _querySnapshot.docs;
     if (_snapshotList.isNotEmpty) {
@@ -547,6 +549,7 @@ Future<bool> _getLoginAction(
       next(UpdateInitStateAction(userId: _userData.userId));
       await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
       await appStore.dispatch(GetAllKindPostsAction());
+      await appStore.dispatch(GetUserPostsAction());
       closeLoading();
       appStore.dispatch(
           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
@@ -762,6 +765,33 @@ Future<bool> _getCheckPhoneNumExistsAction(AppState state,
     isExist = false;
   }
   return isExist;
+}
+
+_getChangeUserInfoAction(
+    AppState state, GetChangeUserInfoAction action, NextDispatcher next) async {
+  await usersCollection.doc(state.apiState.userMe.userId).update({
+    "name": action.username ?? state.apiState.userMe.name,
+    "userId": state.apiState.userMe.userId,
+    "createdDate": state.apiState.userMe.createdDate,
+    "isAdmin": state.apiState.userMe.isAdmin,
+    "password": action.newPass ?? state.apiState.userMe.password,
+    "phoneNumber": state.apiState.userMe.phoneNumber,
+    "uniName": state.apiState.userMe.uniName,
+    "postIds": [...?state.apiState.userMe.postIds],
+  });
+  next(UpdateApiStateAction(
+      userMe: UserModelRes(
+    name: action.username ?? state.apiState.userMe.name,
+    userId: state.apiState.userMe.userId,
+    isAdmin: state.apiState.userMe.isAdmin,
+    createdDate: state.apiState.userMe.createdDate,
+    password: action.newPass ?? state.apiState.userMe.password,
+    phoneNumber: state.apiState.userMe.phoneNumber,
+    uniName: state.apiState.userMe.uniName,
+    postIds: state.apiState.userMe.postIds,
+  )));
+
+  appStore.dispatch(NavigateToAction(to: 'up'));
 }
 
 _getUserPostsAction(
@@ -995,9 +1025,6 @@ String _generatePostUuid({String? type}) {
   String postIdFormat = "${type ?? "POST_POST"}_${currentDate}_$uid";
   return postIdFormat;
 }
-
-_getChangePasswordAction(
-    AppState state, GetChangePasswordAction action, NextDispatcher next) {}
 
 String _generateUserUuid() {
   final uid = uuid.v1();

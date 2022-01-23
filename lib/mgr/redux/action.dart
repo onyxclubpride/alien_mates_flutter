@@ -80,6 +80,13 @@ class GetAllKindPostsAction {
   GetAllKindPostsAction({this.showLoading = true});
 }
 
+class GetChangeUserInfoAction {
+  String? username;
+  String? newPass;
+
+  GetChangeUserInfoAction({this.newPass, this.username});
+}
+
 class UpdateApiStateAction {
   bool isRestart;
   List<ListPostModelRes>? posts;

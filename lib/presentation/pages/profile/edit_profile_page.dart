@@ -24,6 +24,10 @@ class _EditProfilePageState extends State<EditProfilePage> {
   File? noticeImage;
 
   String? pwErrorText;
+  String? pwErrorTextCurr;
+  String? pwErrorTextName;
+
+  bool isPwChange = false;
 
   @override
   void dispose() {
@@ -35,8 +39,11 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
+        onInit: (store) {
+          userName =
+              TextEditingController(text: store.state.apiState.userMe.name);
+        },
         builder: (context, state) {
-          userName = TextEditingController(text: state.apiState.userMe.name);
           return DefaultBody(
             withNavigationBar: false,
             withTopBanner: false,
@@ -81,8 +88,34 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         validator: Validator.validateText,
                                         controller: userName,
                                       ),
-                                    SizedBox(
-                                      height: 25.h,
+                                    if (pwErrorTextName != null)
+                                      SizedText(
+                                        text: pwErrorTextName,
+                                        textAlign: TextAlign.center,
+                                        textStyle: latoM14.copyWith(
+                                            color: ThemeColors.red400),
+                                      ),
+                                    Checkbox(
+                                      splashRadius: 0,
+                                      shape: const CircleBorder(),
+                                      checkColor: ThemeColors.black,
+                                      activeColor: ThemeColors.yellow,
+                                      fillColor: MaterialStateProperty
+                                          .resolveWith<Color>(
+                                              (Set<MaterialState> states) {
+                                        if (states
+                                            .contains(MaterialState.focused)) {
+                                          return ThemeColors.fontWhite;
+                                        } else {
+                                          return ThemeColors.yellow;
+                                        }
+                                      }),
+                                      value: isPwChange,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          isPwChange = value!;
+                                        });
+                                      },
                                     ),
                                   ]),
                             ],
@@ -92,66 +125,76 @@ class _EditProfilePageState extends State<EditProfilePage> {
                       SizedBox(
                         height: 25.h,
                       ),
-                      DefaultBanner(
-                        bgColor: ThemeColors.black,
-                        child: Container(
-                          padding: EdgeInsets.all(12.w),
-                          child: SpacedColumn(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedText(
-                                  text: 'Password',
-                                  textStyle: latoR14.copyWith(
-                                      color: ThemeColors.fontWhite)),
-                              Container(
-                                margin: EdgeInsets.symmetric(vertical: 6.h),
-                                child: Divider(
-                                    thickness: 1.w,
-                                    color: ThemeColors.borderDark),
-                              ),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Current Password'),
-                                    PostCreateInput(
-                                      isObscured: true,
-                                      keyboardType:
-                                          TextInputType.visiblePassword,
-                                      maxlines: 1,
-                                      validator: Validator.validatePassword,
-                                      controller: currentPass,
-                                    ),
-                                    SizedBox(
-                                      height: 25.h,
-                                    ),
-                                    InputLabel(label: 'New Password'),
-                                    PostCreateInput(
-                                      isObscured: true,
-                                      maxlines: 1,
-                                      validator: Validator.validatePassword,
-                                      controller: newPass,
-                                    ),
-                                    SizedBox(
-                                      height: 25.h,
-                                    ),
-                                    InputLabel(label: 'Confirm Password'),
-                                    PostCreateInput(
-                                      isObscured: true,
-                                      maxlines: 1,
-                                      controller: confirmNewPass,
-                                    ),
-                                  ]),
-                              // if (pwErrorText != null)
-                              SizedText(
-                                text: pwErrorText,
-                                textAlign: TextAlign.center,
-                                textStyle:
-                                    latoM14.copyWith(color: ThemeColors.red400),
-                              )
-                            ],
+                      if (isPwChange)
+                        DefaultBanner(
+                          bgColor: ThemeColors.black,
+                          child: Container(
+                            padding: EdgeInsets.all(12.w),
+                            child: SpacedColumn(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                SizedText(
+                                    text: 'Password',
+                                    textStyle: latoR14.copyWith(
+                                        color: ThemeColors.fontWhite)),
+                                Container(
+                                  margin: EdgeInsets.symmetric(vertical: 6.h),
+                                  child: Divider(
+                                      thickness: 1.w,
+                                      color: ThemeColors.borderDark),
+                                ),
+                                SpacedColumn(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      InputLabel(label: 'Current Password'),
+                                      PostCreateInput(
+                                        isObscured: true,
+                                        keyboardType:
+                                            TextInputType.visiblePassword,
+                                        maxlines: 1,
+                                        // validator: Validator.validatePassword,
+                                        controller: currentPass,
+                                      ),
+                                      if (pwErrorTextCurr != null)
+                                        SizedText(
+                                          text: pwErrorTextCurr,
+                                          textAlign: TextAlign.center,
+                                          textStyle: latoM14.copyWith(
+                                              color: ThemeColors.red400),
+                                        ),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      InputLabel(label: 'New Password'),
+                                      PostCreateInput(
+                                        isObscured: true,
+                                        maxlines: 1,
+                                        // validator: Validator.validatePassword,
+                                        controller: newPass,
+                                      ),
+                                      SizedBox(
+                                        height: 25.h,
+                                      ),
+                                      InputLabel(label: 'Confirm Password'),
+                                      PostCreateInput(
+                                        isObscured: true,
+                                        maxlines: 1,
+                                        // validator: Validator.validatePassword,
+                                        controller: confirmNewPass,
+                                      ),
+                                    ]),
+                                if (pwErrorText != null)
+                                  SizedText(
+                                    text: pwErrorText,
+                                    textAlign: TextAlign.center,
+                                    textStyle: latoM14.copyWith(
+                                        color: ThemeColors.red400),
+                                  )
+                              ],
+                            ),
                           ),
                         ),
-                      ),
                     ],
                   ),
                 ),
@@ -160,15 +203,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
             footer: ExpandedButton(
               text: 'Save',
               onPressed: () {
-                _validateConfirmNumber(newPass, confirmNewPass);
-                // _onUpdateEvent(state.apiState.postDetail.postId);
+                if (_formKeyEditProfilePage.currentState!.validate()) {
+                  _validateConfirmNumber(currentPass.text, newPass.text,
+                      confirmNewPass.text, state.apiState.userMe.password!);
+                }
               },
             ),
           );
         });
   }
 
-  _onUpdateUser(String postId) async {}
+  _onUpdateUser({bool onlyNameChange = true}) async {
+    if (onlyNameChange) {
+      //Check if new username and old usernmae is same
+      if (appStore.state.apiState.userMe.name == userName.text) {
+        setState(() {
+          pwErrorTextName = 'Name is same as before!';
+        });
+      } else {
+        appStore.dispatch(GetChangeUserInfoAction(username: userName.text));
+      }
+    } else {
+      appStore.dispatch(GetChangeUserInfoAction(
+          newPass: newPass.text, username: userName.text));
+    }
+  }
 
   Widget _buildTitleIcon() {
     return IconButton(
@@ -181,17 +240,32 @@ class _EditProfilePageState extends State<EditProfilePage> {
     );
   }
 
-  _validateConfirmNumber(newPass, confirmNewPass) {
-    if (newPass != confirmNewPass) {
-      setState(() {
-        pwErrorText = 'Password did not match';
-      });
-      return false;
+  _validateConfirmNumber(String currentPass, String newPasss,
+      String confirmNewPasss, String oldPass) {
+    if (isPwChange) {
+      if (newPasss != confirmNewPasss) {
+        setState(() {
+          pwErrorText = 'Password did not match';
+        });
+      } else {
+        setState(() {
+          pwErrorText = null;
+        });
+        if (currentPass == oldPass) {
+          setState(() {
+            pwErrorTextCurr = null;
+          });
+          _onUpdateUser(onlyNameChange: false);
+          //TODO: Continue editing pass
+        } else {
+          setState(() {
+            pwErrorTextCurr =
+                'The current password does not match with old password!';
+          });
+        }
+      }
     } else {
-      setState(() {
-        pwErrorText = null;
-      });
-      return true;
+      _onUpdateUser();
     }
   }
 }
