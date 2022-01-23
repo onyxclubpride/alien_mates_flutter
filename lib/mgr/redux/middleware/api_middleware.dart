@@ -81,6 +81,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getChangePasswordAction(store.state, action, next);
       case GetCheckPhoneNumExistsAction:
         return _getCheckPhoneNumExistsAction(store.state, action, next);
+      case GetUserPostsAction:
+        return _getUserPostsAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -289,6 +291,7 @@ Future<bool> _getCreatePostAction(
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     await appStore.dispatch(GetAllKindPostsAction());
+    await appStore.dispatch(GetUserPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -680,6 +683,8 @@ Future<bool> _getUpdatePostAction(
       });
       next(UpdateApiStateAction(postDetail: _postModelRes));
     }
+    await appStore.dispatch(GetUserPostsAction());
+
     if (action.showloading) {
       closeLoading();
     }
@@ -759,6 +764,37 @@ Future<bool> _getCheckPhoneNumExistsAction(AppState state,
   return isExist;
 }
 
+_getUserPostsAction(
+    AppState state, GetUserPostsAction action, NextDispatcher next) async {
+  QuerySnapshot _querySnapshot = await postsCollection
+      .where('userId', isEqualTo: state.initState.userId)
+      .orderBy('createdDate', descending: true)
+      .get();
+  List _snapshotList = _querySnapshot.docs;
+  List<PostModelRes> _posts = [];
+  for (int i = 0; i < _snapshotList.length; i++) {
+    final _postDetail = _snapshotList[i];
+    PostModelRes _postModelRes = PostModelRes(
+        createdDate: _postDetail['createdDate'],
+        postId: _postDetail['postId'],
+        isNotice: _postDetail['isNotice'],
+        isPost: _postDetail['isPost'],
+        userId: _postDetail['userId'],
+        isEvent: _postDetail['isEvent'],
+        isHelp: _postDetail['isHelp'],
+        likedUserIds: _postDetail['likedUserIds'],
+        joinedUserIds: _postDetail['joinedUserIds'],
+        description: _postDetail['description'],
+        title: _postDetail['title'],
+        joinLimit: _postDetail['joinLimit'],
+        imageUrl: _postDetail['imageUrl'],
+        eventLocation: _postDetail['eventLocation']);
+    _posts.add(_postModelRes);
+  }
+  next(UpdateApiStateAction(userPostsList: _posts));
+  logger(_snapshotList, hint: 'USER POSTS LIST');
+}
+
 Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
@@ -774,7 +810,7 @@ Future<void> _getDeletePostAction(
     }
 
     next(UpdateApiStateAction(posts: newPosts));
-
+    await appStore.dispatch(GetUserPostsAction());
     closeLoading();
   } catch (e) {
     closeLoading();
@@ -943,7 +979,6 @@ _getFetchMorePostsAction(
   List<ListPostModelRes> sortedPosts = [];
 
   final allPosts = [...oldPosts, ...newPosts];
-
   for (var element in sortedIds) {
     allPosts.lastWhere((e) {
       if (e.postId == element) {

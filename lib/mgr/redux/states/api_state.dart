@@ -16,19 +16,22 @@ class ApiState {
   final List<UnivModelRes> univs;
   final UserModelRes postDetailUser;
   final List<ListPostModelRes> bannerPosts;
+  final List<PostModelRes> userPostsList;
   final int bannerIndex;
 
-  ApiState(
-      {required this.posts,
-      required this.postOnly,
-      required this.users,
-      required this.userMe,
-      required this.selectedUni,
-      required this.univs,
-      required this.postDetail,
-      required this.postDetailUser,
-      required this.bannerIndex,
-      required this.bannerPosts});
+  ApiState({
+    required this.posts,
+    required this.postOnly,
+    required this.users,
+    required this.userMe,
+    required this.selectedUni,
+    required this.univs,
+    required this.postDetail,
+    required this.postDetailUser,
+    required this.bannerIndex,
+    required this.bannerPosts,
+    required this.userPostsList,
+  });
 
   factory ApiState.initial() {
     return ApiState(
@@ -36,6 +39,7 @@ class ApiState {
         postOnly: [],
         users: [],
         bannerPosts: [],
+        userPostsList: [],
         bannerIndex: 0,
         postDetail: PostModelRes(
             createdDate: '',
@@ -85,6 +89,7 @@ class ApiState {
     UserModelRes? postDetailUser,
     List<ListPostModelRes>? bannerPosts,
     int? bannerIndex,
+    List<PostModelRes>? userPostsList,
   }) {
     return ApiState(
       posts: posts ?? this.posts,
@@ -97,6 +102,7 @@ class ApiState {
       postDetailUser: postDetailUser ?? this.postDetailUser,
       bannerPosts: bannerPosts ?? this.bannerPosts,
       bannerIndex: bannerIndex ?? this.bannerIndex,
+      userPostsList: userPostsList ?? this.userPostsList,
     );
   }
 }

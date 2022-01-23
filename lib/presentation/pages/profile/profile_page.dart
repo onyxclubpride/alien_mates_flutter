@@ -119,15 +119,12 @@ class _ProfilePageState extends State<ProfilePage> {
     List<Widget> _list = [];
     int myPostCount = 0;
 
-    List<ListPostModelRes> postsList = state.apiState.posts;
-    // logger(myPostCount, hint: "MY POSTS");
+    List<PostModelRes> postsList = state.apiState.userPostsList;
     if (postsList.isNotEmpty) {
       for (int i = 0; i < postsList.length; i++) {
-        ListPostModelRes _item = postsList[i];
+        PostModelRes _item = postsList[i];
         if (state.apiState.userMe.postIds!.contains(_item.postId)) {
           myPostCount += 1;
-          logger(myPostCount);
-
           _list.add(
             PostItemBanner(
               height: 130.h,
@@ -415,7 +412,7 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  _onEditPostPress(ListPostModelRes item) async {
+  _onEditPostPress(PostModelRes item) async {
     if (item.isNotice) {
       appStore.dispatch(GetPostByIdAction(item.postId,
           goToRoute: AppRoutes.editNoticePageRoute));

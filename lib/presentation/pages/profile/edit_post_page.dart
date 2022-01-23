@@ -115,7 +115,6 @@ class _EditPostPageState extends State<EditPostPage> {
   }
 
   _onChooseImage() async {
-    print('sdfsdfsdf');
     String? xImagePath = await appStore.dispatch(GetSelectImageAction());
     if (xImagePath != null) {
       setState(() {
@@ -131,6 +130,7 @@ class _EditPostPageState extends State<EditPostPage> {
               ? null
               : descriptionController.text,
           imagePath: noticeImage?.path,
+          showloading: true,
           postId: postId));
 
       if (!created) {

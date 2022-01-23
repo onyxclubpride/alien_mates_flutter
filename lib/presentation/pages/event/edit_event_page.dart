@@ -176,6 +176,7 @@ class _EditEventPageState extends State<EditEventPage> {
           joinLimit: int.parse(maxPplController.text),
           eventLocation: locationController.text,
           imagePath: noticeImage?.path,
+          showloading: true,
           postId: postId));
 
       if (!created) {

@@ -141,6 +141,7 @@ class _EditHelpPageState extends State<EditHelpPage> {
           title: titleController.text,
           description: descriptionController.text,
           imagePath: noticeImage?.path,
+          showloading: true,
           postId: postId));
 
       if (!created) {

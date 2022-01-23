@@ -91,6 +91,7 @@ class UpdateApiStateAction {
   List<UnivModelRes>? univs;
   UserModelRes? postDetailUser;
   List<ListPostModelRes>? bannerPosts;
+  List<PostModelRes>? userPostsList;
   int? bannerIndex;
   UpdateApiStateAction(
       {this.posts,
@@ -103,7 +104,8 @@ class UpdateApiStateAction {
       this.selectedUni,
       this.bannerPosts,
       this.postDetailUser,
-      this.isRestart = false});
+      this.isRestart = false,
+      this.userPostsList});
 }
 
 class GetStateInitAction {}
@@ -173,6 +175,8 @@ class GetLoginAction {
 
   GetLoginAction({required this.phoneNumber, required this.password});
 }
+
+class GetUserPostsAction {}
 
 class GetPostByIdAction {
   String postId;

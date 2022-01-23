@@ -76,16 +76,18 @@ ApiState _updateApiState(ApiState state, UpdateApiStateAction action) {
     return ApiState.initial();
   }
   return state.copyWith(
-      posts: action.posts ?? state.posts,
-      postOnly: action.postOnly ?? state.postOnly,
-      users: action.users ?? state.users,
-      userMe: action.userMe ?? state.userMe,
-      postDetail: action.postDetail ?? state.postDetail,
-      selectedUni: action.selectedUni ?? state.selectedUni,
-      univs: action.univs ?? state.univs,
-      postDetailUser: action.postDetailUser ?? state.postDetailUser,
-      bannerPosts: action.bannerPosts ?? state.bannerPosts,
-      bannerIndex: action.bannerIndex ?? state.bannerIndex);
+    posts: action.posts ?? state.posts,
+    postOnly: action.postOnly ?? state.postOnly,
+    users: action.users ?? state.users,
+    userMe: action.userMe ?? state.userMe,
+    postDetail: action.postDetail ?? state.postDetail,
+    selectedUni: action.selectedUni ?? state.selectedUni,
+    univs: action.univs ?? state.univs,
+    postDetailUser: action.postDetailUser ?? state.postDetailUser,
+    bannerPosts: action.bannerPosts ?? state.bannerPosts,
+    bannerIndex: action.bannerIndex ?? state.bannerIndex,
+    userPostsList: action.userPostsList ?? state.userPostsList,
+  );
 }
 
 ///
