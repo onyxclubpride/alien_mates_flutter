@@ -38,6 +38,7 @@ dependencies:
   encrypt: ^5.0.1
   lottie: ^1.2.1
   url_launcher: ^6.0.18
+  paginate_firestore: ^1.0.3
 
 dev_dependencies:
   flutter_test:

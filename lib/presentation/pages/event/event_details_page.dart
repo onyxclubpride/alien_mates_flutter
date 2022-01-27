@@ -1,4 +1,3 @@
-import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';

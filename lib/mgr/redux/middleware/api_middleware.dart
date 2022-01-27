@@ -109,19 +109,28 @@ Future<bool> _getAllKindPostsAction(
 }
 
 Future<List<ListPostModelRes>> _getPostsList(
-    {int limit = 20,
+    {int limit = 2,
     bool isPostOnly = false,
     bool isHelpOnly = false,
     bool isEventOnly = false,
-    bool isNoticeOnly = false}) async {
+    bool isNoticeOnly = false,
+    String? lastPostId}) async {
+  List<DocumentSnapshot> documentList = [];
+
   try {
     if (isPostOnly) {
+      logger(lastPostId, hint: "LAST POST ID");
       QuerySnapshot _querySnapshot = await postsCollection
           .where('isPost', isEqualTo: true)
-          .orderBy('createdDate', descending: true)
+          .orderBy('createdDate', descending: false)
+          .startAfter([
+            {"postId": lastPostId}
+          ])
           .limit(limit)
           .get();
-      List _snapshotList = _querySnapshot.docs;
+      List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
+      documentList.addAll(_snapshotList);
+
       List<ListPostModelRes> _posts = [];
       for (int i = 0; i < _snapshotList.length; i++) {
         var item = _snapshotList[i];
@@ -141,6 +150,7 @@ Future<List<ListPostModelRes>> _getPostsList(
             userId: item['userId']);
         _posts.add(postModelRes);
       }
+
       logger(_posts, hint: 'POSTS LIST POSTS ONLY');
       return _posts;
     } else if (isEventOnly) {
@@ -148,7 +158,9 @@ Future<List<ListPostModelRes>> _getPostsList(
           .where('isEvent', isEqualTo: true)
           .orderBy('createdDate', descending: true)
           .limit(limit)
-          .get();
+          .endBefore([
+        {"postId": lastPostId}
+      ]).get();
       List _snapshotList = _querySnapshot.docs;
       List<ListPostModelRes> _posts = [];
       for (int i = 0; i < _snapshotList.length; i++) {
@@ -177,7 +189,9 @@ Future<List<ListPostModelRes>> _getPostsList(
           .where('isHelp', isEqualTo: true)
           .orderBy('createdDate', descending: true)
           .limit(limit)
-          .get();
+          .startAfter([
+        {"postId": lastPostId}
+      ]).get();
       List _snapshotList = _querySnapshot.docs;
       List<ListPostModelRes> _posts = [];
       for (int i = 0; i < _snapshotList.length; i++) {
@@ -205,7 +219,9 @@ Future<List<ListPostModelRes>> _getPostsList(
           .where('isNotice', isEqualTo: true)
           .orderBy('createdDate', descending: true)
           .limit(limit)
-          .get();
+          .startAfter([
+        {"postId": lastPostId}
+      ]).get();
       List _snapshotList = _querySnapshot.docs;
       List<ListPostModelRes> _posts = [];
       for (int i = 0; i < _snapshotList.length; i++) {
@@ -233,7 +249,8 @@ Future<List<ListPostModelRes>> _getPostsList(
         .limit(limit)
         .orderBy('createdDate', descending: true)
         .get();
-    List _snapshotList = _querySnapshot.docs;
+    List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
+    documentList.addAll(_snapshotList);
     List<ListPostModelRes> _posts = [];
     for (int i = 0; i < _snapshotList.length; i++) {
       var item = _snapshotList[i];
@@ -421,30 +438,19 @@ Future<bool> _getCreateHelpAction(
 Future<bool> _getCreateUserAction(
     AppState state, GetCreateUserAction action, NextDispatcher next) async {
   try {
-    bool userExists = false;
     String _userUid = _generateUserUuid();
-    for (int i = 0; i < state.apiState.users.length; i++) {
-      UserModelRes user = state.apiState.users[i];
-      if (user.phoneNumber == action.phoneNumber) {
-        userExists = true;
-      }
-    }
-    if (!userExists) {
-      showLoading();
-      await usersCollection.doc(_userUid).set({
-        "userId": _userUid,
-        "name": action.name,
-        "phoneNumber": action.phoneNumber,
-        "password": _encryptToken(action.password),
-        "uniName": action.uniName,
-        "postIds": [],
-        "createdDate": currentDateAndTime,
-        "isAdmin": false,
-      });
-      closeLoading();
-    } else {
-      showError('User exists with the given phone number');
-    }
+    showLoading();
+    await usersCollection.doc(_userUid).set({
+      "userId": _userUid,
+      "name": action.name,
+      "phoneNumber": action.phoneNumber,
+      "password": _encryptToken(action.password),
+      "uniName": action.uniName,
+      "postIds": [],
+      "createdDate": currentDateAndTime,
+      "isAdmin": false,
+    });
+    closeLoading();
     return true;
   } catch (e) {
     closeLoading();
@@ -526,7 +532,6 @@ Future<bool> _getLoginAction(
     AppState state, GetLoginAction action, NextDispatcher next) async {
   try {
     String encPass = _encryptToken(action.password);
-    logger(encPass, hint: 'ENC PASS');
     showLoading();
     bool _matched = false;
     QuerySnapshot _querySnapshot = await usersCollection
@@ -959,7 +964,7 @@ _getFetchMorePostsAction(
         isBoolCount++;
       }
     }
-    currentItemsCount = isBoolCount + 10;
+    currentItemsCount = 1;
   }
   if (action.isEventOnly) {
     int isBoolCount = 0;
@@ -968,7 +973,7 @@ _getFetchMorePostsAction(
         isBoolCount++;
       }
     }
-    currentItemsCount = isBoolCount + 1;
+    currentItemsCount = isBoolCount + 10;
   }
   if (action.isNoticeOnly) {
     int isBoolCount = 0;
@@ -989,12 +994,15 @@ _getFetchMorePostsAction(
     currentItemsCount = isBoolCount + 10;
   }
   final oldPosts = state.apiState.posts;
+  logger(oldPosts.length);
   final newPosts = await _getPostsList(
       limit: currentItemsCount,
+      lastPostId: oldPosts.last.postId,
       isEventOnly: action.isEventOnly,
       isHelpOnly: action.isHelpOnly,
       isNoticeOnly: action.isNoticeOnly,
       isPostOnly: action.isPostOnly);
+
   final oldPostIds = [];
   final newPostIds = [];
   for (var element in oldPosts) {
@@ -1017,7 +1025,8 @@ _getFetchMorePostsAction(
       return e.postId == element;
     });
   }
-  next(UpdateApiStateAction(posts: sortedPosts));
+
+  next(UpdateApiStateAction(posts: allPosts));
 }
 
 String _generatePostUuid({String? type}) {
