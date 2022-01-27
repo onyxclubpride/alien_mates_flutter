@@ -17,6 +17,10 @@ export '../../layout/default_body.dart';
 //other pages
 export '../../pages/splash_page.dart';
 export '../../pages/auth/login_page.dart';
+export '../../pages/about_us_page.dart';
+export '../../pages/terms_and_condition_page.dart';
+
+//profile pages
 export '../../pages/home_page.dart';
 export '../../pages/profile/profile_page.dart';
 export '../../pages/profile/edit_profile_page.dart';

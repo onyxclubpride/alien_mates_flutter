@@ -8,6 +8,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/services.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
@@ -27,6 +28,7 @@ final encryptor = enc.Encrypter(aes);
 FirebaseKit firebaseKit = FirebaseKit();
 final postsCollection = firebaseKit.postsCollection;
 final usersCollection = firebaseKit.usersCollection;
+final extraInfoCollection = firebaseKit.extraInfoCollection;
 const uuid = Uuid();
 final now = DateTime.now();
 final currentDateAndTime =
@@ -83,6 +85,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getUserPostsAction(store.state, action, next);
       case GetChangeUserInfoAction:
         return _getChangeUserInfoAction(store.state, action, next);
+      case GetExtraInfoAction:
+        return _getExtraInfoAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -1018,6 +1022,21 @@ _getFetchMorePostsAction(
     });
   }
   next(UpdateApiStateAction(posts: sortedPosts));
+}
+
+_getExtraInfoAction(
+    AppState state, GetExtraInfoAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    QuerySnapshot _querySnapshot = await extraInfoCollection.get();
+    final _snapshotList = _querySnapshot.docs;
+    next(UpdateApiStateAction(
+        aboutUs: _snapshotList.first['aboutUs'],
+        termsAndConditions: _snapshotList.first['termsAndConditions']));
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET Extra Info CATCH ERROR');
+  }
 }
 
 String _generatePostUuid({String? type}) {

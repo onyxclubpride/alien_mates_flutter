@@ -40,6 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
             withNavigationBar: false,
             rightIcon: Ionicons.settings_outline,
             onRightButtonClick: () {
+              appStore.dispatch(GetExtraInfoAction());
               appStore
                   .dispatch(NavigateToAction(to: AppRoutes.settingsPageRoute));
             },
