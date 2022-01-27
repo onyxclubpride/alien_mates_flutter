@@ -43,6 +43,10 @@ class AppRouter {
           return EditHelpPage();
         case (AppRoutes.editProfilePageRoute):
           return EditProfilePage();
+        case (AppRoutes.termsAndConditionsPageRoute):
+          return const TermsAndConditionsPage();
+        case (AppRoutes.aboutUsPageRoute):
+          return const AboutUsPage();
         default:
           return const SplashPage();
       }

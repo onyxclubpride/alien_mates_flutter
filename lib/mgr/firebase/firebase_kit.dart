@@ -9,4 +9,7 @@ class FirebaseKit {
   //Users collection
   final CollectionReference usersCollection =
       FirebaseFirestore.instance.collection(Constants.firebaseUsersCollection);
+
+  final CollectionReference extraInfoCollection = FirebaseFirestore.instance
+      .collection(Constants.firebaseExtraInfoCollection);
 }

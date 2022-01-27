@@ -100,6 +100,8 @@ class UpdateApiStateAction {
   List<ListPostModelRes>? bannerPosts;
   List<PostModelRes>? userPostsList;
   int? bannerIndex;
+  String? aboutUs;
+  String? termsAndConditions;
   UpdateApiStateAction(
       {this.posts,
       this.postOnly,
@@ -112,7 +114,9 @@ class UpdateApiStateAction {
       this.bannerPosts,
       this.postDetailUser,
       this.isRestart = false,
-      this.userPostsList});
+      this.userPostsList,
+      this.aboutUs,
+      this.termsAndConditions});
 }
 
 class GetStateInitAction {}
@@ -302,6 +306,8 @@ class GetFetchMorePostsAction {
       this.isPostOnly = false,
       this.isHelpOnly = false});
 }
+
+class GetExtraInfoAction {}
 
 ///----------------- Init -----------------
 

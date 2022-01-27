@@ -18,20 +18,23 @@ class ApiState {
   final List<ListPostModelRes> bannerPosts;
   final List<PostModelRes> userPostsList;
   final int bannerIndex;
+  final String aboutUs;
+  final String termsAndConditions;
 
-  ApiState({
-    required this.posts,
-    required this.postOnly,
-    required this.users,
-    required this.userMe,
-    required this.selectedUni,
-    required this.univs,
-    required this.postDetail,
-    required this.postDetailUser,
-    required this.bannerIndex,
-    required this.bannerPosts,
-    required this.userPostsList,
-  });
+  ApiState(
+      {required this.posts,
+      required this.postOnly,
+      required this.users,
+      required this.userMe,
+      required this.selectedUni,
+      required this.univs,
+      required this.postDetail,
+      required this.postDetailUser,
+      required this.bannerIndex,
+      required this.bannerPosts,
+      required this.userPostsList,
+      required this.aboutUs,
+      required this.termsAndConditions});
 
   factory ApiState.initial() {
     return ApiState(
@@ -75,7 +78,9 @@ class ApiState {
             uniName: '',
             postIds: []),
         univs: [],
-        selectedUni: '');
+        selectedUni: '',
+        aboutUs: '',
+        termsAndConditions: '');
   }
 
   ApiState copyWith({
@@ -90,19 +95,22 @@ class ApiState {
     List<ListPostModelRes>? bannerPosts,
     int? bannerIndex,
     List<PostModelRes>? userPostsList,
+    String? aboutUs,
+    String? termsAndConditions,
   }) {
     return ApiState(
-      posts: posts ?? this.posts,
-      postOnly: postOnly ?? this.postOnly,
-      users: users ?? this.users,
-      userMe: userMe ?? this.userMe,
-      postDetail: postDetail ?? this.postDetail,
-      selectedUni: selectedUni ?? this.selectedUni,
-      univs: univs ?? this.univs,
-      postDetailUser: postDetailUser ?? this.postDetailUser,
-      bannerPosts: bannerPosts ?? this.bannerPosts,
-      bannerIndex: bannerIndex ?? this.bannerIndex,
-      userPostsList: userPostsList ?? this.userPostsList,
-    );
+        posts: posts ?? this.posts,
+        postOnly: postOnly ?? this.postOnly,
+        users: users ?? this.users,
+        userMe: userMe ?? this.userMe,
+        postDetail: postDetail ?? this.postDetail,
+        selectedUni: selectedUni ?? this.selectedUni,
+        univs: univs ?? this.univs,
+        postDetailUser: postDetailUser ?? this.postDetailUser,
+        bannerPosts: bannerPosts ?? this.bannerPosts,
+        bannerIndex: bannerIndex ?? this.bannerIndex,
+        userPostsList: userPostsList ?? this.userPostsList,
+        aboutUs: aboutUs ?? this.aboutUs,
+        termsAndConditions: termsAndConditions ?? this.termsAndConditions);
   }
 }

@@ -1,13 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:redux/redux.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
-import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/utils/common/constants.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 
 class InitMiddleware extends MiddlewareClass<AppState> {
   @override

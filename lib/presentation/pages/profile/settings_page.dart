@@ -85,7 +85,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.black, elevation: 0),
-                    onPressed: () {},
+                    onPressed: () {
+                      appStore.dispatch(NavigateToAction(
+                          to: AppRoutes.termsAndConditionsPageRoute));
+                    },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -105,7 +108,10 @@ class _SettingsPageState extends State<SettingsPage> {
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.black, elevation: 0),
-                    onPressed: () {},
+                    onPressed: () {
+                      appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.aboutUsPageRoute));
+                    },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
