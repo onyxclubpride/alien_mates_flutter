@@ -1,7 +1,7 @@
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -17,10 +17,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   final GlobalKey<FormState> _formKeyForgotPasswordPage =
       GlobalKey<FormState>(debugLabel: '_formKeySignupPage');
 
-  TextEditingController nameController = TextEditingController();
+  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
-  TextEditingController phoneNumberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
   TextEditingController uniNameController = TextEditingController();
 
@@ -34,7 +33,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   void dispose() {
-    nameController.dispose();
     passController.dispose();
     confirmPassController.dispose();
     otpController.dispose();
@@ -71,12 +69,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             footer: ExpandedButton(
               text: isPhoneNumberAvailable
                   ? isOtpSent
-                      ? 'Sign Up'
+                      ? 'Change Password'
                       : "Send Otp"
                   : 'Check Phone Number',
               onPressed: () {
-                if (isOtpSent) {
-                  _signUpPress();
+                if (!isPhoneNumberAvailable) {
+                  _checkPhoneNumberPress();
+                } else if (isOtpSent) {
+                  _onChangePasswordPress();
                 } else {
                   _onSendOtp(state);
                 }
@@ -130,14 +130,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         BasicInput(
                           hintText: "Password",
                           controller: passController,
-                          // validator: Validator.validatePassword,
+                          validator: Validator.validatePassword,
                           isObscured: true,
                         ),
                       if (isOtpCorrect)
                         BasicInput(
                           hintText: "Confirm Password",
                           controller: confirmPassController,
-                          // validator: Validator.validatePassword,
+                          validator: Validator.validatePassword,
                           isObscured: true,
                         ),
                       if (errorText.isNotEmpty)
@@ -187,7 +187,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     if (_formKeyForgotPasswordPage.currentState!.validate() &&
         phoneNumberController.text.isNotEmpty &&
         phoneNumberController.text.length > 10) {
-      if (!userExists) {
+      if (userExists) {
         showLoading();
         setState(() {
           errorText = "";
@@ -228,34 +228,45 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             isOtpSent = false;
           });
         }
-      } else {
-        setState(() {
-          errorText = 'The above phone number has already been registered!';
-        });
       }
     }
   }
 
-  _signUpPress() async {
+  _checkPhoneNumberPress() async {
+    bool userExists = await appStore
+        .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
+
+    logger(userExists);
+    if (userExists) {
+      setState(() {
+        isPhoneNumberAvailable = true;
+        errorText = "";
+      });
+    } else {
+      setState(() {
+        errorText = "There is no account with this number.";
+      });
+    }
+    return userExists;
+  }
+
+  _onChangePasswordPress() async {
     if (_formKeyForgotPasswordPage.currentState!.validate()) {
       if (_checkPwd()) {
         setState(() {
           errorText = "";
         });
-        if (_formKeyForgotPasswordPage.currentState!.validate()) {
-          bool matched = await appStore.dispatch(GetCreateUserAction(
-              phoneNumber: phoneNumberController.text,
-              password: passController.text,
-              name: nameController.text,
-              uniName: uniNameController.text));
-          if (!matched) {
-            setState(() {
-              errorText =
-                  "There is something wrong. Please check your data again";
-            });
-          } else {
-            appStore.dispatch(NavigateToAction(to: 'up'));
-          }
+
+        bool matched = await appStore.dispatch(GetChangePasswordAction(
+            newPassword: passController.text,
+            phoneNumber: phoneNumberController.text));
+        if (!matched) {
+          setState(() {
+            errorText =
+                "There is something wrong. Please check your data again";
+          });
+        } else {
+          appStore.dispatch(NavigateToAction(to: 'up'));
         }
       } else {
         setState(() {

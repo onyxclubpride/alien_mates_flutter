@@ -91,7 +91,10 @@ class _LoginPageState extends State<LoginPage> {
                                       color: ThemeColors.fontWhite
                                           .withOpacity(0.5)),
                                 ),
-                                onTap: appStore.dispatch(NavigateToAction())),
+                                onTap: () {
+                                  appStore.dispatch(NavigateToAction(
+                                      to: AppRoutes.forgotPasswordPageRoute));
+                                }),
                             InkWell(
                               child: SizedText(
                                 text: 'Sign Up',
@@ -119,7 +122,7 @@ class _LoginPageState extends State<LoginPage> {
           phoneNumber: phoneNumController.text, password: pwController.text));
       if (!matched) {
         setState(() {
-          errorText = "User not found! Please, try again!";
+          errorText = "Login Error! Please, try again!";
         });
       }
     }

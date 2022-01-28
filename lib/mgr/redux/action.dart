@@ -284,9 +284,11 @@ class GetCheckPhoneNumExistsAction {
 }
 
 class GetChangePasswordAction {
+  String phoneNumber;
   String newPassword;
 
-  GetChangePasswordAction({required this.newPassword});
+  GetChangePasswordAction(
+      {required this.phoneNumber, required this.newPassword});
 }
 
 class GetLogoutUserAction {

@@ -87,6 +87,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getChangeUserInfoAction(store.state, action, next);
       case GetExtraInfoAction:
         return _getExtraInfoAction(store.state, action, next);
+      case GetChangePasswordAction:
+        return _getChangePasswordAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -538,6 +540,7 @@ Future<bool> _getLoginAction(
     String encPass = _encryptToken(action.password);
     showLoading();
     bool _matched = false;
+
     QuerySnapshot _querySnapshot = await usersCollection
         .where('phoneNumber', isEqualTo: action.phoneNumber)
         .where('password', isEqualTo: encPass)
@@ -763,6 +766,67 @@ Future<bool> _getUpdateUserAction(
   }
 }
 
+Future<bool> _getChangePasswordAction(
+    AppState state, GetChangePasswordAction action, NextDispatcher next) async {
+  try {
+    String encPass = _encryptToken(action.newPassword);
+    showLoading();
+    bool _matched = false;
+    QuerySnapshot _querySnapshot = await usersCollection
+        .where('phoneNumber', isEqualTo: action.phoneNumber)
+        .get();
+    List _snapshotList = _querySnapshot.docs;
+    if (_snapshotList.isNotEmpty) {
+      UserModelRes _userData = UserModelRes(
+        name: _snapshotList.first["name"],
+        isAdmin: _snapshotList.first["isAdmin"],
+        userId: _snapshotList.first["userId"],
+        createdDate: _snapshotList.first["createdDate"],
+        password: _snapshotList.first["password"],
+        phoneNumber: _snapshotList.first["phoneNumber"],
+        uniName: _snapshotList.first["uniName"],
+        postIds: _snapshotList.first["postIds"],
+      );
+      usersCollection.doc(_userData.userId).update({
+        "userId": _userData.userId,
+        "createdDate": _userData.createdDate,
+        "isAdmin": _userData.isAdmin,
+        "password": encPass,
+        "phoneNumber": _userData.phoneNumber,
+        "uniName": _userData.uniName,
+        "postIds": [...?_userData.postIds],
+      });
+      next(UpdateApiStateAction(
+          userMe: UserModelRes(
+        name: _userData.name,
+        userId: _userData.userId,
+        isAdmin: _userData.isAdmin,
+        createdDate: _userData.createdDate,
+        password: encPass,
+        phoneNumber: _userData.phoneNumber,
+        uniName: _userData.uniName,
+        postIds: _userData.postIds,
+      )));
+
+      next(UpdateApiStateAction(userMe: _userData));
+      next(UpdateInitStateAction(userId: _userData.userId));
+      await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
+      await appStore.dispatch(GetUserPostsAction());
+      closeLoading();
+      appStore.dispatch(
+          NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+      _matched = true;
+      return _matched;
+    } else {
+      closeLoading();
+      return _matched;
+    }
+  } catch (e) {
+    logger(e.toString(), hint: 'GET LOGIN CATCH ERROR');
+    return false;
+  }
+}
+
 Future<bool> _getCheckPhoneNumExistsAction(AppState state,
     GetCheckPhoneNumExistsAction action, NextDispatcher next) async {
   QuerySnapshot _querySnapshot = await usersCollection
@@ -783,7 +847,9 @@ _getChangeUserInfoAction(
     "userId": state.apiState.userMe.userId,
     "createdDate": state.apiState.userMe.createdDate,
     "isAdmin": state.apiState.userMe.isAdmin,
-    "password": action.newPass ?? state.apiState.userMe.password,
+    "password": action.newPass != null
+        ? _encryptToken(action.newPass!)
+        : state.apiState.userMe.password,
     "phoneNumber": state.apiState.userMe.phoneNumber,
     "uniName": state.apiState.userMe.uniName,
     "postIds": [...?state.apiState.userMe.postIds],
@@ -794,7 +860,9 @@ _getChangeUserInfoAction(
     userId: state.apiState.userMe.userId,
     isAdmin: state.apiState.userMe.isAdmin,
     createdDate: state.apiState.userMe.createdDate,
-    password: action.newPass ?? state.apiState.userMe.password,
+    password: action.newPass != null
+        ? _encryptToken(action.newPass!)
+        : state.apiState.userMe.password,
     phoneNumber: state.apiState.userMe.phoneNumber,
     uniName: state.apiState.userMe.uniName,
     postIds: state.apiState.userMe.postIds,
