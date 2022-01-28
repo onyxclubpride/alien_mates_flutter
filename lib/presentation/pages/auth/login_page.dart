@@ -86,10 +86,9 @@ class _LoginPageState extends State<LoginPage> {
                           children: <Widget>[
                             InkWell(
                                 child: SizedText(
-                                  text: 'Forget Password',
+                                  text: 'Reset Password',
                                   textStyle: latoB14.apply(
-                                      color: ThemeColors.fontWhite
-                                          .withOpacity(0.5)),
+                                      color: ThemeColors.fontWhite),
                                 ),
                                 onTap: () {
                                   appStore.dispatch(NavigateToAction(

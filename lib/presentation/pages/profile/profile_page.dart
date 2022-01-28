@@ -1,7 +1,10 @@
 import 'dart:io';
+import 'package:alien_mates/presentation/layout/post_layout.dart';
+import 'package:alien_mates/presentation/layout/profile_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -26,6 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    return ProfileLayout(buildWidget: _buildPostsWidgetList);
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => DefaultBody(
@@ -70,7 +74,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         shrinkWrap: true,
                         controller: _controller,
                         children: [
-                          ..._buildPostsWidgetList(state),
+                          // ..._buildPostsWidgetList(state),
                         ],
                       ),
                     )
@@ -115,86 +119,59 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  List<Widget> _buildPostsWidgetList(AppState state) {
-    // logger(appStore.state.apiState.posts?.contains(appStore.state.apiState.userMe.postIds));
-    List<Widget> _list = [];
-    int myPostCount = 0;
+  PostModelRes _getPostModel(snapshot) {
+    final _postDetail = snapshot;
+    PostModelRes _postModelRes = PostModelRes(
+        createdDate: _postDetail['createdDate'],
+        postId: _postDetail['postId'],
+        isNotice: _postDetail['isNotice'],
+        isPost: _postDetail['isPost'],
+        userId: _postDetail['userId'],
+        isEvent: _postDetail['isEvent'],
+        isHelp: _postDetail['isHelp'],
+        likedUserIds: _postDetail['likedUserIds'],
+        joinedUserIds: _postDetail['joinedUserIds'],
+        description: _postDetail['description'],
+        title: _postDetail['title'],
+        joinLimit: _postDetail['joinLimit'],
+        imageUrl: _postDetail['imageUrl'],
+        eventLocation: _postDetail['eventLocation']);
+    return _postModelRes;
+  }
 
-    List<PostModelRes> postsList = state.apiState.userPostsList;
-    if (postsList.isNotEmpty) {
-      for (int i = 0; i < postsList.length; i++) {
-        PostModelRes _item = postsList[i];
-        if (state.apiState.userMe.postIds!.contains(_item.postId)) {
-          myPostCount += 1;
-          _list.add(
-            PostItemBanner(
-              height: 130.h,
-              imageUrl: _item.imageUrl,
-              desc: _item.description,
-              leftWidget: InkWell(
-                onTap: () {
-                  _onDeletePress(_item.postId);
-                },
-                child: SizedText(
-                  text: 'Delete',
-                  textStyle: latoR14.copyWith(color: ThemeColors.coolgray300),
-                ),
-              ),
-              rightWidget: InkWell(
-                onTap: () {
-                  _onEditPostPress(_item);
-                },
-                child: SizedText(
-                  text: 'Edit',
-                  textStyle: latoB14.copyWith(color: ThemeColors.coolgray300),
-                ),
-              ),
-              child: CachedImageOrTextImageWidget(
-                  title: _item.title,
-                  maxLines: 3,
-                  imageUrl: _item.imageUrl,
-                  description: _item.description),
-            ),
-          );
-          _list.add(SizedBox(height: 20.h));
-        }
-      }
-    }
+  Widget _buildPostsWidgetList(BuildContext ctx,
+      List<DocumentSnapshot> snapshots, int index, AppState state) {
+    final _item = _getPostModel(snapshots[index]);
 
-    if (myPostCount == 0) {
-      _list.add(SpacedColumn(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 30.h,
-            ),
-            SizedBox(
-              height: 100.w,
-              width: 150.w,
-              child: LottieBuilder.asset(
-                'assets/lotties/empty_page_lottie.json',
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            SizedText(
-              text: 'There are no post available',
-              textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
-            ExpandedButton(
-                width: MediaQuery.of(context).size.width / 2,
-                text: 'Post ',
-                onPressed: () {
-                  _onEditPress(state);
-                }),
-          ]));
-    }
-    return _list;
+    // if (postsList.isNotEmpty) {
+    return PostItemBanner(
+      height: 130.h,
+      imageUrl: _item.imageUrl,
+      desc: _item.description,
+      leftWidget: InkWell(
+        onTap: () {
+          _onDeletePress(_item.postId);
+        },
+        child: SizedText(
+          text: 'Delete',
+          textStyle: latoR14.copyWith(color: ThemeColors.coolgray300),
+        ),
+      ),
+      rightWidget: InkWell(
+        onTap: () {
+          _onEditPostPress(_item);
+        },
+        child: SizedText(
+          text: 'Edit',
+          textStyle: latoB14.copyWith(color: ThemeColors.coolgray300),
+        ),
+      ),
+      child: CachedImageOrTextImageWidget(
+          title: _item.title,
+          maxLines: 3,
+          imageUrl: _item.imageUrl,
+          description: _item.description),
+    );
   }
 
   Widget _buildTitleIcon() {

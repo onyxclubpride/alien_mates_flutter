@@ -90,7 +90,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   verticalSpace: 21,
                   children: [
                     SizedText(
-                        text: 'Forgot Password',
+                        text: 'Reset Password',
                         textStyle: latoB45.copyWith(color: Colors.white)),
                     if (!isOtpSent) SizedBox(height: 20.h),
                     SpacedColumn(verticalSpace: 25, children: [
@@ -101,9 +101,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         keyboardType: TextInputType.number,
                         icon: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            SizedText(text: '+82'),
-                          ],
+                          children: const [SizedText(text: '+82')],
                         ),
                         controller: phoneNumberController,
                       ),

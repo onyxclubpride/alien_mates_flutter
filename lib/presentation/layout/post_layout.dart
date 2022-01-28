@@ -1,5 +1,8 @@
+import 'package:alien_mates/mgr/models/model_exporter.dart';
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
+import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -65,10 +68,7 @@ class _PostLayoutState extends State<PostLayout> {
                       child: const Icon(Ionicons.arrow_up_outline),
                     )
                   : null,
-              appBar: DefaultHeader(
-                withAction: true,
-                titleText: null,
-              ),
+              appBar: _getHeader(),
               body: PaginateFirestore(
                 separator: SizedBox(height: 20.h),
                 scrollController: _controller,
@@ -139,15 +139,26 @@ class _PostLayoutState extends State<PostLayout> {
                   );
                 },
                 physics: const BouncingScrollPhysics(),
-                query: postsCollection
-                    .orderBy('createdDate', descending: true)
-                    .where(widget.postType.parseString(), isEqualTo: true)
-                    .limit(10),
+                query: _getQuery(state),
                 itemBuilderType: PaginateBuilderType.listView,
                 isLive: true,
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
               ),
             ));
+  }
+
+  _getQuery(AppState state) {
+    return postsCollection
+        .orderBy('createdDate', descending: true)
+        .where(widget.postType.parseString(), isEqualTo: true)
+        .limit(10);
+  }
+
+  _getHeader() {
+    return DefaultHeader(
+      withAction: true,
+      titleText: null,
+    );
   }
 
   // This function is triggered when the user presses the back-to-top button

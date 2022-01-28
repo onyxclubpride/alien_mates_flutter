@@ -698,7 +698,6 @@ Future<bool> _getUpdatePostAction(
       });
       next(UpdateApiStateAction(postDetail: _postModelRes));
     }
-    await appStore.dispatch(GetUserPostsAction());
 
     if (action.showloading) {
       closeLoading();

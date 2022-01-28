@@ -26,6 +26,8 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(rightIcon);
+
     return AppBar(
       centerTitle: centerTitle,
       title: _buildTitle(),
@@ -64,7 +66,8 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
 
   List<Widget> _buildActions() {
     List<Widget> _list = [];
-    if (rightIcon == null) {
+    if (rightIcon == null && onRightButtonClick == null) {
+      print('isNull');
       _list.add(Container(
         margin: EdgeInsets.only(right: 10.w),
         child: IconButton(
@@ -73,17 +76,13 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
               color: ThemeColors.coolgray300),
           iconSize: 25.h,
           onPressed: () {
-            // appStore.dispatch(GetCreateEventAction(
-            //     eventLocation: 'Seoul',
-            //     title: "Cool event",
-            //     description: "Cool event desc",
-            //     joinLimit: 10,
-            //     imagePath: ''));
             appStore.dispatch(NavigateToAction(to: AppRoutes.profilePageRoute));
           },
         ),
       ));
     } else {
+      print('isNotNull');
+
       _list.add(Container(
         margin: EdgeInsets.only(right: 10.w),
         child: IconButton(
@@ -94,6 +93,7 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
       ));
     }
+
     return _list;
   }
 }
