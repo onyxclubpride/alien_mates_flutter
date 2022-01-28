@@ -30,6 +30,7 @@ class AppRoutes {
 
   static const termsAndConditionsPageRoute = "/termsAndConditions";
   static const aboutUsPageRoute = "/aboutUs";
+  static const forgotPasswordPageRoute = "/fotgotPassword";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -58,7 +59,9 @@ class AppRoutes {
           EditProfilePage(),
       AppRoutes.termsAndConditionsPageRoute: (BuildContext context) =>
           const TermsAndConditionsPage(),
-      AppRoutes.aboutUsPageRoute: (BuildContext context) => const AboutUsPage()
+      AppRoutes.aboutUsPageRoute: (BuildContext context) => const AboutUsPage(),
+      AppRoutes.forgotPasswordPageRoute: (BuildContext context) =>
+          ForgotPasswordPage(),
     };
 
     return base;

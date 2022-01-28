@@ -2,7 +2,6 @@ import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/pages/profile/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/profile/settings_page.dart';
-import 'package:alien_mates/presentation/pages/auth/sign_up_page.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
 class AppRouter {
@@ -47,6 +46,8 @@ class AppRouter {
           return const TermsAndConditionsPage();
         case (AppRoutes.aboutUsPageRoute):
           return const AboutUsPage();
+        case (AppRoutes.forgotPasswordPageRoute):
+          return ForgotPasswordPage();
         default:
           return const SplashPage();
       }

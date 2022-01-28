@@ -16,9 +16,13 @@ export '../../layout/default_body.dart';
 
 //other pages
 export '../../pages/splash_page.dart';
-export '../../pages/auth/login_page.dart';
 export '../../pages/about_us_page.dart';
 export '../../pages/terms_and_condition_page.dart';
+
+// auth page
+export '../../pages/auth/login_page.dart';
+export '../../pages/auth/sign_up_page.dart';
+export '../../pages/auth/forgot_password.dart';
 
 //profile pages
 export '../../pages/home_page.dart';

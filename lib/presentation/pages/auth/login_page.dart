@@ -91,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                                       color: ThemeColors.fontWhite
                                           .withOpacity(0.5)),
                                 ),
-                                onTap: null),
+                                onTap: appStore.dispatch(NavigateToAction())),
                             InkWell(
                               child: SizedText(
                                 text: 'Sign Up',
