@@ -28,10 +28,8 @@ Future<void> _getStateInitAction(
   String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
   if (_localUserId != null) {
     await appStore.dispatch(GetUserIdExistAction(_localUserId));
-    await appStore.dispatch(GetUserPostsAction());
   } else {
     await appStore.dispatch(GetSearchUniversityAction());
-
     appStore.dispatch(
         NavigateToAction(to: AppRoutes.loginPageRoute, replace: true));
   }

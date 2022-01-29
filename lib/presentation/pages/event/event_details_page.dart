@@ -194,7 +194,6 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
       if (!userIds.contains(userId)) {
         await appStore.dispatch(GetUpdatePostAction(
             postId: postId, joinedUserIds: [...userIds, userId]));
-        appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
       } else {
         showAlertDialog(context, text: "You have already joined!");
       }
@@ -208,6 +207,5 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
     _list.remove(userId);
     await appStore
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
-    appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
   }
 }

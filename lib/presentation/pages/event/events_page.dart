@@ -40,10 +40,6 @@ class _EventsPageState extends State<EventsPage> {
             buildWidget: _buildWigdet, postType: PostTypeEnum.EVENT));
   }
 
-  _onRefresh() async {
-    appStore.dispatch(GetFetchMorePostsAction(isEventOnly: true));
-  }
-
   // Widget _buildPostsWidgetList(AppState state) {
   //   List<Widget> _list = [];
   //   List<ListPostModelRes> postsList = state.apiState.posts;
@@ -100,7 +96,6 @@ class _EventsPageState extends State<EventsPage> {
       if (!userIds.contains(userId)) {
         await appStore.dispatch(GetUpdatePostAction(
             postId: postId, joinedUserIds: [...userIds, userId]));
-        _onRefresh();
       } else {
         showAlertDialog(context, text: "You have already joined!");
       }
@@ -114,7 +109,6 @@ class _EventsPageState extends State<EventsPage> {
     _list.remove(userId);
     await appStore
         .dispatch(GetUpdatePostAction(postId: postId, joinedUserIds: _list));
-    _onRefresh();
   }
 
   PostModelRes _getPostModel(snapshot) {

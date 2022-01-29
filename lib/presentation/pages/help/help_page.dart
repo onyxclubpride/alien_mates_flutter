@@ -21,10 +21,6 @@ class _HelpPageState extends State<HelpPage> {
             PostLayout(buildWidget: _buildWigdet, postType: PostTypeEnum.HELP));
   }
 
-  _onRefresh() {
-    appStore.dispatch(GetFetchMorePostsAction(isHelpOnly: true));
-  }
-
   // Widget _buildPostsWidgetList(AppState state) {
   //   List<Widget> _list = [];
   //   List<ListPostModelRes> postsList = state.apiState.posts;

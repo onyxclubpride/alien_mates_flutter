@@ -74,11 +74,11 @@ class DismissPopupAction {
 
 ///----------------- API -----------------
 
-class GetAllKindPostsAction {
-  bool showLoading;
-
-  GetAllKindPostsAction({this.showLoading = true});
-}
+// class GetAllKindPostsAction {
+//   bool showLoading;
+//
+//   GetAllKindPostsAction({this.showLoading = true});
+// }
 
 class GetChangeUserInfoAction {
   String? username;
@@ -187,8 +187,6 @@ class GetLoginAction {
   GetLoginAction({required this.phoneNumber, required this.password});
 }
 
-class GetUserPostsAction {}
-
 class GetPostByIdAction {
   String postId;
   String? goToRoute;
@@ -201,8 +199,6 @@ class GetUserByIdAction {
 
   GetUserByIdAction(this.userId);
 }
-
-class GetAllUsersAction {}
 
 class GetDeletePostAction {
   String postId;
@@ -294,19 +290,6 @@ class GetChangePasswordAction {
 class GetLogoutUserAction {
   String? routeTo;
   GetLogoutUserAction({this.routeTo});
-}
-
-class GetFetchMorePostsAction {
-  bool isPostOnly;
-  bool isHelpOnly;
-  bool isEventOnly;
-  bool isNoticeOnly;
-
-  GetFetchMorePostsAction(
-      {this.isNoticeOnly = false,
-      this.isEventOnly = false,
-      this.isPostOnly = false,
-      this.isHelpOnly = false});
 }
 
 class GetExtraInfoAction {}

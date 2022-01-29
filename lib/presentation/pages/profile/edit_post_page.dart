@@ -138,7 +138,6 @@ class _EditPostPageState extends State<EditPostPage> {
             text:
                 'There was a problem while updating to server! Please, try again!');
       } else {
-        appStore.dispatch(GetFetchMorePostsAction(isPostOnly: true));
         appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }

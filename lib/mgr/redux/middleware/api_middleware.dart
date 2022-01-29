@@ -8,7 +8,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/services.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
@@ -39,8 +38,6 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
   @override
   call(Store<AppState> store, action, next) {
     switch (action.runtimeType) {
-      case GetAllKindPostsAction:
-        return _getAllKindPostsAction(store.state, action, next);
       case GetCreatePostAction:
         return _getCreatePostAction(store.state, action, next);
       case GetCreateEventAction:
@@ -51,8 +48,6 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getCreateHelpAction(store.state, action, next);
       case GetCreateUserAction:
         return _getCreateUserAction(store.state, action, next);
-      case GetAllUsersAction:
-        return _getAllUsersAction(store.state, action, next);
       case GetUserIdExistAction:
         return _getUserIdExistAction(store.state, action, next);
       case GetLoginAction:
@@ -77,12 +72,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getLogoutAction(store.state, action, next);
       case GetCheckPhoneNumberExistsAction:
         return _getCheckPhoneNumberExistsAction(store.state, action, next);
-      case GetFetchMorePostsAction:
-        return _getFetchMorePostsAction(store.state, action, next);
       case GetCheckPhoneNumExistsAction:
         return _getCheckPhoneNumExistsAction(store.state, action, next);
-      case GetUserPostsAction:
-        return _getUserPostsAction(store.state, action, next);
       case GetChangeUserInfoAction:
         return _getChangeUserInfoAction(store.state, action, next);
       case GetExtraInfoAction:
@@ -103,186 +94,176 @@ String _encryptToken(String token) {
   return encryptor.encrypt(token, iv: iv).base64;
 }
 
-Future<bool> _getAllKindPostsAction(
-    AppState state, GetAllKindPostsAction action, NextDispatcher next) async {
-  List<ListPostModelRes> postsList = await _getPostsList();
-  List<ListPostModelRes> bannerPosts = [];
-  // bannerPosts.add(postsList.firstWhere((element) => element.isHelp));
-  // bannerPosts.add(postsList.firstWhere((element) => element.isNotice));
-  // bannerPosts.add(postsList.firstWhere((element) => element.isEvent));
-  next(UpdateApiStateAction(posts: postsList, bannerPosts: bannerPosts));
-  return postsList.isNotEmpty;
-}
-
-Future<List<ListPostModelRes>> _getPostsList(
-    {int limit = 2,
-    bool isPostOnly = false,
-    bool isHelpOnly = false,
-    bool isEventOnly = false,
-    bool isNoticeOnly = false,
-    String? lastPostId}) async {
-  List<DocumentSnapshot> documentList = [];
-
-  try {
-    if (isPostOnly) {
-      logger(lastPostId, hint: "LAST POST ID");
-      QuerySnapshot _querySnapshot = await postsCollection
-          .where('isPost', isEqualTo: true)
-          .orderBy('createdDate', descending: false)
-          .startAfter([
-            {"postId": lastPostId}
-          ])
-          .limit(limit)
-          .get();
-      List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
-      documentList.addAll(_snapshotList);
-
-      List<ListPostModelRes> _posts = [];
-      for (int i = 0; i < _snapshotList.length; i++) {
-        var item = _snapshotList[i];
-        ListPostModelRes postModelRes = ListPostModelRes(
-            createdDate: item['createdDate'],
-            postId: item['postId'],
-            isEvent: item['isEvent'],
-            isNotice: item['isNotice'],
-            isPost: item['isPost'],
-            isHelp: item['isHelp'],
-            imageUrl: item['imageUrl'],
-            description: item['description'],
-            joinedUserIds: item['joinedUserIds'],
-            likedUserIds: item['likedUserIds'],
-            title: item['title'],
-            joinLimit: item['joinLimit'],
-            userId: item['userId']);
-        _posts.add(postModelRes);
-      }
-
-      logger(_posts, hint: 'POSTS LIST POSTS ONLY');
-      return _posts;
-    } else if (isEventOnly) {
-      QuerySnapshot _querySnapshot = await postsCollection
-          .where('isEvent', isEqualTo: true)
-          .orderBy('createdDate', descending: true)
-          .limit(limit)
-          .endBefore([
-        {"postId": lastPostId}
-      ]).get();
-      List _snapshotList = _querySnapshot.docs;
-      List<ListPostModelRes> _posts = [];
-      for (int i = 0; i < _snapshotList.length; i++) {
-        var item = _snapshotList[i];
-        ListPostModelRes postModelRes = ListPostModelRes(
-            createdDate: item['createdDate'],
-            postId: item['postId'],
-            isEvent: item['isEvent'],
-            isNotice: item['isNotice'],
-            isPost: item['isPost'],
-            isHelp: item['isHelp'],
-            imageUrl: item['imageUrl'],
-            description: item['description'],
-            joinedUserIds: item['joinedUserIds'],
-            likedUserIds: item['likedUserIds'],
-            title: item['title'],
-            joinLimit: item['joinLimit'],
-            userId: item['userId']);
-        _posts.add(postModelRes);
-      }
-
-      logger(_posts, hint: 'POSTS LIST EVENT ONLY');
-      return _posts;
-    } else if (isHelpOnly) {
-      QuerySnapshot _querySnapshot = await postsCollection
-          .where('isHelp', isEqualTo: true)
-          .orderBy('createdDate', descending: true)
-          .limit(limit)
-          .startAfter([
-        {"postId": lastPostId}
-      ]).get();
-      List _snapshotList = _querySnapshot.docs;
-      List<ListPostModelRes> _posts = [];
-      for (int i = 0; i < _snapshotList.length; i++) {
-        var item = _snapshotList[i];
-        ListPostModelRes postModelRes = ListPostModelRes(
-            createdDate: item['createdDate'],
-            postId: item['postId'],
-            isEvent: item['isEvent'],
-            isNotice: item['isNotice'],
-            isPost: item['isPost'],
-            isHelp: item['isHelp'],
-            imageUrl: item['imageUrl'],
-            description: item['description'],
-            joinedUserIds: item['joinedUserIds'],
-            likedUserIds: item['likedUserIds'],
-            title: item['title'],
-            joinLimit: item['joinLimit'],
-            userId: item['userId']);
-        _posts.add(postModelRes);
-      }
-      logger(_posts, hint: 'POSTS LIST HELP ONLY');
-      return _posts;
-    } else if (isNoticeOnly) {
-      QuerySnapshot _querySnapshot = await postsCollection
-          .where('isNotice', isEqualTo: true)
-          .orderBy('createdDate', descending: true)
-          .limit(limit)
-          .startAfter([
-        {"postId": lastPostId}
-      ]).get();
-      List _snapshotList = _querySnapshot.docs;
-      List<ListPostModelRes> _posts = [];
-      for (int i = 0; i < _snapshotList.length; i++) {
-        var item = _snapshotList[i];
-        ListPostModelRes postModelRes = ListPostModelRes(
-            createdDate: item['createdDate'],
-            postId: item['postId'],
-            isEvent: item['isEvent'],
-            isNotice: item['isNotice'],
-            isPost: item['isPost'],
-            isHelp: item['isHelp'],
-            imageUrl: item['imageUrl'],
-            description: item['description'],
-            joinedUserIds: item['joinedUserIds'],
-            likedUserIds: item['likedUserIds'],
-            title: item['title'],
-            joinLimit: item['joinLimit'],
-            userId: item['userId']);
-        _posts.add(postModelRes);
-      }
-      logger(_posts, hint: 'POSTS LIST NOTICE ONLY');
-      return _posts;
-    }
-    QuerySnapshot _querySnapshot = await postsCollection
-        .limit(limit)
-        .orderBy('createdDate', descending: true)
-        .get();
-    List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
-    documentList.addAll(_snapshotList);
-    List<ListPostModelRes> _posts = [];
-    for (int i = 0; i < _snapshotList.length; i++) {
-      var item = _snapshotList[i];
-      ListPostModelRes postModelRes = ListPostModelRes(
-          createdDate: item['createdDate'],
-          postId: item['postId'],
-          isEvent: item['isEvent'],
-          isNotice: item['isNotice'],
-          isPost: item['isPost'],
-          isHelp: item['isHelp'],
-          imageUrl: item['imageUrl'],
-          description: item['description'],
-          joinedUserIds: item['joinedUserIds'],
-          likedUserIds: item['likedUserIds'],
-          title: item['title'],
-          joinLimit: item['joinLimit'],
-          userId: item['userId']);
-      _posts.add(postModelRes);
-    }
-    logger(_posts, hint: 'POSTS LIST POSTS ONLY');
-    return _posts;
-  } catch (e) {
-    logger(e.toString(), hint: 'GET POSTS LIST CATCH ERROR');
-    return [];
-  }
-}
+//
+// Future<List<ListPostModelRes>> _getPostsList(
+//     {int limit = 10,
+//     bool isPostOnly = false,
+//     bool isHelpOnly = false,
+//     bool isEventOnly = false,
+//     bool isNoticeOnly = false,
+//     String? lastPostId}) async {
+//   List<DocumentSnapshot> documentList = [];
+//
+//   try {
+//     if (isPostOnly) {
+//       logger(lastPostId, hint: "LAST POST ID");
+//       QuerySnapshot _querySnapshot = await postsCollection
+//           .where('isPost', isEqualTo: true)
+//           .orderBy('createdDate', descending: false)
+//           .startAfter([
+//             {"postId": lastPostId}
+//           ])
+//           .limit(limit)
+//           .get();
+//       List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
+//       documentList.addAll(_snapshotList);
+//
+//       List<ListPostModelRes> _posts = [];
+//       for (int i = 0; i < _snapshotList.length; i++) {
+//         var item = _snapshotList[i];
+//         ListPostModelRes postModelRes = ListPostModelRes(
+//             createdDate: item['createdDate'],
+//             postId: item['postId'],
+//             isEvent: item['isEvent'],
+//             isNotice: item['isNotice'],
+//             isPost: item['isPost'],
+//             isHelp: item['isHelp'],
+//             imageUrl: item['imageUrl'],
+//             description: item['description'],
+//             joinedUserIds: item['joinedUserIds'],
+//             likedUserIds: item['likedUserIds'],
+//             title: item['title'],
+//             joinLimit: item['joinLimit'],
+//             userId: item['userId']);
+//         _posts.add(postModelRes);
+//       }
+//
+//       logger(_posts, hint: 'POSTS LIST POSTS ONLY');
+//       return _posts;
+//     } else if (isEventOnly) {
+//       QuerySnapshot _querySnapshot = await postsCollection
+//           .where('isEvent', isEqualTo: true)
+//           .orderBy('createdDate', descending: true)
+//           .limit(limit)
+//           .endBefore([
+//         {"postId": lastPostId}
+//       ]).get();
+//       List _snapshotList = _querySnapshot.docs;
+//       List<ListPostModelRes> _posts = [];
+//       for (int i = 0; i < _snapshotList.length; i++) {
+//         var item = _snapshotList[i];
+//         ListPostModelRes postModelRes = ListPostModelRes(
+//             createdDate: item['createdDate'],
+//             postId: item['postId'],
+//             isEvent: item['isEvent'],
+//             isNotice: item['isNotice'],
+//             isPost: item['isPost'],
+//             isHelp: item['isHelp'],
+//             imageUrl: item['imageUrl'],
+//             description: item['description'],
+//             joinedUserIds: item['joinedUserIds'],
+//             likedUserIds: item['likedUserIds'],
+//             title: item['title'],
+//             joinLimit: item['joinLimit'],
+//             userId: item['userId']);
+//         _posts.add(postModelRes);
+//       }
+//
+//       logger(_posts, hint: 'POSTS LIST EVENT ONLY');
+//       return _posts;
+//     } else if (isHelpOnly) {
+//       QuerySnapshot _querySnapshot = await postsCollection
+//           .where('isHelp', isEqualTo: true)
+//           .orderBy('createdDate', descending: true)
+//           .limit(limit)
+//           .startAfter([
+//         {"postId": lastPostId}
+//       ]).get();
+//       List _snapshotList = _querySnapshot.docs;
+//       List<ListPostModelRes> _posts = [];
+//       for (int i = 0; i < _snapshotList.length; i++) {
+//         var item = _snapshotList[i];
+//         ListPostModelRes postModelRes = ListPostModelRes(
+//             createdDate: item['createdDate'],
+//             postId: item['postId'],
+//             isEvent: item['isEvent'],
+//             isNotice: item['isNotice'],
+//             isPost: item['isPost'],
+//             isHelp: item['isHelp'],
+//             imageUrl: item['imageUrl'],
+//             description: item['description'],
+//             joinedUserIds: item['joinedUserIds'],
+//             likedUserIds: item['likedUserIds'],
+//             title: item['title'],
+//             joinLimit: item['joinLimit'],
+//             userId: item['userId']);
+//         _posts.add(postModelRes);
+//       }
+//       logger(_posts, hint: 'POSTS LIST HELP ONLY');
+//       return _posts;
+//     } else if (isNoticeOnly) {
+//       QuerySnapshot _querySnapshot = await postsCollection
+//           .where('isNotice', isEqualTo: true)
+//           .orderBy('createdDate', descending: true)
+//           .limit(limit)
+//           .startAfter([
+//         {"postId": lastPostId}
+//       ]).get();
+//       List _snapshotList = _querySnapshot.docs;
+//       List<ListPostModelRes> _posts = [];
+//       for (int i = 0; i < _snapshotList.length; i++) {
+//         var item = _snapshotList[i];
+//         ListPostModelRes postModelRes = ListPostModelRes(
+//             createdDate: item['createdDate'],
+//             postId: item['postId'],
+//             isEvent: item['isEvent'],
+//             isNotice: item['isNotice'],
+//             isPost: item['isPost'],
+//             isHelp: item['isHelp'],
+//             imageUrl: item['imageUrl'],
+//             description: item['description'],
+//             joinedUserIds: item['joinedUserIds'],
+//             likedUserIds: item['likedUserIds'],
+//             title: item['title'],
+//             joinLimit: item['joinLimit'],
+//             userId: item['userId']);
+//         _posts.add(postModelRes);
+//       }
+//       logger(_posts, hint: 'POSTS LIST NOTICE ONLY');
+//       return _posts;
+//     }
+//     QuerySnapshot _querySnapshot = await postsCollection
+//         .limit(limit)
+//         .orderBy('createdDate', descending: true)
+//         .get();
+//     List<DocumentSnapshot> _snapshotList = _querySnapshot.docs;
+//     documentList.addAll(_snapshotList);
+//     List<ListPostModelRes> _posts = [];
+//     for (int i = 0; i < _snapshotList.length; i++) {
+//       var item = _snapshotList[i];
+//       ListPostModelRes postModelRes = ListPostModelRes(
+//           createdDate: item['createdDate'],
+//           postId: item['postId'],
+//           isEvent: item['isEvent'],
+//           isNotice: item['isNotice'],
+//           isPost: item['isPost'],
+//           isHelp: item['isHelp'],
+//           imageUrl: item['imageUrl'],
+//           description: item['description'],
+//           joinedUserIds: item['joinedUserIds'],
+//           likedUserIds: item['likedUserIds'],
+//           title: item['title'],
+//           joinLimit: item['joinLimit'],
+//           userId: item['userId']);
+//       _posts.add(postModelRes);
+//     }
+//     logger(_posts, hint: 'POSTS LIST POSTS ONLY');
+//     return _posts;
+//   } catch (e) {
+//     logger(e.toString(), hint: 'GET POSTS LIST CATCH ERROR');
+//     return [];
+//   }
+// }
 
 Future<bool> _getCreatePostAction(
     AppState state, GetCreatePostAction action, NextDispatcher next) async {
@@ -313,8 +294,6 @@ Future<bool> _getCreatePostAction(
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
-    await appStore.dispatch(GetAllKindPostsAction());
-    await appStore.dispatch(GetUserPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -353,7 +332,6 @@ Future<bool> _getCreateNoticeAction(
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
-    await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -392,7 +370,6 @@ Future<bool> _getCreateEventAction(
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
-    await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -431,7 +408,6 @@ Future<bool> _getCreateHelpAction(
       "createdDate": currentDateAndTime
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
-    await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -465,12 +441,12 @@ Future<bool> _getCreateUserAction(
   }
 }
 
-Future<List<UserModelRes>> _getAllUsersAction(
-    AppState state, GetAllUsersAction action, NextDispatcher next) async {
-  List<UserModelRes> usersList = await _getUsersList();
-  next(UpdateApiStateAction(users: usersList));
-  return usersList;
-}
+// Future<List<UserModelRes>> _getAllUsersAction(
+//     AppState state, GetAllUsersAction action, NextDispatcher next) async {
+//   List<UserModelRes> usersList = await _getUsersList();
+//   next(UpdateApiStateAction(users: usersList));
+//   return usersList;
+// }
 
 Future<bool> _getCheckPhoneNumberExistsAction(AppState state,
     GetCheckPhoneNumberExistsAction action, NextDispatcher next) async {
@@ -483,36 +459,35 @@ Future<bool> _getCheckPhoneNumberExistsAction(AppState state,
   return false;
 }
 
-Future<List<UserModelRes>> _getUsersList() async {
-  try {
-    QuerySnapshot _querySnapshot = await usersCollection.get();
-    List _snapshotList = _querySnapshot.docs;
-    List<UserModelRes> _users = [];
-    for (int i = 0; i < _snapshotList.length; i++) {
-      var item = _snapshotList[i];
-      UserModelRes userModelRes = UserModelRes(
-        createdDate: item['createdDate'],
-        isAdmin: item['isAdmin'],
-        userId: item['userId'],
-        phoneNumber: item['phoneNumber'],
-        name: item['name'],
-        password: item['password'],
-        uniName: item['uniName'],
-        postIds: item['postIds'],
-      );
-      _users.add(userModelRes);
-    }
-    return _users;
-  } catch (e) {
-    logger(e.toString(), hint: 'GET USERS LIST CATCH ERROR');
-    return [];
-  }
-}
+// Future<List<UserModelRes>> _getUsersList() async {
+//   try {
+//     QuerySnapshot _querySnapshot = await usersCollection.get();
+//     List _snapshotList = _querySnapshot.docs;
+//     List<UserModelRes> _users = [];
+//     for (int i = 0; i < _snapshotList.length; i++) {
+//       var item = _snapshotList[i];
+//       UserModelRes userModelRes = UserModelRes(
+//         createdDate: item['createdDate'],
+//         isAdmin: item['isAdmin'],
+//         userId: item['userId'],
+//         phoneNumber: item['phoneNumber'],
+//         name: item['name'],
+//         password: item['password'],
+//         uniName: item['uniName'],
+//         postIds: item['postIds'],
+//       );
+//       _users.add(userModelRes);
+//     }
+//     return _users;
+//   } catch (e) {
+//     logger(e.toString(), hint: 'GET USERS LIST CATCH ERROR');
+//     return [];
+//   }
+// }
 
 Future<void> _getUserIdExistAction(
     AppState state, GetUserIdExistAction action, NextDispatcher next) async {
   try {
-    final postsFetched = await appStore.dispatch(GetAllKindPostsAction());
     final item = await usersCollection.doc(action.userId).get();
     UserModelRes userModelRes = UserModelRes(
         createdDate: item['createdDate'],
@@ -528,7 +503,6 @@ Future<void> _getUserIdExistAction(
     logger(userModelRes.userId);
     appStore
         .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
-    // }
   } catch (e) {
     logger(e.toString(), hint: 'GET USER ID CATCH ERROR');
   }
@@ -560,8 +534,6 @@ Future<bool> _getLoginAction(
       next(UpdateApiStateAction(userMe: _userData));
       next(UpdateInitStateAction(userId: _userData.userId));
       await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
-      await appStore.dispatch(GetAllKindPostsAction());
-      await appStore.dispatch(GetUserPostsAction());
       closeLoading();
       appStore.dispatch(
           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
@@ -571,27 +543,6 @@ Future<bool> _getLoginAction(
       closeLoading();
       return _matched;
     }
-    // showLoading();
-    // List<UserModelRes> users = await appStore.dispatch(GetAllUsersAction());
-    // if (users.isNotEmpty) {
-    //   for (int i = 0; i < users.length; i++) {
-    //     UserModelRes? _userInst = users[i];
-    //
-    //     bool _matched = _userInst.phoneNumber == action.phoneNumber &&
-    //         _userInst.password == action.password;
-    //     //_decryptToken(_userInst.password!)
-    //     if (_matched) {
-    //       next(UpdateApiStateAction(userMe: _userInst));
-    //       next(UpdateInitStateAction(userId: _userInst.userId));
-    //       await appStore.dispatch((SetLocalUserIdAction(_userInst.userId)));
-    //       await appStore.dispatch(GetAllKindPostsAction());
-    //       appStore.dispatch(
-    //           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
-    //     }
-    //   }
-    // }
-    closeLoading();
-    // return _matched;
   } catch (e) {
     logger(e.toString(), hint: 'GET LOGIN CATCH ERROR');
     return false;
@@ -755,7 +706,6 @@ Future<bool> _getUpdateUserAction(
         "postIds": _oldUserData.postIds,
       });
     }
-    await appStore.dispatch(GetAllKindPostsAction());
     closeLoading();
     return true;
   } catch (e) {
@@ -810,7 +760,6 @@ Future<bool> _getChangePasswordAction(
       next(UpdateApiStateAction(userMe: _userData));
       next(UpdateInitStateAction(userId: _userData.userId));
       await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
-      await appStore.dispatch(GetUserPostsAction());
       closeLoading();
       appStore.dispatch(
           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
@@ -870,37 +819,6 @@ _getChangeUserInfoAction(
   appStore.dispatch(NavigateToAction(to: 'up'));
 }
 
-_getUserPostsAction(
-    AppState state, GetUserPostsAction action, NextDispatcher next) async {
-  QuerySnapshot _querySnapshot = await postsCollection
-      .where('userId', isEqualTo: state.initState.userId)
-      .orderBy('createdDate', descending: true)
-      .get();
-  List _snapshotList = _querySnapshot.docs;
-  List<PostModelRes> _posts = [];
-  for (int i = 0; i < _snapshotList.length; i++) {
-    final _postDetail = _snapshotList[i];
-    PostModelRes _postModelRes = PostModelRes(
-        createdDate: _postDetail['createdDate'],
-        postId: _postDetail['postId'],
-        isNotice: _postDetail['isNotice'],
-        isPost: _postDetail['isPost'],
-        userId: _postDetail['userId'],
-        isEvent: _postDetail['isEvent'],
-        isHelp: _postDetail['isHelp'],
-        likedUserIds: _postDetail['likedUserIds'],
-        joinedUserIds: _postDetail['joinedUserIds'],
-        description: _postDetail['description'],
-        title: _postDetail['title'],
-        joinLimit: _postDetail['joinLimit'],
-        imageUrl: _postDetail['imageUrl'],
-        eventLocation: _postDetail['eventLocation']);
-    _posts.add(_postModelRes);
-  }
-  next(UpdateApiStateAction(userPostsList: _posts));
-  logger(_snapshotList, hint: 'USER POSTS LIST');
-}
-
 Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
@@ -914,9 +832,7 @@ Future<void> _getDeletePostAction(
         newPosts.add(element);
       }
     }
-
     next(UpdateApiStateAction(posts: newPosts));
-    await appStore.dispatch(GetUserPostsAction());
     closeLoading();
   } catch (e) {
     closeLoading();
@@ -1023,81 +939,6 @@ Future<UserModelRes?> _getUserByIdAction(
     closeLoading();
     logger(e.toString(), hint: 'Get User By Id CATCH ERROR');
   }
-}
-
-_getFetchMorePostsAction(
-    AppState state, GetFetchMorePostsAction action, NextDispatcher next) async {
-  int currentItemsCount = 0;
-  if (action.isPostOnly) {
-    int isBoolCount = 0;
-    for (var element in state.apiState.posts) {
-      if (element.isPost) {
-        isBoolCount++;
-      }
-    }
-    currentItemsCount = 1;
-  }
-  if (action.isEventOnly) {
-    int isBoolCount = 0;
-    for (var element in state.apiState.posts) {
-      if (element.isEvent) {
-        isBoolCount++;
-      }
-    }
-    currentItemsCount = isBoolCount + 10;
-  }
-  if (action.isNoticeOnly) {
-    int isBoolCount = 0;
-    for (var element in state.apiState.posts) {
-      if (element.isNotice) {
-        isBoolCount++;
-      }
-    }
-    currentItemsCount = isBoolCount + 10;
-  }
-  if (action.isHelpOnly) {
-    int isBoolCount = 0;
-    for (var element in state.apiState.posts) {
-      if (element.isHelp) {
-        isBoolCount++;
-      }
-    }
-    currentItemsCount = isBoolCount + 10;
-  }
-  final oldPosts = state.apiState.posts;
-  logger(oldPosts.length);
-  final newPosts = await _getPostsList(
-      limit: currentItemsCount,
-      lastPostId: oldPosts.last.postId,
-      isEventOnly: action.isEventOnly,
-      isHelpOnly: action.isHelpOnly,
-      isNoticeOnly: action.isNoticeOnly,
-      isPostOnly: action.isPostOnly);
-
-  final oldPostIds = [];
-  final newPostIds = [];
-  for (var element in oldPosts) {
-    oldPostIds.add(element.postId);
-  }
-
-  for (var element in newPosts) {
-    newPostIds.add(element.postId);
-  }
-
-  final sortedIds = <String>{...oldPostIds, ...newPostIds};
-  List<ListPostModelRes> sortedPosts = [];
-
-  final allPosts = [...oldPosts, ...newPosts];
-  for (var element in sortedIds) {
-    allPosts.lastWhere((e) {
-      if (e.postId == element) {
-        sortedPosts.add(e);
-      }
-      return e.postId == element;
-    });
-  }
-
-  next(UpdateApiStateAction(posts: allPosts));
 }
 
 _getExtraInfoAction(
