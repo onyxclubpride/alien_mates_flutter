@@ -4,8 +4,6 @@ import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -21,6 +19,10 @@ class ProfileLayout extends StatefulWidget {
 }
 
 class _ProfileLayoutState extends State<ProfileLayout> {
+  final GlobalKey<FormState> _formKeyCreatePostPage =
+      GlobalKey<FormState>(debugLabel: '_formKeyCreatePostPage');
+
+  TextEditingController descriptionController = TextEditingController();
   final ScrollController _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
@@ -28,6 +30,13 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
               appBar: _getHeader(),
+              floatingActionButton: FloatingActionButton(
+                child: const Icon(Ionicons.add),
+                backgroundColor: ThemeColors.bluegray700,
+                onPressed: () {
+                  _onEditPress(state);
+                },
+              ),
               body: PaginateFirestore(
                 separator: SizedBox(height: 20.h),
                 scrollController: _controller,
@@ -39,6 +48,7 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                         children: [
                           if (index == 0)
                             Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 _buildUserInfoWidget(state.apiState),
                                 SizedBox(height: 10.h),
@@ -97,12 +107,6 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         });
   }
 
-  // This function is triggered when the user presses the back-to-top button
-  void _scrollToTop() {
-    _controller.animateTo(0,
-        duration: const Duration(milliseconds: 300), curve: Curves.linear);
-  }
-
   Widget _buildUserInfoWidget(ApiState state) {
     UserModelRes userModelRes = state.userMe;
     return DefaultBanner(
@@ -136,5 +140,210 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             textStyle: latoM16.copyWith(color: ThemeColors.fontDark)),
       ],
     );
+  }
+
+  _onEditPress(AppState state) {
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.componentBgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: state.apiState.userMe.isAdmin == true ? 300.h : 240.h,
+            margin: EdgeInsets.all(25.w),
+            child: SpacedColumn(children: [
+              SizedBox(height: 0.h),
+              GestureDetector(
+                onTap: () {
+                  appStore.dispatch(DismissPopupAction());
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: Container(
+                    width: 80.w,
+                    height: 4.h,
+                    color: ThemeColors.gray1,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              ExpandedButton(
+                text: 'Feed',
+                onPressed: _onFeedPress,
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Event',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createEventPageRoute));
+                },
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Support',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createHelpPageRoute));
+                },
+              ),
+              SizedBox(height: 27.h),
+              if (state.apiState.userMe.isAdmin == true)
+                ExpandedButton(
+                  text: 'Notice',
+                  onPressed: () {
+                    appStore.dispatch(
+                        NavigateToAction(to: AppRoutes.createNoticePageRoute));
+                  },
+                ),
+            ]),
+          );
+        });
+    // appStore.dispatch(NavigateToAction(to: AppRoutes.createHelpPageRoute));
+  }
+
+  _onFeedPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: 150.h,
+            margin: EdgeInsets.all(25.w),
+            child: SpacedColumn(children: [
+              SizedBox(height: 0.h),
+              GestureDetector(
+                onTap: () {
+                  appStore.dispatch(DismissPopupAction());
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(20.r),
+                  child: Container(
+                    width: 80.w,
+                    height: 4.h,
+                    color: ThemeColors.gray1,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20.h),
+              ExpandedButton(
+                text: 'Image only',
+                onPressed: _onImageOnlyPress,
+              ),
+              SizedBox(height: 27.h),
+              ExpandedButton(
+                text: 'Text only',
+                onPressed: _onTextOnlyPress,
+              ),
+            ]),
+          );
+        });
+  }
+
+  _onImageOnlyPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return ImagesContainerForSheet();
+        });
+  }
+
+  _onTextOnlyPress() {
+    appStore.dispatch(DismissPopupAction());
+    showModalBottomSheet(
+        backgroundColor: ThemeColors.bgDark,
+        enableDrag: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16.r),
+                topRight: Radius.circular(16.r))),
+        context: context,
+        barrierColor: ThemeColors.black.withOpacity(0.8),
+        isScrollControlled: true,
+        builder: (context) {
+          return Container(
+            height: 360.h + MediaQuery.of(context).viewInsets.bottom,
+            margin: EdgeInsets.symmetric(horizontal: 25.w),
+            child: Column(children: [
+              // if (MediaQuery.of(context).viewInsets.bottom == 0)
+              SizedBox(height: 15.h),
+              if (MediaQuery.of(context).viewInsets.bottom == 0)
+                GestureDetector(
+                  onTap: () {
+                    appStore.dispatch(DismissPopupAction());
+                  },
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20.r),
+                    child: Container(
+                      width: 80.w,
+                      height: 4.h,
+                      color: ThemeColors.gray1,
+                    ),
+                  ),
+                ),
+              SizedBox(height: 10.h),
+              SizedText(
+                  text: "Create Post",
+                  textStyle: latoM30.copyWith(color: ThemeColors.fontDark)),
+              SizedBox(height: 10.h),
+              Divider(thickness: 1.w, color: ThemeColors.borderDark),
+              SizedBox(height: 10.h),
+              Flexible(
+                child: Form(
+                  key: _formKeyCreatePostPage,
+                  child: PostCreateInput(
+                    maxlines: 10,
+                    hintText: 'What is going on today...? ⊙_0  \u200d👀 ',
+                    validator: Validator.validateDescription,
+                    controller: descriptionController,
+                  ),
+                ),
+              ),
+              SizedBox(height: 30.h),
+              ExpandedButton(
+                text: 'POST',
+                onPressed: _onPostPost,
+              ),
+              SizedBox(height: 30.h),
+            ]),
+          );
+        });
+  }
+
+  _onPostPost() async {
+    if (_formKeyCreatePostPage.currentState!.validate()) {
+      bool created = await appStore.dispatch(
+          GetCreatePostAction(description: descriptionController.text));
+      if (!created) {
+        showAlertDialog(context,
+            text:
+                'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+      }
+    }
   }
 }
