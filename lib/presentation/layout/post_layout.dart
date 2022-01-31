@@ -81,10 +81,7 @@ class _PostLayoutState extends State<PostLayout> {
                             CarouselSlider.builder(
                               itemCount: state.apiState.bannerPosts.length,
                               options: CarouselOptions(
-                                  onPageChanged: (index, reason) {
-                                    appStore.dispatch(UpdateApiStateAction(
-                                        bannerIndex: index));
-                                  },
+                                  onPageChanged: (index, reason) {},
                                   enableInfiniteScroll: false,
                                   viewportFraction: 1,
                                   height: 90.h),

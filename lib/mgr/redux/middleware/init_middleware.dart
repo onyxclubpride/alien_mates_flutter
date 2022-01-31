@@ -28,6 +28,7 @@ Future<void> _getStateInitAction(
   String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
   if (_localUserId != null) {
     await appStore.dispatch(GetUserIdExistAction(_localUserId));
+    await appStore.dispatch(GetBannerPostsAction());
   } else {
     await appStore.dispatch(GetSearchUniversityAction());
     appStore.dispatch(

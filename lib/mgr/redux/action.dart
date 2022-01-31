@@ -294,6 +294,8 @@ class GetLogoutUserAction {
 
 class GetExtraInfoAction {}
 
+class GetBannerPostsAction {}
+
 ///----------------- Init -----------------
 
 class GetLogoutAction {}

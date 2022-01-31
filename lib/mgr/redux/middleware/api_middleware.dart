@@ -80,6 +80,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getExtraInfoAction(store.state, action, next);
       case GetChangePasswordAction:
         return _getChangePasswordAction(store.state, action, next);
+      case GetBannerPostsAction:
+        return _getBannerPostsAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -786,6 +788,46 @@ Future<bool> _getCheckPhoneNumExistsAction(AppState state,
     isExist = false;
   }
   return isExist;
+}
+
+_getBannerPostsAction(
+    AppState state, GetBannerPostsAction action, NextDispatcher next) async {
+  List<ListPostModelRes> posts = [];
+  QuerySnapshot _querySnapshot =
+      await postsCollection.where('isHelp', isEqualTo: true).get();
+  final _helpDetail = _querySnapshot.docs.first;
+  ListPostModelRes helpRes = _getPostModel(_helpDetail);
+  posts.add(helpRes);
+  QuerySnapshot _querySnapshot1 =
+      await postsCollection.where('isEvent', isEqualTo: true).get();
+  final _eventDetail = _querySnapshot1.docs.first;
+  ListPostModelRes eventRes = _getPostModel(_eventDetail);
+  posts.add(eventRes);
+  // QuerySnapshot _querySnapshot2 =
+  //     await postsCollection.where('isNotice', isEqualTo: true).get();
+  // final _noticeDetail = _querySnapshot2.docs.first;
+  // ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
+  // posts.add(noticeRes);
+
+  next(UpdateApiStateAction(bannerPosts: posts));
+}
+
+ListPostModelRes _getPostModel(_postDetail) {
+  ListPostModelRes _postModelRes = ListPostModelRes(
+      createdDate: _postDetail['createdDate'],
+      postId: _postDetail['postId'],
+      isNotice: _postDetail['isNotice'],
+      isPost: _postDetail['isPost'],
+      userId: _postDetail['userId'],
+      isEvent: _postDetail['isEvent'],
+      isHelp: _postDetail['isHelp'],
+      likedUserIds: _postDetail['likedUserIds'],
+      joinedUserIds: _postDetail['joinedUserIds'],
+      description: _postDetail['description'],
+      title: _postDetail['title'],
+      joinLimit: _postDetail['joinLimit'],
+      imageUrl: _postDetail['imageUrl']);
+  return _postModelRes;
 }
 
 _getChangeUserInfoAction(
