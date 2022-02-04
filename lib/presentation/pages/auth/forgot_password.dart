@@ -21,15 +21,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   TextEditingController passController = TextEditingController();
   TextEditingController confirmPassController = TextEditingController();
   TextEditingController otpController = TextEditingController();
-  TextEditingController uniNameController = TextEditingController();
 
   int? sentOtp = 12345;
-  String? verId;
-
   bool isOtpSent = false;
   bool isOtpCorrect = false;
-  String errorText = "";
   bool isPhoneNumberAvailable = false;
+  bool isButtonDisable = false;
+  String? verId;
+  String errorText = "";
 
   @override
   void dispose() {
@@ -37,28 +36,13 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     confirmPassController.dispose();
     otpController.dispose();
     phoneNumberController.dispose();
-    uniNameController.dispose();
     super.dispose();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
-        onDidChange: (previousViewModel, viewModel) {
-          if (viewModel.apiState.selectedUni.isNotEmpty) {
-            setState(() {
-              uniNameController =
-                  TextEditingController(text: viewModel.apiState.selectedUni);
-            });
-          }
-        },
         builder: (context, state) {
           return DefaultBody(
             withNavigationBar: false,
@@ -66,22 +50,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             showAppBar: false,
             topPadding: 30,
             bottomPadding: 20,
-            footer: ExpandedButton(
-              text: isPhoneNumberAvailable
-                  ? isOtpSent
-                      ? 'Change Password'
-                      : "Send Otp"
-                  : 'Check Phone Number',
-              onPressed: () {
-                if (!isPhoneNumberAvailable) {
-                  _checkPhoneNumberPress();
-                } else if (isOtpSent) {
-                  _onChangePasswordPress();
-                } else {
-                  _onSendOtp(state);
-                }
-              },
-            ),
             child: SingleChildScrollView(
               child: Form(
                 key: _formKeyForgotPasswordPage,
@@ -135,7 +103,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         BasicInput(
                           hintText: "Confirm Password",
                           controller: confirmPassController,
-                          validator: Validator.validatePassword,
                           isObscured: true,
                         ),
                       if (errorText.isNotEmpty)
@@ -148,6 +115,28 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 ),
               ),
             ),
+            footer: !isButtonDisable
+                ? ExpandedButton(
+                    text:
+                        isPhoneNumberAvailable ? 'Change Password' : "Send OTP",
+                    onPressed: () {
+                      if (!isPhoneNumberAvailable) {
+                        _checkPhoneNumberPress(state);
+                      } else if (isOtpSent) {
+                        logger('Hello');
+                        // update backend
+                        setState(() {
+                          isButtonDisable = false;
+                        });
+                        _onChangePasswordPress();
+                      } else {
+                        setState(() {
+                          isButtonDisable = false;
+                        });
+                      }
+                    },
+                  )
+                : null,
           );
         });
   }
@@ -172,6 +161,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           if (!userExists) {
             setState(() {
               isOtpCorrect = true;
+              isButtonDisable = false;
             });
           }
         }
@@ -230,22 +220,31 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     }
   }
 
-  _checkPhoneNumberPress() async {
-    bool userExists = await appStore
-        .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
-
-    logger(userExists);
-    if (userExists) {
+  _checkPhoneNumberPress(AppState state) async {
+    if (phoneNumberController.text.length < 9) {
       setState(() {
-        isPhoneNumberAvailable = true;
-        errorText = "";
+        errorText = "Phone Number should be more than 10";
       });
     } else {
-      setState(() {
-        errorText = "There is no account with this number.";
-      });
+      bool userExists = await appStore
+          .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
+
+      logger(userExists);
+      if (userExists) {
+        setState(() {
+          isPhoneNumberAvailable = true;
+          isButtonDisable = true;
+          errorText = "";
+        });
+        _onSendOtp(state);
+      } else {
+        setState(() {
+          isButtonDisable = false;
+          errorText = "There is no account with this number.";
+        });
+      }
+      return userExists;
     }
-    return userExists;
   }
 
   _onChangePasswordPress() async {
@@ -278,6 +277,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     bool isSame = false;
     if (passController.text == confirmPassController.text) {
       isSame = true;
+    } else {
+      setState(() {
+        errorText = "Password didn't match";
+      });
+      isSame = false;
     }
     return isSame;
   }
