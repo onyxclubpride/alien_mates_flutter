@@ -805,6 +805,7 @@ _getBannerPostsAction(
   final _eventDetail = _querySnapshot1.docs.first;
   ListPostModelRes eventRes = _getPostModel(_eventDetail);
   posts.add(eventRes);
+  //TODO : LATER BEFORE PUBLISH
   // QuerySnapshot _querySnapshot2 =
   //     await postsCollection.where('isNotice', isEqualTo: true).get();
   // final _noticeDetail = _querySnapshot2.docs.first;

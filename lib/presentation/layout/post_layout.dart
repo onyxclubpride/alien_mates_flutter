@@ -1,8 +1,5 @@
-import 'package:alien_mates/mgr/models/model_exporter.dart';
-import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
-import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -70,6 +67,7 @@ class _PostLayoutState extends State<PostLayout> {
                   : null,
               appBar: _getHeader(),
               body: PaginateFirestore(
+                onEmpty: _getEmptyWidgets(),
                 separator: SizedBox(height: 20.h),
                 scrollController: _controller,
                 itemBuilder: (_, documentSnapshots, index) {
@@ -81,7 +79,10 @@ class _PostLayoutState extends State<PostLayout> {
                             CarouselSlider.builder(
                               itemCount: state.apiState.bannerPosts.length,
                               options: CarouselOptions(
-                                  onPageChanged: (index, reason) {},
+                                  onPageChanged: (index, reason) {
+                                    appStore.dispatch(UpdateApiStateAction(
+                                        bannerIndex: index));
+                                  },
                                   enableInfiniteScroll: false,
                                   viewportFraction: 1,
                                   height: 90.h),
@@ -90,13 +91,9 @@ class _PostLayoutState extends State<PostLayout> {
                                 height: 90.h,
                                 child: CachedImageOrTextImageWidget(
                                     imageUrl: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .imageUrl,
-                                    description: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .description),
+                                        .apiState.bannerPosts[index].imageUrl,
+                                    description: state.apiState
+                                        .bannerPosts[index].description),
                               ),
                             ),
                             SizedBox(height: 5.h),
@@ -162,5 +159,11 @@ class _PostLayoutState extends State<PostLayout> {
   void _scrollToTop() {
     _controller.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.linear);
+  }
+
+  Widget _getEmptyWidgets() {
+    return Column(
+      children: [Text('Empty Page Edit here')],
+    );
   }
 }

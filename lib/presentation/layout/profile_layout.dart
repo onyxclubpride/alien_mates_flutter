@@ -38,6 +38,7 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                 },
               ),
               body: PaginateFirestore(
+                onEmpty: _getEmptyWidgets(state),
                 separator: SizedBox(height: 20.h),
                 scrollController: _controller,
                 itemBuilder: (_, documentSnapshots, index) {
@@ -75,6 +76,18 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                 padding: EdgeInsets.symmetric(horizontal: 12.w),
               ),
             ));
+  }
+
+  Widget _getEmptyWidgets(state) {
+    return Column(
+      children: [
+        _buildUserInfoWidget(state.apiState),
+        Text(
+          'Empty Page Edit here',
+          style: TextStyle(color: Colors.white),
+        )
+      ],
+    );
   }
 
   _getQuery(AppState state) {
