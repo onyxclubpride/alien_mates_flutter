@@ -535,7 +535,9 @@ Future<bool> _getLoginAction(
       );
       next(UpdateApiStateAction(userMe: _userData));
       next(UpdateInitStateAction(userId: _userData.userId));
+      await appStore.dispatch(GetBannerPostsAction());
       await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
+
       closeLoading();
       appStore.dispatch(
           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
