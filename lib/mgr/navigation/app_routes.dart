@@ -21,7 +21,6 @@ class AppRoutes {
 
   static const eventDetailsPageRoute = "/eventDetails";
   static const helpDetailsPageRoute = "/helpDetails";
-  static const noticeDetailsRoute = "/noticeDetails";
   static const editPostPageRoute = "/editPost";
   static const editEventPageRoute = "/editEvent";
   static const editHelpPageRoute = "/editHelp";
@@ -31,6 +30,7 @@ class AppRoutes {
   static const termsAndConditionsPageRoute = "/termsAndConditions";
   static const aboutUsPageRoute = "/aboutUs";
   static const forgotPasswordPageRoute = "/fotgotPassword";
+  static const noticeDetailsRoute = "/noticeDetails";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -62,6 +62,8 @@ class AppRoutes {
       AppRoutes.aboutUsPageRoute: (BuildContext context) => const AboutUsPage(),
       AppRoutes.forgotPasswordPageRoute: (BuildContext context) =>
           ForgotPasswordPage(),
+      AppRoutes.noticeDetailsRoute: (BuildContext context) =>
+          NoticeDetailsPage()
     };
 
     return base;

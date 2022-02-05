@@ -40,9 +40,15 @@ export '../../pages/event/event_details_page.dart';
 export '../../pages/event/create_event_page.dart';
 export '../../pages/event/edit_event_page.dart';
 
+//setting pages
+export '../../pages/settings/settings_page.dart';
+export '../../pages/settings/about_us_page.dart';
+export '../../pages/settings/terms_and_condition_page.dart';
+
 //notice pages
 export '../../pages/notice/edit_notice_page.dart';
 export '../../pages/notice/create_notice_page.dart';
+export '../../pages/notice/notice_details_page.dart';
 
 //Widgets
 export "../../widgets/sized_text.dart";

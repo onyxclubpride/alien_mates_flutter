@@ -1,3 +1,4 @@
+import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
@@ -92,6 +93,10 @@ class _PostLayoutState extends State<PostLayout> {
                                   height: 110.h),
                               itemBuilder: (context, index, realIndex) =>
                                   PostItemBanner(
+                                onTap: () {
+                                  appStore.dispatch(NavigateToAction(
+                                      to: AppRoutes.noticeDetailsRoute));
+                                },
                                 height: 110.h,
                                 child: CachedImageOrTextImageWidget(
                                     imageUrl: state
