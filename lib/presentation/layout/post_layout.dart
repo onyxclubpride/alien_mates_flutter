@@ -78,16 +78,21 @@ class _PostLayoutState extends State<PostLayout> {
                             CarouselSlider.builder(
                               itemCount: state.apiState.bannerPosts.length,
                               options: CarouselOptions(
+                                  autoPlay: true,
+                                  autoPlayAnimationDuration:
+                                      const Duration(milliseconds: 1000),
+                                  reverse: false,
+                                  scrollDirection: Axis.horizontal,
                                   onPageChanged: (index, reason) {
                                     appStore.dispatch(UpdateApiStateAction(
                                         bannerIndex: index));
                                   },
-                                  enableInfiniteScroll: false,
+                                  enableInfiniteScroll: true,
                                   viewportFraction: 1,
-                                  height: 90.h),
+                                  height: 110.h),
                               itemBuilder: (context, index, realIndex) =>
                                   PostItemBanner(
-                                height: 90.h,
+                                height: 110.h,
                                 child: CachedImageOrTextImageWidget(
                                     imageUrl: state
                                         .apiState.bannerPosts[index].imageUrl,

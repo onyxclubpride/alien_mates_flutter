@@ -16,8 +16,8 @@ export '../../layout/default_body.dart';
 
 //other pages
 export '../../pages/splash_page.dart';
-export '../../pages/about_us_page.dart';
-export '../../pages/terms_and_condition_page.dart';
+export '../../pages/settings/about_us_page.dart';
+export '../../pages/settings/terms_and_condition_page.dart';
 
 // auth page
 export '../../pages/auth/login_page.dart';

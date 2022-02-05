@@ -1,6 +1,6 @@
 import 'package:alien_mates/presentation/pages/profile/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
-import 'package:alien_mates/presentation/pages/profile/settings_page.dart';
+import 'package:alien_mates/presentation/pages/settings/settings_page.dart';
 import 'package:alien_mates/presentation/pages/auth/sign_up_page.dart';
 
 import '../../presentation/template/base/template.dart';
