@@ -93,7 +93,7 @@ class _EditEventPageState extends State<EditEventPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       hintText:
-                                          'Add you KakaoTalk or contact number to let them contact you..  ',
+                                          'Add description about an event!',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,
@@ -104,7 +104,8 @@ class _EditEventPageState extends State<EditEventPage> {
                                   children: [
                                     InputLabel(label: 'Maximum people'),
                                     PostCreateInput(
-                                      hintText: 'Leave 0 if none',
+                                      hintText:
+                                          'Leave the field empty if the # of people is 0',
                                       controller: maxPplController,
                                       validator: Validator.validateMaxPeople,
                                       keyboardType: TextInputType.number,
@@ -116,7 +117,6 @@ class _EditEventPageState extends State<EditEventPage> {
                                     InputLabel(label: 'Location'),
                                     PostCreateInput(
                                       hintText: 'Add the Location',
-                                      validator: Validator.validateText,
                                       controller: locationController,
                                     ),
                                   ]),

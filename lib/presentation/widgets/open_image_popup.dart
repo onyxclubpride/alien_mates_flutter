@@ -19,6 +19,7 @@ Widget createPopupContentForDesc(String desc) => Container(
       borderRadius: BorderRadius.circular(16.r),
     ),
     child: SizedText(
+        maxLines: 25,
         textAlign: TextAlign.left,
         text: desc,
         textStyle: latoM16.copyWith(color: ThemeColors.fontWhite)));

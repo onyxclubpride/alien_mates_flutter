@@ -26,8 +26,6 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(rightIcon);
-
     return AppBar(
       centerTitle: centerTitle,
       title: _buildTitle(),

@@ -182,7 +182,7 @@ class _PostItemBannerState extends State<PostItemBanner> {
     );
   }
 
-  OverlayEntry _createPopupDialog(String url, {String? desc}) {
+  OverlayEntry _createPopupDialog(String url) {
     return OverlayEntry(
       builder: (context) => AnimatedDialog(
         child: createPopupContent(url),

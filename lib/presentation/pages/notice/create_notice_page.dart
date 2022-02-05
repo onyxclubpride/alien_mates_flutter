@@ -149,8 +149,6 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
         showAlertDialog(context,
             text:
                 'There was a problem while uploading to server! Please, try again!');
-      } else {
-        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }
   }

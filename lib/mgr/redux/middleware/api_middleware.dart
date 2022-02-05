@@ -644,7 +644,8 @@ Future<bool> _getUpdatePostAction(
         "isEvent": _postModelRes.isEvent,
         "isHelp": _postModelRes.isHelp,
         "likedUserIds": _postModelRes.likedUserIds,
-        "joinedUserIds": _postModelRes.joinedUserIds,
+        "joinedUserIds":
+            _postModelRes.joinLimit == 0 ? [] : _postModelRes.joinedUserIds,
         "description": _postModelRes.description,
         "title": _postModelRes.title,
         "joinLimit": _postModelRes.joinLimit,
@@ -1041,7 +1042,6 @@ Future<String?> _getSelectImageAction(
       quality: .50,
       pickType: PickType.image,
       language: Language.System,
-      gif: true,
       count: 1,
       cropOpt: CropOption(
         aspectRatio: CropAspectRatio.wh4x3,

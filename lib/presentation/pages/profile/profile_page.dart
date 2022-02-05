@@ -1,18 +1,13 @@
 import 'dart:io';
-import 'package:alien_mates/presentation/layout/post_layout.dart';
 import 'package:alien_mates/presentation/layout/profile_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
-import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
-import 'package:lottie/lottie.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -20,11 +15,6 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  final ScrollController _controller = ScrollController();
-
-  final GlobalKey<FormState> _formKeyCreatePostPage =
-      GlobalKey<FormState>(debugLabel: '_formKeyCreatePostPage');
-
   TextEditingController descriptionController = TextEditingController();
 
   @override
@@ -56,7 +46,6 @@ class _ProfilePageState extends State<ProfilePage> {
       List<DocumentSnapshot> snapshots, int index, AppState state) {
     final _item = _getPostModel(snapshots[index]);
 
-    // if (postsList.isNotEmpty) {
     return PostItemBanner(
       height: 130.h,
       imageUrl: _item.imageUrl,
@@ -207,7 +196,7 @@ class _ImagesContainerForSheetState extends State<ImagesContainerForSheet> {
             text:
                 'There was a problem while uploading to server! Please, try again!');
       } else {
-        appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
+        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     } else {
       showAlertDialog(context, text: 'Please select image first!');

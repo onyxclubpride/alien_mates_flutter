@@ -67,7 +67,6 @@ class _PostLayoutState extends State<PostLayout> {
                   : null,
               appBar: _getHeader(),
               body: PaginateFirestore(
-                onEmpty: _getEmptyWidgets(),
                 separator: SizedBox(height: 20.h),
                 scrollController: _controller,
                 itemBuilder: (_, documentSnapshots, index) {
@@ -159,11 +158,5 @@ class _PostLayoutState extends State<PostLayout> {
   void _scrollToTop() {
     _controller.animateTo(0,
         duration: const Duration(milliseconds: 300), curve: Curves.linear);
-  }
-
-  Widget _getEmptyWidgets() {
-    return Column(
-      children: [Text('Empty Page Edit here')],
-    );
   }
 }

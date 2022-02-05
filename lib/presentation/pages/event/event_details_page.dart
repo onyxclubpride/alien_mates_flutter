@@ -78,23 +78,27 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
                                 )
                               ],
                             ),
-                            SizedBox(height: 20.h),
-                            SpacedRow(
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedText(
-                                  text: '\u200d📍\t\tLocation\t:\t',
-                                  textStyle: latoM16.copyWith(
-                                      color: ThemeColors.coolgray300),
-                                ),
-                                SizedText(
-                                    isSelectable: true,
-                                    text:
-                                        state.apiState.postDetail.eventLocation,
+                            if (state.apiState.postDetail.eventLocation !=
+                                    null &&
+                                state.apiState.postDetail.eventLocation!
+                                    .isNotEmpty)
+                              SpacedRow(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  SizedBox(height: 20.h),
+                                  SizedText(
+                                    text: '\u200d📍\t\tLocation\t:\t',
                                     textStyle: latoM16.copyWith(
-                                        color: ThemeColors.coolgray300))
-                              ],
-                            ),
+                                        color: ThemeColors.coolgray300),
+                                  ),
+                                  SizedText(
+                                      isSelectable: true,
+                                      text: state
+                                          .apiState.postDetail.eventLocation,
+                                      textStyle: latoM16.copyWith(
+                                          color: ThemeColors.coolgray300))
+                                ],
+                              ),
                             SizedBox(height: 30.h),
                             Container(
                               width: MediaQuery.of(context).size.width - 100.w,

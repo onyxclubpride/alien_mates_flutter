@@ -80,51 +80,44 @@ class _ProfileLayoutState extends State<ProfileLayout> {
   }
 
   Widget _getEmptyWidgets(state) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _buildUserInfoWidget(state.apiState),
-          SizedBox(height: 10.h),
-          SizedText(
-              text: "My Feed",
-              textStyle: latoB25.copyWith(color: ThemeColors.fontDark)),
-          Divider(thickness: 1.w, color: ThemeColors.borderDark),
-          SizedBox(height: 20.h),
-          SizedBox(
-            height: 30.h,
-          ),
-          Center(
-            child: SpacedColumn(children: [
-              SizedBox(
-                height: 100.w,
-                width: 150.w,
-                child: LottieBuilder.asset(
-                  'assets/lotties/empty_page_lottie.json',
-                ),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              SizedText(
-                text: 'There are no post available',
-                textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
-              ),
-              SizedBox(
-                height: 20.h,
-              ),
-              ExpandedButton(
-                  width: MediaQuery.of(context).size.width / 2,
-                  text: 'Post ',
-                  onPressed: () {
-                    _onEditPress(state);
-                  }),
-            ]),
-          ),
-        ],
+    return Column(children: [
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal: 15.w),
+        child: _buildUserInfoWidget(state.apiState),
       ),
-    );
+      SizedBox(height: 40.h),
+      SpacedColumn(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 30.h,
+            ),
+            SizedBox(
+              height: 100.w,
+              width: 150.w,
+              child: LottieBuilder.asset(
+                'assets/lotties/empty_page_lottie.json',
+              ),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            SizedText(
+              text: 'There are no post available',
+              textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            ExpandedButton(
+                width: MediaQuery.of(context).size.width / 2,
+                text: 'Post ',
+                onPressed: () {
+                  _onEditPress(state);
+                }),
+          ])
+    ]);
   }
 
   _getQuery(AppState state) {
@@ -160,7 +153,6 @@ class _ProfileLayoutState extends State<ProfileLayout> {
   Widget _buildUserInfoWidget(ApiState state) {
     UserModelRes userModelRes = state.userMe;
     return DefaultBanner(
-      // height: 150.h,
       child: Padding(
         padding: EdgeInsets.all(15.w),
         child: SpacedColumn(
@@ -338,7 +330,6 @@ class _ProfileLayoutState extends State<ProfileLayout> {
             height: 360.h + MediaQuery.of(context).viewInsets.bottom,
             margin: EdgeInsets.symmetric(horizontal: 25.w),
             child: Column(children: [
-              // if (MediaQuery.of(context).viewInsets.bottom == 0)
               SizedBox(height: 15.h),
               if (MediaQuery.of(context).viewInsets.bottom == 0)
                 GestureDetector(
@@ -366,7 +357,7 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                   key: _formKeyCreatePostPage,
                   child: PostCreateInput(
                     maxlines: 10,
-                    hintText: 'What is going on today...? ⊙_0  \u200d👀 ',
+                    hintText: 'Add description about post!',
                     validator: Validator.validateDescription,
                     controller: descriptionController,
                   ),
@@ -391,8 +382,6 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         showAlertDialog(context,
             text:
                 'There was a problem while uploading to server! Please, try again!');
-      } else {
-        appStore.dispatch(NavigateToAction(to: AppRoutes.homePageRoute));
       }
     }
   }

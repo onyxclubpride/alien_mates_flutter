@@ -68,8 +68,6 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                   children: [
                                     InputLabel(label: 'Title'),
                                     PostCreateInput(
-                                      hintText:
-                                          'ex: Support Needed, Help me!!!',
                                       controller: titleController,
                                       validator: Validator.validateTitle,
                                     ),
@@ -80,7 +78,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       hintText:
-                                          'Add your KakaoTalk or contact number to let them contact you..  ',
+                                          'Add description about support!',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,
@@ -149,7 +147,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
             text:
                 'There was a problem while uploading to server! Please, try again!');
       } else {
-        appStore.dispatch(NavigateToAction(to: AppRoutes.helpPageRoute));
+        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }
   }

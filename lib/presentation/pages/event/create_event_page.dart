@@ -84,7 +84,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
                                       hintText:
-                                          'Add your KakaoTalk or contact number to let them contact you..  ',
+                                          'Add description about an event!',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,
@@ -95,10 +95,10 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                   children: [
                                     InputLabel(label: 'Maximum people'),
                                     PostCreateInput(
-                                      regexPattern: RegExp(r'^[0-9]*$'),
-                                      hintText: 'Leave 0 if none',
-                                      controller: maxPplController,
                                       validator: Validator.validateMaxPeople,
+                                      hintText:
+                                          'Leave the field empty if the # of people is 0',
+                                      controller: maxPplController,
                                       keyboardType: TextInputType.number,
                                     ),
                                   ]),
@@ -108,7 +108,6 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     InputLabel(label: 'Location'),
                                     PostCreateInput(
                                       hintText: 'Add the Location',
-                                      validator: Validator.validateText,
                                       controller: locationController,
                                     ),
                                   ]),
@@ -176,13 +175,14 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                     color: agreementChecked
                                         ? ThemeColors.fontWhite
                                         : ThemeColors.borderDark)),
-                            SizedText(
-                                textAlign: TextAlign.start,
-                                width: 260.w,
-                                text:
-                                    '* Edit to show agreement to show the phone number of the user',
-                                textStyle:
-                                    latoR14.copyWith(color: ThemeColors.red)),
+                            if (!agreementChecked)
+                              SizedText(
+                                  textAlign: TextAlign.start,
+                                  width: 260.w,
+                                  text:
+                                      '* REQUIRED! Your phone number will be visible in the event details to let others contact you about the event information!',
+                                  textStyle:
+                                      latoR14.copyWith(color: ThemeColors.red)),
                           ],
                         ),
                       ],
@@ -214,7 +214,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
             title: titleController.text,
             description: descriptionController.text,
             eventLocation: locationController.text,
-            joinLimit: int.parse(maxPplController.text).toInt(),
+            joinLimit: int.tryParse(maxPplController.text),
             imagePath: postImage?.path));
 
         if (!created) {
@@ -222,7 +222,7 @@ class _CreateEventPageState extends State<CreateEventPage> {
               text:
                   'There was a problem while uploading to server! Please, try again!');
         } else {
-          appStore.dispatch(NavigateToAction(to: AppRoutes.eventsPageRoute));
+          appStore.dispatch(NavigateToAction(to: 'up'));
         }
       } else {
         showAlertDialog(context,
