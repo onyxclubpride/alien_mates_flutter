@@ -7,6 +7,7 @@ import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:lottie/lottie.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
 class ProfileLayout extends StatefulWidget {
@@ -79,14 +80,50 @@ class _ProfileLayoutState extends State<ProfileLayout> {
   }
 
   Widget _getEmptyWidgets(state) {
-    return Column(
-      children: [
-        _buildUserInfoWidget(state.apiState),
-        Text(
-          'Empty Page Edit here',
-          style: TextStyle(color: Colors.white),
-        )
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildUserInfoWidget(state.apiState),
+          SizedBox(height: 10.h),
+          SizedText(
+              text: "My Feed",
+              textStyle: latoB25.copyWith(color: ThemeColors.fontDark)),
+          Divider(thickness: 1.w, color: ThemeColors.borderDark),
+          SizedBox(height: 20.h),
+          SizedBox(
+            height: 30.h,
+          ),
+          Center(
+            child: SpacedColumn(children: [
+              SizedBox(
+                height: 100.w,
+                width: 150.w,
+                child: LottieBuilder.asset(
+                  'assets/lotties/empty_page_lottie.json',
+                ),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              SizedText(
+                text: 'There are no post available',
+                textStyle: latoM16.copyWith(color: ThemeColors.coolgray400),
+              ),
+              SizedBox(
+                height: 20.h,
+              ),
+              ExpandedButton(
+                  width: MediaQuery.of(context).size.width / 2,
+                  text: 'Post ',
+                  onPressed: () {
+                    _onEditPress(state);
+                  }),
+            ]),
+          ),
+        ],
+      ),
     );
   }
 
