@@ -82,6 +82,7 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                                   children: [
                                     InputLabel(label: 'Description'),
                                     PostCreateInput(
+                                      hintText: 'Add description about notice!',
                                       maxlines: 10,
                                       validator: Validator.validateDescription,
                                       controller: descriptionController,
@@ -149,6 +150,8 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
         showAlertDialog(context,
             text:
                 'There was a problem while uploading to server! Please, try again!');
+      } else {
+        appStore.dispatch(NavigateToAction(to: 'up'));
       }
     }
   }
