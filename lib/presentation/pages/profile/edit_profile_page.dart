@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -95,27 +96,39 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                         textStyle: latoM14.copyWith(
                                             color: ThemeColors.red400),
                                       ),
-                                    Checkbox(
-                                      splashRadius: 0,
-                                      shape: const CircleBorder(),
-                                      checkColor: ThemeColors.black,
-                                      activeColor: ThemeColors.yellow,
-                                      fillColor: MaterialStateProperty
-                                          .resolveWith<Color>(
-                                              (Set<MaterialState> states) {
-                                        if (states
-                                            .contains(MaterialState.focused)) {
-                                          return ThemeColors.fontWhite;
-                                        } else {
-                                          return ThemeColors.yellow;
-                                        }
-                                      }),
-                                      value: isPwChange,
-                                      onChanged: (value) {
-                                        setState(() {
-                                          isPwChange = value!;
-                                        });
-                                      },
+                                    Row(
+                                      children: [
+                                        Checkbox(
+                                          splashRadius: 0,
+                                          shape: const CircleBorder(),
+                                          checkColor: ThemeColors.black,
+                                          activeColor: ThemeColors.yellow,
+                                          fillColor: MaterialStateProperty
+                                              .resolveWith<Color>(
+                                                  (Set<MaterialState> states) {
+                                            if (states.contains(
+                                                MaterialState.focused)) {
+                                              return ThemeColors.fontWhite;
+                                            } else {
+                                              return ThemeColors.yellow;
+                                            }
+                                          }),
+                                          value: isPwChange,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              isPwChange = value!;
+                                            });
+                                          },
+                                        ),
+                                        SizedText(
+                                            textAlign: TextAlign.start,
+                                            width: 260.w,
+                                            text: 'Change password',
+                                            textStyle: latoM20.copyWith(
+                                                color: isPwChange
+                                                    ? ThemeColors.fontWhite
+                                                    : ThemeColors.borderDark)),
+                                      ],
                                     ),
                                   ]),
                             ],
@@ -150,8 +163,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       InputLabel(label: 'Current Password'),
                                       PostCreateInput(
                                         isObscured: true,
-                                        keyboardType:
-                                            TextInputType.visiblePassword,
                                         maxlines: 1,
                                         // validator: Validator.validatePassword,
                                         controller: currentPass,
@@ -170,7 +181,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
                                       PostCreateInput(
                                         isObscured: true,
                                         maxlines: 1,
-                                        // validator: Validator.validatePassword,
+                                        validator: Validator.validatePassword,
                                         controller: newPass,
                                       ),
                                       SizedBox(
@@ -251,7 +262,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
         setState(() {
           pwErrorText = null;
         });
-        if (currentPass == oldPass) {
+        if (encryptToken(currentPass) == oldPass) {
           setState(() {
             pwErrorTextCurr = null;
           });

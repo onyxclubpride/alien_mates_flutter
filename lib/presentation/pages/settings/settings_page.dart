@@ -37,7 +37,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
                       appStore.dispatch(
-                          NavigateToAction(to: AppRoutes.eventsPageRoute));
+                          NavigateToAction(to: AppRoutes.homePageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,

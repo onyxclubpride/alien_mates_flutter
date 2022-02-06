@@ -65,7 +65,6 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
   List<Widget> _buildActions() {
     List<Widget> _list = [];
     if (rightIcon == null && onRightButtonClick == null) {
-      print('isNull');
       _list.add(Container(
         margin: EdgeInsets.only(right: 10.w),
         child: IconButton(
@@ -79,8 +78,6 @@ class DefaultHeader extends StatelessWidget implements PreferredSizeWidget {
         ),
       ));
     } else {
-      print('isNotNull');
-
       _list.add(Container(
         margin: EdgeInsets.only(right: 10.w),
         child: IconButton(

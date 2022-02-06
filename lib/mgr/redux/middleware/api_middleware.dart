@@ -88,11 +88,13 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
   }
 }
 
-String _decryptToken(String encrypted) {
-  return encryptor.decrypt(enc.Encrypted.from64(encrypted), iv: iv);
+String decryptToken(String encrypted) {
+  final String decStr =
+      encryptor.decrypt(enc.Encrypted.from64(encrypted), iv: iv);
+  return decStr;
 }
 
-String _encryptToken(String token) {
+String encryptToken(String token) {
   return encryptor.encrypt(token, iv: iv).base64;
 }
 
@@ -428,7 +430,7 @@ Future<bool> _getCreateUserAction(
       "userId": _userUid,
       "name": action.name,
       "phoneNumber": action.phoneNumber,
-      "password": _encryptToken(action.password),
+      "password": encryptToken(action.password),
       "uniName": action.uniName,
       "postIds": [],
       "createdDate": currentDateAndTime,
@@ -513,7 +515,7 @@ Future<void> _getUserIdExistAction(
 Future<bool> _getLoginAction(
     AppState state, GetLoginAction action, NextDispatcher next) async {
   try {
-    String encPass = _encryptToken(action.password);
+    String encPass = encryptToken(action.password);
     showLoading();
     bool _matched = false;
 
@@ -723,7 +725,7 @@ Future<bool> _getUpdateUserAction(
 Future<bool> _getChangePasswordAction(
     AppState state, GetChangePasswordAction action, NextDispatcher next) async {
   try {
-    String encPass = _encryptToken(action.newPassword);
+    String encPass = encryptToken(action.newPassword);
     showLoading();
     bool _matched = false;
     QuerySnapshot _querySnapshot = await usersCollection
@@ -841,7 +843,7 @@ _getChangeUserInfoAction(
     "createdDate": state.apiState.userMe.createdDate,
     "isAdmin": state.apiState.userMe.isAdmin,
     "password": action.newPass != null
-        ? _encryptToken(action.newPass!)
+        ? encryptToken(action.newPass!)
         : state.apiState.userMe.password,
     "phoneNumber": state.apiState.userMe.phoneNumber,
     "uniName": state.apiState.userMe.uniName,
@@ -854,7 +856,7 @@ _getChangeUserInfoAction(
     isAdmin: state.apiState.userMe.isAdmin,
     createdDate: state.apiState.userMe.createdDate,
     password: action.newPass != null
-        ? _encryptToken(action.newPass!)
+        ? encryptToken(action.newPass!)
         : state.apiState.userMe.password,
     phoneNumber: state.apiState.userMe.phoneNumber,
     uniName: state.apiState.userMe.uniName,
