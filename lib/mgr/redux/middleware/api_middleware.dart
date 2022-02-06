@@ -808,11 +808,11 @@ _getBannerPostsAction(
   final _eventDetail = _querySnapshot1.docs.first;
   ListPostModelRes eventRes = _getPostModel(_eventDetail);
   posts.add(eventRes);
-  // QuerySnapshot _querySnapshot2 =
-  //     await postsCollection.where('isNotice', isEqualTo: true).get();
-  // final _noticeDetail = _querySnapshot2.docs.first;
-  // ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
-  // posts.add(noticeRes);
+  QuerySnapshot _querySnapshot2 =
+      await postsCollection.where('isNotice', isEqualTo: true).get();
+  final _noticeDetail = _querySnapshot2.docs.first;
+  ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
+  posts.add(noticeRes);
 
   next(UpdateApiStateAction(bannerPosts: posts));
 }
