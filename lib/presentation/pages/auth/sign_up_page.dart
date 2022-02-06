@@ -99,13 +99,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       BasicInput(
                         hintText: "Password",
                         controller: passController,
-                        // validator: Validator.validatePassword,
+                        validator: Validator.validatePassword,
                         isObscured: true,
                       ),
                       BasicInput(
                         hintText: "Confirm Password",
                         controller: confirmPassController,
-                        // validator: Validator.validatePassword,
+                        validator: Validator.validatePassword,
                         isObscured: true,
                       ),
                       BasicInput(

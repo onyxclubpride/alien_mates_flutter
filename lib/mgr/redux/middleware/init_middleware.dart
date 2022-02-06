@@ -28,9 +28,11 @@ Future<void> _getStateInitAction(
   String? _localUserId = await appStore.dispatch(GetLocalUserIdAction());
   await appStore.dispatch(GetBannerPostsAction());
   if (_localUserId != null) {
+    await Future.delayed(const Duration(seconds: 5));
     await appStore.dispatch(GetUserIdExistAction(_localUserId));
   } else {
     await appStore.dispatch(GetSearchUniversityAction());
+    await Future.delayed(const Duration(seconds: 5));
     appStore.dispatch(
         NavigateToAction(to: AppRoutes.loginPageRoute, replace: true));
   }

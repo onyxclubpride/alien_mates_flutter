@@ -61,6 +61,7 @@ class _LoginPageState extends State<LoginPage> {
                             BasicInput(
                               hintText: "Password",
                               controller: pwController,
+                              validator: Validator.validatePassword,
                               textInputAction: TextInputAction.done,
                               isObscured: true,
                             ),

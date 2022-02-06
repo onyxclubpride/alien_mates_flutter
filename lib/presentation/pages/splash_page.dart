@@ -1,8 +1,11 @@
 import 'dart:developer';
 
+import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:lottie/lottie.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -24,15 +27,18 @@ class _SplashPageState extends State<SplashPage> {
       showAppBar: false,
       withNavigationBar: false,
       withTopBanner: false,
-      child: InkWell(
-        onTap: () {},
+      child: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedText(
-                text: 'Splash Screen is Fetching Data',
-                textStyle: latoB45.copyWith(color: ThemeColors.bgLight)),
-            CircularProgressIndicator(),
+            TextLiquidFill(
+                textAlign: TextAlign.center,
+                text: 'Alien\nMates',
+                waveColor: ThemeColors.white,
+                boxBackgroundColor: ThemeColors.green800,
+                loadDuration: const Duration(seconds: 6),
+                textStyle: latoB60.copyWith(color: ThemeColors.bgLight),
+                boxWidth: 300.w)
           ],
         ),
       ),

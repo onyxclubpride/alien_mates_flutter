@@ -119,3 +119,7 @@ final latoB45 = GoogleFonts.lato(
   fontWeight: FontWeight.w700,
   fontSize: 45.0,
 );
+final latoB60 = GoogleFonts.lato(
+  fontWeight: FontWeight.w700,
+  fontSize: 60.0,
+);
