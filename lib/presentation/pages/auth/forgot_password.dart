@@ -102,7 +102,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       if (isOtpCorrect)
                         BasicInput(
                           hintText: "Confirm Password",
-                          controller: confirmPassController,
+                          validator: Validator.validatePassword,
                           isObscured: true,
                         ),
                       if (errorText.isNotEmpty)
@@ -123,7 +123,6 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                       if (!isPhoneNumberAvailable) {
                         _checkPhoneNumberPress(state);
                       } else if (isOtpSent) {
-                        logger('Hello');
                         // update backend
                         setState(() {
                           isButtonDisable = false;
@@ -170,66 +169,63 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   }
 
   _onSendOtp(AppState state) async {
-    bool userExists = await appStore
-        .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
-    if (_formKeyForgotPasswordPage.currentState!.validate() &&
-        phoneNumberController.text.isNotEmpty &&
-        phoneNumberController.text.length > 10) {
-      if (userExists) {
-        showLoading();
-        setState(() {
-          errorText = "";
-        });
-        try {
-          await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: "+82" + phoneNumberController.text,
-            verificationCompleted: (PhoneAuthCredential credential) async {
-              // await FirebaseAuth.instance.signInWithCredential(credential);
-            },
-            verificationFailed: (FirebaseAuthException e) {
-              closeLoading();
-              showAlertDialog(context, text: e.message.toString());
-              setState(() {
-                isOtpSent = false;
-              });
-            },
-            forceResendingToken: sentOtp,
-            timeout: const Duration(milliseconds: 20000),
-            codeSent: (String verificationId, int? resendToken) async {
-              closeLoading();
-              setState(() {
-                isOtpSent = true;
-                sentOtp = resendToken;
-                verId = verificationId;
-              });
-            },
-            codeAutoRetrievalTimeout: (String verificationId) {
-              closeLoading();
-              setState(() {
-                verId = verificationId;
-              });
-            },
-          );
-        } catch (e) {
+    showLoading();
+    setState(() {
+      errorText = "";
+    });
+    try {
+      String phNum = phoneNumberController.text;
+      if (!phNum.startsWith('0')) {
+        phNum = "0${phoneNumberController.text}";
+      }
+      await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: "+82" + phNum,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          // await FirebaseAuth.instance.signInWithCredential(credential);
+        },
+        verificationFailed: (FirebaseAuthException e) {
           closeLoading();
+          showAlertDialog(context, text: e.message.toString());
           setState(() {
             isOtpSent = false;
           });
-        }
-      }
+        },
+        forceResendingToken: sentOtp,
+        timeout: const Duration(milliseconds: 20000),
+        codeSent: (String verificationId, int? resendToken) async {
+          closeLoading();
+          setState(() {
+            isOtpSent = true;
+            sentOtp = resendToken;
+            verId = verificationId;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          closeLoading();
+          setState(() {
+            verId = verificationId;
+          });
+        },
+      );
+    } catch (e) {
+      closeLoading();
+      setState(() {
+        isOtpSent = false;
+      });
     }
   }
 
   _checkPhoneNumberPress(AppState state) async {
-    if (phoneNumberController.text.length < 9) {
-      setState(() {
-        errorText = "Phone Number should be more than 10";
-      });
-    } else {
-      bool userExists = await appStore
-          .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
+    if (_formKeyForgotPasswordPage.currentState!.validate() &&
+        phoneNumberController.text.isNotEmpty &&
+        phoneNumberController.text.length > 9) {
+      String phNum = phoneNumberController.text;
+      if (!phNum.startsWith('0')) {
+        phNum = "0${phoneNumberController.text}";
+      }
+      bool userExists =
+          await appStore.dispatch(GetCheckPhoneNumExistsAction(phNum));
 
-      logger(userExists);
       if (userExists) {
         setState(() {
           isPhoneNumberAvailable = true;
@@ -244,6 +240,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         });
       }
       return userExists;
+    } else {
+      setState(() {
+        errorText = "Phone Number should be more than 9";
+      });
     }
   }
 
@@ -267,7 +267,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         }
       } else {
         setState(() {
-          errorText = "Passwords do not match!";
+          errorText = "Password do not match!";
         });
       }
     }
