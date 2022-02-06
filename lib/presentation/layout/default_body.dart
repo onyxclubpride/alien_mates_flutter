@@ -1,8 +1,6 @@
-import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 
@@ -145,32 +143,6 @@ class _DefaultBodyState extends State<DefaultBody> {
                             physics: const AlwaysScrollableScrollPhysics(),
                             controller: _controller,
                             children: [
-                              CarouselSlider.builder(
-                                itemCount: state.apiState.bannerPosts.length,
-                                options: CarouselOptions(
-                                    onPageChanged: (index, reason) {
-                                      appStore.dispatch(UpdateApiStateAction(
-                                          bannerIndex: index));
-                                    },
-                                    enableInfiniteScroll: false,
-                                    viewportFraction: 1,
-                                    height: 90.h),
-                                itemBuilder: (context, index, realIndex) =>
-                                    PostItemBanner(
-                                  height: 90.h,
-                                  child: CachedImageOrTextImageWidget(
-                                      imageUrl: state
-                                          .apiState
-                                          .bannerPosts[
-                                              state.apiState.bannerIndex]
-                                          .imageUrl,
-                                      description: state
-                                          .apiState
-                                          .bannerPosts[
-                                              state.apiState.bannerIndex]
-                                          .description),
-                                ),
-                              ),
                               SizedBox(height: 5.h),
                               SpacedRow(
                                   horizontalSpace: 5,

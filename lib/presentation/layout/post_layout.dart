@@ -1,12 +1,10 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
-import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
@@ -45,11 +43,6 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    tabController = TabController(length: 3, vsync: this)
-      ..addListener(() {
-        appStore
-            .dispatch(UpdateApiStateAction(bannerIndex: tabController.index));
-      });
 
     _controller = ScrollController()
       ..addListener(() {
@@ -62,9 +55,6 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
         });
       });
   }
-
-  CarouselController carController = CarouselController();
-  late TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -88,82 +78,30 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
                       if (index == 0)
                         Column(
                           children: [
-                            // CarouselSlider(
-                            //   items: _buildBannerWidgets(state.apiState),
-                            //   options: CarouselOptions(
-                            //       autoPlay: false,
-                            //       autoPlayAnimationDuration:
-                            //           const Duration(milliseconds: 1000),
-                            //       scrollDirection: Axis.horizontal,
-                            //       onPageChanged: (i, reason) {
-                            //         appStore.dispatch(
-                            //             UpdateApiStateAction(bannerIndex: i));
-                            //       },
-                            //       enableInfiniteScroll: true,
-                            //       viewportFraction: 1,
-                            //       height: 110.h),
-                            // ),
-                            // DefaultTabController(
-                            //     initialIndex: state.apiState.bannerIndex,
-                            //     length: state.apiState.bannerPosts.length,
-                            //     child: SizedBox(
-                            //         height: 100.h,
-                            //         child: TabBarView(
-                            //           controller: tabController,
-                            //           children:
-                            //               _buildBannerWidgets(state.apiState),
-                            //         ))),
-
-                            CarouselSlider.builder(
-                              carouselController: carController,
-                              itemCount: state.apiState.bannerPosts.length,
-                              options: CarouselOptions(
-                                  initialPage: state.apiState.bannerIndex,
-                                  autoPlay: false,
-                                  autoPlayAnimationDuration:
-                                      const Duration(milliseconds: 1000),
-                                  scrollDirection: Axis.horizontal,
-                                  onScrolled: (value) {
-                                    // TODO : LATER
-                                    // print(value);
-                                    // String top = value
-                                    //     .toString()
-                                    //     .substring(
-                                    //         value.toString().indexOf('.') + 1)
-                                    //     .substring(0, 1);
-                                    // if (int.parse(top) == 5) {
-                                    //   appStore.dispatch(UpdateApiStateAction(
-                                    //       bannerIndex: ind));
-                                    // }
+                            SizedBox(
+                              height: 110.h,
+                              child: Swiper(
+                                  index: state.apiState.bannerIndex,
+                                  onIndexChanged: (value) {
+                                    appStore.dispatch(UpdateApiStateAction(
+                                        bannerIndex: value));
                                   },
-                                  onPageChanged: (i, reason) {
-                                    appStore.dispatch(
-                                        UpdateApiStateAction(bannerIndex: i));
-                                    // setState(() {
-                                    //   ind = i;
-                                    // });
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return PostItemBanner(
+                                      height: 110.h,
+                                      child: CachedImageOrTextImageWidget(
+                                          imageUrl: state.apiState
+                                              .bannerPosts[index].imageUrl,
+                                          description: state.apiState
+                                              .bannerPosts[index].description),
+                                    );
                                   },
-                                  enlargeCenterPage: true,
-                                  enableInfiniteScroll: true,
-                                  viewportFraction: 1,
-                                  height: 110.h),
-                              itemBuilder: (context, i, realIndex) =>
-                                  PostItemBanner(
-                                onTap: () {
-                                  appStore.dispatch(NavigateToAction(
-                                      to: AppRoutes.noticeDetailsRoute));
-                                },
-                                height: 110.h,
-                                child: CachedImageOrTextImageWidget(
-                                    imageUrl: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .imageUrl,
-                                    description: state
-                                        .apiState
-                                        .bannerPosts[state.apiState.bannerIndex]
-                                        .description),
-                              ),
+                                  itemCount: state.apiState.bannerPosts.length,
+                                  autoplay: true,
+                                  onTap: _onBannerTap,
+                                  autoplayDelay: 10000,
+                                  duration: 1000),
                             ),
                             SizedBox(height: 5.h),
                             SpacedRow(
@@ -210,21 +148,25 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
             ));
   }
 
-  List<Widget> _buildBannerWidgets(ApiState state) {
-    List<Widget> list = [];
-
-    for (int i = 0; i < state.bannerPosts.length; i++) {
-      list.add(
-        PostItemBanner(
-          height: 110.h,
-          child: CachedImageOrTextImageWidget(
-              imageUrl: state.bannerPosts[i].imageUrl,
-              description: state.bannerPosts[i].description),
-        ),
-      );
+  _onBannerTap(int index) async {
+    switch (index) {
+      case 0:
+        await appStore.dispatch(GetPostByIdAction(
+            appStore.state.apiState.bannerPosts[index].postId));
+        appStore.dispatch(NavigateToAction(to: AppRoutes.helpDetailsPageRoute));
+        break;
+      case 1:
+        await appStore.dispatch(GetPostByIdAction(
+            appStore.state.apiState.bannerPosts[index].postId));
+        appStore
+            .dispatch(NavigateToAction(to: AppRoutes.eventDetailsPageRoute));
+        break;
+      case 2:
+        await appStore.dispatch(GetPostByIdAction(
+            appStore.state.apiState.bannerPosts[index].postId));
+        appStore.dispatch(NavigateToAction(to: AppRoutes.noticeDetailsRoute));
+        break;
     }
-
-    return list;
   }
 
   _getQuery(AppState state) {
