@@ -253,10 +253,12 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         setState(() {
           errorText = "";
         });
-
+        String phNum = phoneNumberController.text;
+        if (!phNum.startsWith('0')) {
+          phNum = "0${phoneNumberController.text}";
+        }
         bool matched = await appStore.dispatch(GetChangePasswordAction(
-            newPassword: passController.text,
-            phoneNumber: phoneNumberController.text));
+            newPassword: passController.text, phoneNumber: phNum));
         if (!matched) {
           setState(() {
             errorText =

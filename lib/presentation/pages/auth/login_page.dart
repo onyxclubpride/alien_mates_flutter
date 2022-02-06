@@ -117,8 +117,12 @@ class _LoginPageState extends State<LoginPage> {
       errorText = "";
     });
     if (_formKeyLoginPage.currentState!.validate()) {
-      bool matched = await appStore.dispatch(GetLoginAction(
-          phoneNumber: phoneNumController.text, password: pwController.text));
+      String phNum = phoneNumController.text;
+      if (!phNum.startsWith('0')) {
+        phNum = "0${phoneNumController.text}";
+      }
+      bool matched = await appStore.dispatch(
+          GetLoginAction(phoneNumber: phNum, password: pwController.text));
       if (!matched) {
         setState(() {
           errorText = "Login Error! Please, try again!";

@@ -207,11 +207,15 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _onSendOtp(AppState state) async {
-    bool userExists = await appStore
-        .dispatch(GetCheckPhoneNumExistsAction(phoneNumberController.text));
+    String phNum = phoneNumberController.text;
+    if (!phNum.startsWith('0')) {
+      phNum = "0${phoneNumberController.text}";
+    }
+    bool userExists =
+        await appStore.dispatch(GetCheckPhoneNumExistsAction(phNum));
     if (_formKeySignUpPage.currentState!.validate() &&
         phoneNumberController.text.isNotEmpty &&
-        phoneNumberController.text.length > 10) {
+        phoneNumberController.text.length > 9) {
       if (!userExists) {
         showLoading();
         setState(() {
@@ -219,7 +223,7 @@ class _SignUpPageState extends State<SignUpPage> {
         });
         try {
           await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: "+82" + phoneNumberController.text,
+            phoneNumber: "+82" + phNum,
             verificationCompleted: (PhoneAuthCredential credential) async {
               // await FirebaseAuth.instance.signInWithCredential(credential);
             },
@@ -267,20 +271,22 @@ class _SignUpPageState extends State<SignUpPage> {
         setState(() {
           errorText = "";
         });
-        if (_formKeySignUpPage.currentState!.validate()) {
-          bool matched = await appStore.dispatch(GetCreateUserAction(
-              phoneNumber: phoneNumberController.text,
-              password: passController.text,
-              name: nameController.text,
-              uniName: uniNameController.text));
-          if (!matched) {
-            setState(() {
-              errorText =
-                  "There is something wrong. Please check your data again";
-            });
-          } else {
-            appStore.dispatch(NavigateToAction(to: 'up'));
-          }
+        String phNum = phoneNumberController.text;
+        if (!phNum.startsWith('0')) {
+          phNum = "0${phoneNumberController.text}";
+        }
+        bool matched = await appStore.dispatch(GetCreateUserAction(
+            phoneNumber: phNum,
+            password: passController.text,
+            name: nameController.text,
+            uniName: uniNameController.text));
+        if (!matched) {
+          setState(() {
+            errorText =
+                "There is something wrong. Please check your data again";
+          });
+        } else {
+          appStore.dispatch(NavigateToAction(to: 'up'));
         }
       } else {
         setState(() {
