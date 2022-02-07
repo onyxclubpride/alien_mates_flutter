@@ -48,7 +48,7 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
                             textStyle: latoR16.copyWith(color: Colors.white),
                             textAlign: TextAlign.left,
                           ),
-                          SizedBox(height: 20.h),
+                          SizedBox(height: 70.h),
                         ],
                       ),
                     ]),

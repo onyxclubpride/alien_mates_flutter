@@ -178,7 +178,10 @@ class _ProfileLayoutState extends State<ProfileLayout> {
       children: [
         Icon(icon, color: ThemeColors.fontDark, size: 25.w),
         SizedText(
+            width: 250.w,
+            textAlign: TextAlign.left,
             text: valueText,
+            maxLines: 2,
             textStyle: latoM16.copyWith(color: ThemeColors.fontDark)),
       ],
     );

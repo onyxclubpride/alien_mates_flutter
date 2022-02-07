@@ -295,6 +295,7 @@ class GetLogoutUserAction {
 class GetExtraInfoAction {}
 
 class GetBannerPostsAction {}
+class GetFeedbackPostAction {String name; String? email; String feedback; GetFeedbackPostAction({required this.name,this.email, required this.feedback});}
 
 ///----------------- Init -----------------
 

@@ -104,6 +104,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                           hintText: "Confirm Password",
                           validator: Validator.validatePassword,
                           isObscured: true,
+                          controller: confirmPassController,
                         ),
                       if (errorText.isNotEmpty)
                         SizedText(
@@ -269,7 +270,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         }
       } else {
         setState(() {
-          errorText = "Password do not match!";
+          // errorText = "Password do not match!";
         });
       }
     }

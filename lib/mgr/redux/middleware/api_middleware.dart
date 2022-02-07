@@ -28,6 +28,7 @@ FirebaseKit firebaseKit = FirebaseKit();
 final postsCollection = firebaseKit.postsCollection;
 final usersCollection = firebaseKit.usersCollection;
 final extraInfoCollection = firebaseKit.extraInfoCollection;
+final feedbackCollection = firebaseKit.feedbackCollection;
 const uuid = Uuid();
 final now = DateTime.now();
 final currentDateAndTime =
@@ -82,6 +83,8 @@ class ApiMiddleware extends MiddlewareClass<AppState> {
         return _getChangePasswordAction(store.state, action, next);
       case GetBannerPostsAction:
         return _getBannerPostsAction(store.state, action, next);
+      case GetFeedbackPostAction:
+        return _getFeedbackPostAction(store.state, action, next);
       default:
         return next(action);
     }
@@ -1000,6 +1003,24 @@ _getExtraInfoAction(
   } catch (e) {
     closeLoading();
     logger(e.toString(), hint: 'GET Extra Info CATCH ERROR');
+  }
+}
+
+_getFeedbackPostAction(
+    AppState state, GetFeedbackPostAction action, NextDispatcher next) async {
+  try {
+    showLoading();
+    logger("UDPDDD");
+    await feedbackCollection.doc().set({
+      "email": action.email,
+      "name": action.name,
+      "feedback": action.feedback
+    });
+    return true;
+  } catch (e) {
+    closeLoading();
+    logger(e.toString(), hint: 'GET Feedback POST CATCH ERROR');
+    return false;
   }
 }
 

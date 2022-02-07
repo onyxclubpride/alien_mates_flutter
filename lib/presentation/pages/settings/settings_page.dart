@@ -1,6 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -86,8 +87,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.black, elevation: 0),
                     onPressed: () {
-                      appStore.dispatch(NavigateToAction(
-                          to: AppRoutes.termsAndConditionsPageRoute));
+                      appStore.dispatch(
+                          NavigateToAction(to: AppRoutes.feedbackPageRoute));
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -101,7 +102,7 @@ class _SettingsPageState extends State<SettingsPage> {
                             width: 10.h,
                           ),
                           SizedText(
-                              text: "Terms and Conditions",
+                              text: "Feedback",
                               textStyle: latoM16.copyWith(color: Colors.white)),
                         ]),
                   ),
@@ -136,7 +137,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     style: ElevatedButton.styleFrom(
                         primary: ThemeColors.black, elevation: 0),
                     onPressed: () async {
-                      appStore.dispatch(GetLogoutAction());
+                      _logOutConfirmation();
                     },
                     child: SpacedRow(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -166,6 +167,17 @@ class _SettingsPageState extends State<SettingsPage> {
       icon: const Icon(Ionicons.chevron_back_outline),
       onPressed: () {
         appStore.dispatch(NavigateToAction(to: 'up'));
+      },
+    );
+  }
+
+  _logOutConfirmation() {
+    return showBodyDialog(
+      context,
+      text: 'Do you want to Logout?',
+      onMainButtonText: 'Yes',
+      onPress: () {
+        appStore.dispatch(GetLogoutAction());
       },
     );
   }

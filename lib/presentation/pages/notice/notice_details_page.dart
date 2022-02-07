@@ -62,7 +62,7 @@ class NoticeDetailsPage extends StatelessWidget {
     return IconButton(
       padding: EdgeInsets.zero,
       iconSize: 30.w,
-      icon: const Icon(Ionicons.close),
+      icon: const Icon(Ionicons.arrow_back),
       onPressed: () {
         appStore.dispatch(NavigateToAction(to: 'up'));
       },

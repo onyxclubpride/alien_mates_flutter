@@ -13,8 +13,9 @@ class _LoginPageState extends State<LoginPage> {
       GlobalKey<FormState>(debugLabel: '_formKeyLoginPage');
 
   TextEditingController phoneNumController =
-      TextEditingController(text: '01064634085');
-  TextEditingController pwController = TextEditingController(text: 'test1111');
+      TextEditingController(text: '01027192101');
+  TextEditingController pwController =
+      TextEditingController(text: 'Nishat123!');
   String errorText = "";
 
   @override

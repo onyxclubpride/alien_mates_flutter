@@ -36,7 +36,7 @@ class _SplashPageState extends State<SplashPage> {
                 text: 'Alien\nMates',
                 waveColor: ThemeColors.white,
                 boxBackgroundColor: ThemeColors.green800,
-                loadDuration: const Duration(seconds: 6),
+                loadDuration: const Duration(seconds: 3),
                 textStyle: latoB60.copyWith(color: ThemeColors.bgLight),
                 boxWidth: 300.w)
           ],

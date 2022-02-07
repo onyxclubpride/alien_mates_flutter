@@ -7,6 +7,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
+import 'package:paginate_firestore/bloc/pagination_listeners.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
 
 enum PostTypeEnum { POST, EVENT, HELP }
@@ -58,6 +59,8 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    PaginateRefreshedChangeListener refreshChangeListener =
+        PaginateRefreshedChangeListener();
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) => Scaffold(
@@ -69,81 +72,91 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
                     )
                   : null,
               appBar: _getHeader(),
-              body: PaginateFirestore(
-                separator: SizedBox(height: 20.h),
-                scrollController: _controller,
-                itemBuilder: (_, documentSnapshots, index) {
-                  return Column(
-                    children: [
-                      if (index == 0)
-                        Column(
-                          children: [
-                            SizedBox(
-                              height: 110.h,
-                              child: Swiper(
-                                  index: state.apiState.bannerIndex,
-                                  onIndexChanged: (value) {
-                                    appStore.dispatch(UpdateApiStateAction(
-                                        bannerIndex: value));
-                                  },
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    return PostItemBanner(
-                                      height: 110.h,
-                                      child: CachedImageOrTextImageWidget(
-                                          imageUrl: state.apiState
-                                              .bannerPosts[index].imageUrl,
-                                          description: state.apiState
-                                              .bannerPosts[index].description),
-                                    );
-                                  },
-                                  itemCount: state.apiState.bannerPosts.length,
-                                  autoplay: true,
-                                  onTap: _onBannerTap,
-                                  autoplayDelay: 10000,
-                                  duration: 1000),
-                            ),
-                            SizedBox(height: 5.h),
-                            SpacedRow(
-                                horizontalSpace: 5,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    state.apiState.bannerIndex == 0
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                  Icon(
-                                    state.apiState.bannerIndex == 1
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                  Icon(
-                                    state.apiState.bannerIndex == 2
-                                        ? Ionicons.stop_circle_outline
-                                        : Ionicons.ellipse_outline,
-                                    color: Colors.white,
-                                    size: 10.h,
-                                  ),
-                                ]),
-                            Container(
-                                margin: EdgeInsets.symmetric(vertical: 15.h),
-                                child: BodyNavigationBar()),
-                          ],
-                        ),
-                      widget.buildWidget(_, documentSnapshots, index, state),
-                    ],
-                  );
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  refreshChangeListener.refreshed = true;
                 },
-                physics: const BouncingScrollPhysics(),
-                query: _getQuery(state),
-                itemBuilderType: PaginateBuilderType.listView,
-                isLive: true,
-                padding: EdgeInsets.symmetric(horizontal: 12.w),
+                child: PaginateFirestore(
+                  listeners: [refreshChangeListener],
+                  separator: SizedBox(height: 20.h),
+                  scrollController: _controller,
+                  itemBuilder: (_, documentSnapshots, index) {
+                    return Column(
+                      children: [
+                        if (index == 0)
+                          Column(
+                            children: [
+                              SizedBox(
+                                height: 110.h,
+                                child: Swiper(
+                                    index: state.apiState.bannerIndex,
+                                    onIndexChanged: (value) {
+                                      appStore.dispatch(UpdateApiStateAction(
+                                          bannerIndex: value));
+                                    },
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return PostItemBanner(
+                                        height: 110.h,
+                                        child: CachedImageOrTextImageWidget(
+                                            gradientBottom: false,
+                                            imageUrl: state.apiState
+                                                .bannerPosts[index].imageUrl,
+                                            description: state
+                                                .apiState
+                                                .bannerPosts[index]
+                                                .description),
+                                      );
+                                    },
+                                    itemCount:
+                                        state.apiState.bannerPosts.length,
+                                    autoplay: true,
+                                    onTap: _onBannerTap,
+                                    autoplayDelay: 10000,
+                                    duration: 1000),
+                              ),
+                              SizedBox(height: 5.h),
+                              SpacedRow(
+                                  horizontalSpace: 5,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      state.apiState.bannerIndex == 0
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                    Icon(
+                                      state.apiState.bannerIndex == 1
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                    Icon(
+                                      state.apiState.bannerIndex == 2
+                                          ? Ionicons.stop_circle_outline
+                                          : Ionicons.ellipse_outline,
+                                      color: Colors.white,
+                                      size: 10.h,
+                                    ),
+                                  ]),
+                              Container(
+                                  margin: EdgeInsets.symmetric(vertical: 15.h),
+                                  child: BodyNavigationBar()),
+                            ],
+                          ),
+                        widget.buildWidget(_, documentSnapshots, index, state),
+                      ],
+                    );
+                  },
+                  physics: const BouncingScrollPhysics(),
+                  query: _getQuery(state),
+                  itemBuilderType: PaginateBuilderType.listView,
+                  isLive: true,
+                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                ),
               ),
             ));
   }

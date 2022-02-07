@@ -50,6 +50,8 @@ class AppRouter {
           return ForgotPasswordPage();
         case (AppRoutes.noticeDetailsRoute):
           return NoticeDetailsPage();
+        case (AppRoutes.feedbackPageRoute):
+          return FeedbackPage();
         default:
           return const SplashPage();
       }
