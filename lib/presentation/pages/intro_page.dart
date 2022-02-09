@@ -2,6 +2,8 @@ import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/app_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intro_slider/intro_slider.dart';
 
 import 'package:intro_slider/slide_object.dart';
@@ -16,6 +18,11 @@ class IntroPage extends StatefulWidget {
 // ------------------ Custom config ------------------
 class IntroPageState extends State<IntroPage> {
   List<Slide> slides = [];
+  DateTime timeBackPressed = DateTime.now();
+
+  bool isliking = false;
+  String likingpostid = "";
+  bool startLiking = false;
 
   @override
   void initState() {
@@ -134,28 +141,51 @@ class IntroPageState extends State<IntroPage> {
 
   @override
   Widget build(BuildContext context) {
-    return IntroSlider(
-      // List slides
-      slides: slides,
+    return WillPopScope(
+      onWillPop: _onWillPop,
+      child: IntroSlider(
+        // List slides
+        slides: slides,
 
-      // Skip button
-      renderSkipBtn: renderSkipBtn(),
-      skipButtonStyle: myButtonStyle(),
+        // Skip button
+        renderSkipBtn: renderSkipBtn(),
+        skipButtonStyle: myButtonStyle(),
 
-      // Next button
-      renderNextBtn: renderNextBtn(),
-      onNextPress: onNextPress,
-      nextButtonStyle: myButtonStyle(),
+        // Next button
+        renderNextBtn: renderNextBtn(),
+        onNextPress: onNextPress,
+        nextButtonStyle: myButtonStyle(),
 
-      // Done button
-      renderDoneBtn: renderDoneBtn(),
-      onDonePress: onDonePress,
-      doneButtonStyle: myButtonStyle(),
+        // Done button
+        renderDoneBtn: renderDoneBtn(),
+        onDonePress: onDonePress,
+        doneButtonStyle: myButtonStyle(),
 
-      // Dot indicator
-      colorDot: ThemeColors.coolgray700,
-      colorActiveDot: ThemeColors.coolgray100,
-      sizeDot: 13.0,
+        // Dot indicator
+        colorDot: ThemeColors.coolgray700,
+        colorActiveDot: ThemeColors.coolgray100,
+        sizeDot: 13.0,
+      ),
     );
+  }
+
+  Future<bool> _onWillPop() {
+    final difference = DateTime.now().difference(timeBackPressed);
+    final isExitWarning = difference >= const Duration(seconds: 2);
+
+    timeBackPressed = DateTime.now();
+
+    if (isExitWarning) {
+      const message = 'Press back again to exit';
+      Fluttertoast.showToast(
+          msg: message,
+          fontSize: 18,
+          backgroundColor: ThemeColors.white,
+          textColor: ThemeColors.bluegray800);
+      return Future.value(false);
+    } else {
+      SystemChannels.platform.invokeMethod('SystemNavigator.pop');
+      return Future.value(false);
+    }
   }
 }
