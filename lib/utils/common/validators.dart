@@ -7,7 +7,8 @@ class Validator {
         return 'Password must not be empty';
       }
       if (!regex.hasMatch(value)) {
-        return "Password must contain lower, upper, 1 character and between 8-13.";
+        //Use a mix of letters, numbers, and symbols to create a stronger password
+        return "Password must be 8-13 letters with (a-z),(A-Z),(1-9),(!@#&).";
       }
     } else {
       return null;
@@ -83,6 +84,17 @@ class Validator {
       if (int.tryParse(value) == null) {
         return "Numbers only allowed";
       }
+    }
+  }
+
+  static String? validateEmail(String? value) {
+    if (value != null && value.isNotEmpty) {
+      if (value.contains('@') && value.contains('.') && !value.contains(' ')) {
+        return null;
+      }
+      return "Check email again!";
+    } else {
+      return "Email cannot be empty";
     }
   }
 }

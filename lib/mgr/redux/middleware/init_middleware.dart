@@ -34,7 +34,7 @@ Future<void> _getStateInitAction(
     await appStore.dispatch(GetSearchUniversityAction());
     await Future.delayed(const Duration(seconds: 2));
     appStore.dispatch(
-        NavigateToAction(to: AppRoutes.loginPageRoute, replace: true));
+        NavigateToAction(to: AppRoutes.introPageRoute, replace: true));
   }
 }
 

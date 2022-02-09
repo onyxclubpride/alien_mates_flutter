@@ -47,8 +47,8 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                   children: [
                     DefaultBanner(
                       bgColor: ThemeColors.black,
-                      child: Container(
-                        padding: EdgeInsets.all(12.w),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: SpacedColumn(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -56,35 +56,27 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                                 text: 'Help details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 6.h),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: Divider(
                                   thickness: 1.w,
                                   color: ThemeColors.borderDark),
                             ),
-                            SpacedColumn(verticalSpace: 12.h, children: [
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Title'),
-                                    PostCreateInput(
-                                      controller: titleController,
-                                      validator: Validator.validateTitle,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Description'),
-                                    PostCreateInput(
-                                      hintText:
-                                          'Add description about support!',
-                                      maxlines: 10,
-                                      validator: Validator.validateDescription,
-                                      controller: descriptionController,
-                                    ),
-                                  ]),
-                            ]),
+                            InputLabel(label: 'Title'),
+                            PostCreateInput(
+                              controller: titleController,
+                              validator: Validator.validateTitle,
+                            ),
+                            InputLabel(label: 'Description'),
+                            PostCreateInput(
+                              hintText: 'Add description about support!',
+                              maxlines: 10,
+                              validator: Validator.validateDescription,
+                              controller: descriptionController,
+                              textInputAction: TextInputAction.newline,
+                              keyboardType: TextInputType.multiline,
+                            ),
                           ],
                         ),
                       ),

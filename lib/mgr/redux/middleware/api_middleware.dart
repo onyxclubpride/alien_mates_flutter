@@ -1013,7 +1013,8 @@ _getFeedbackPostAction(
     logger("UDPDDD");
     await feedbackCollection.doc().set({
       "email": action.email,
-      "name": action.name,
+      "userId": state.initState.userId,
+      "name": state.apiState.userMe.name,
       "feedback": action.feedback
     });
     return true;
@@ -1047,7 +1048,7 @@ closeLoading() {
 showError(String? error, {VoidCallback? onTap}) {
   showAlertDialog(
     Global.navKey.currentState!.context,
-    text: '${error.toString()}',
+    text: error.toString(),
     horizontalPadding: 20,
     buttonText: 'Ok',
     onPress: onTap ??

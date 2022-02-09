@@ -71,16 +71,6 @@ class _FeedbackPageState extends State<FeedbackPage> {
                             SpacedColumn(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  InputLabel(label: 'Name'),
-                                  PostCreateInput(
-                                    hintText: 'What is your name?',
-                                    controller: nameController,
-                                  ),
-                                  SizedBox(height: 20.h),
-                                ]),
-                            SpacedColumn(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
                                   InputLabel(label: 'Description'),
                                   PostCreateInput(
                                     hintText:
@@ -98,7 +88,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
                                     InputLabel(label: 'Email'),
                                     PostCreateInput(
                                       controller: emailController,
-                                      validator: Validator.validateTitle,
+                                      validator: Validator.validateEmail,
                                     ),
                                   ]),
                             ]),
@@ -121,9 +111,7 @@ class _FeedbackPageState extends State<FeedbackPage> {
   _onPostEvent() async {
     if (_formKeyFeedbackPage.currentState!.validate()) {
       bool created = await appStore.dispatch(GetFeedbackPostAction(
-          name: nameController.text,
-          feedback: descriptionController.text,
-          email: emailController.text));
+          feedback: descriptionController.text, email: emailController.text));
 
       if (!created) {
         showAlertDialog(context,

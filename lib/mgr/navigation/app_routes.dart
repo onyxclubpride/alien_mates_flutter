@@ -1,3 +1,4 @@
+import 'package:alien_mates/presentation/pages/intro_page.dart';
 import 'package:alien_mates/presentation/pages/profile/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/settings/settings_page.dart';
@@ -33,6 +34,8 @@ class AppRoutes {
   static const noticeDetailsRoute = "/noticeDetails";
   static const feedbackPageRoute = "/feedbackPage";
 
+  static const introPageRoute = "/introPage";
+
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
       AppRoutes.splashRoute: (BuildContext context) => const SplashPage(),
@@ -65,7 +68,8 @@ class AppRoutes {
           ForgotPasswordPage(),
       AppRoutes.noticeDetailsRoute: (BuildContext context) =>
           NoticeDetailsPage(),
-      AppRoutes.feedbackPageRoute: (BuildContext context) => FeedbackPage()
+      AppRoutes.feedbackPageRoute: (BuildContext context) => FeedbackPage(),
+      AppRoutes.introPageRoute: (BuildContext context) => IntroPage()
     };
 
     return base;

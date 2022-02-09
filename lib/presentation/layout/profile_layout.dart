@@ -359,10 +359,12 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                 child: Form(
                   key: _formKeyCreatePostPage,
                   child: PostCreateInput(
+                    keyboardType: TextInputType.multiline,
                     maxlines: 10,
+                    textInputAction: null,
                     hintText: 'Add description about post!',
-                    validator: Validator.validateDescription,
                     controller: descriptionController,
+                    validator: Validator.validateDescription,
                   ),
                 ),
               ),

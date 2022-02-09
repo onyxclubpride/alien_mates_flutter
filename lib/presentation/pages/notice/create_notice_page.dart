@@ -52,8 +52,8 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                   children: [
                     DefaultBanner(
                       bgColor: ThemeColors.black,
-                      child: Container(
-                        padding: EdgeInsets.all(12.w),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
                         child: SpacedColumn(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -61,34 +61,25 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                                 text: 'Notice details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 6.h),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
                               child: Divider(
                                   thickness: 1.w,
                                   color: ThemeColors.borderDark),
                             ),
-                            SpacedColumn(verticalSpace: 12.h, children: [
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Title'),
-                                    PostCreateInput(
-                                      controller: titleController,
-                                      validator: Validator.validateText,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Description'),
-                                    PostCreateInput(
-                                      hintText: 'Add description about notice!',
-                                      maxlines: 10,
-                                      validator: Validator.validateDescription,
-                                      controller: descriptionController,
-                                    ),
-                                  ]),
-                            ]),
+                            InputLabel(label: 'Title'),
+                            PostCreateInput(
+                              controller: titleController,
+                              validator: Validator.validateText,
+                            ),
+                            InputLabel(label: 'Description'),
+                            PostCreateInput(
+                              hintText: 'Add description about notice!',
+                              maxlines: 10,
+                              validator: Validator.validateDescription,
+                              controller: descriptionController,
+                            ),
                           ],
                         ),
                       ),

@@ -53,8 +53,8 @@ class _CreateEventPageState extends State<CreateEventPage> {
                   children: [
                     DefaultBanner(
                       bgColor: ThemeColors.black,
-                      child: Container(
-                        padding: EdgeInsets.all(12.w),
+                      child: Padding(
+                        padding: EdgeInsets.all(10.h),
                         child: SpacedColumn(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -62,56 +62,42 @@ class _CreateEventPageState extends State<CreateEventPage> {
                                 text: 'Event details',
                                 textStyle: latoR14.copyWith(
                                     color: ThemeColors.fontWhite)),
-                            Container(
-                              margin: EdgeInsets.symmetric(vertical: 6.h),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
                               child: Divider(
                                   thickness: 1.w,
                                   color: ThemeColors.borderDark),
                             ),
-                            SpacedColumn(verticalSpace: 12.h, children: [
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Title'),
-                                    PostCreateInput(
-                                      controller: titleController,
-                                      validator: Validator.validateTitle,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Description'),
-                                    PostCreateInput(
-                                      hintText:
-                                          'Add description about an event!',
-                                      maxlines: 10,
-                                      validator: Validator.validateDescription,
-                                      controller: descriptionController,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Maximum people'),
-                                    PostCreateInput(
-                                      validator: Validator.validateMaxPeople,
-                                      hintText:
-                                          'Leave the field empty if the # of people is 0',
-                                      controller: maxPplController,
-                                      keyboardType: TextInputType.number,
-                                    ),
-                                  ]),
-                              SpacedColumn(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    InputLabel(label: 'Location'),
-                                    PostCreateInput(
-                                      hintText: 'Add the Location',
-                                      controller: locationController,
-                                    ),
-                                  ]),
-                            ]),
+                            InputLabel(label: 'Title'),
+                            PostCreateInput(
+                              controller: titleController,
+                              validator: Validator.validateTitle,
+                            ),
+                            SizedBox(height: 20.h),
+                            InputLabel(label: 'Description'),
+                            PostCreateInput(
+                              keyboardType: TextInputType.multiline,
+                              maxlines: 10,
+                              textInputAction: TextInputAction.newline,
+                              hintText: 'Add description about an event!',
+                              controller: descriptionController,
+                              validator: Validator.validateDescription,
+                            ),
+                            SizedBox(height: 20.h),
+                            InputLabel(label: 'Maximum people'),
+                            PostCreateInput(
+                              validator: Validator.validateMaxPeople,
+                              hintText:
+                                  'Leave the field empty if the # of people is 0',
+                              controller: maxPplController,
+                              keyboardType: TextInputType.number,
+                            ),
+                            SizedBox(height: 20.h),
+                            InputLabel(label: 'Location'),
+                            PostCreateInput(
+                              hintText: 'Add the Location',
+                              controller: locationController,
+                            ),
                           ],
                         ),
                       ),
@@ -229,6 +215,22 @@ class _CreateEventPageState extends State<CreateEventPage> {
             text: 'Please, check the agreement box to continue!');
       }
     }
+  }
+
+  _buildDesc() {
+    return Flexible(
+      child: Form(
+        key: _formKeyCreateEventPage,
+        child: PostCreateInput(
+          keyboardType: TextInputType.multiline,
+          maxlines: 10,
+          textInputAction: null,
+          hintText: 'Add description about post!',
+          controller: descriptionController,
+          validator: Validator.validateDescription,
+        ),
+      ),
+    );
   }
 
   Widget _buildTitleIcon() {
