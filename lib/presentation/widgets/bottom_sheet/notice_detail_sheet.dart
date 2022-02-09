@@ -75,7 +75,7 @@ class _NoticeDetailState extends State<NoticeDetail> {
                         fit: BoxFit.cover,
                       )),
                       SpacedColumn(verticalSpace: 25, children: [
-                        Container(
+                        SizedBox(
                             height: 300.h,
                             child: const SingleChildScrollView(
                               child: Text(

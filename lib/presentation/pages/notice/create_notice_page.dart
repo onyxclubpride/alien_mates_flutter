@@ -50,8 +50,11 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DefaultBanner(
-                      bgColor: ThemeColors.black,
+                    Container(
+                      decoration: BoxDecoration(
+                          border: Border.all(color: ThemeColors.borderDark),
+                          borderRadius:
+                              BorderRadius.all(Radius.circular(10.r))),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: SpacedColumn(
