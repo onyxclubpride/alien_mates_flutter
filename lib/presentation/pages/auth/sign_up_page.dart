@@ -2,6 +2,7 @@ import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -31,6 +32,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isOtpSent = false;
   bool isOtpCorrect = false;
   String errorText = "";
+  String buttonText = "Send Otp";
 
   @override
   void dispose() {
@@ -52,121 +54,136 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppState>(
-        converter: (store) => store.state,
-        onDidChange: (previousViewModel, viewModel) {
-          if (viewModel.apiState.selectedUni.isNotEmpty) {
-            setState(() {
-              uniNameController =
-                  TextEditingController(text: viewModel.apiState.selectedUni);
-            });
-          }
-        },
-        builder: (context, state) {
-          return DefaultBody(
-            withNavigationBar: false,
-            withTopBanner: false,
-            showAppBar: false,
-            topPadding: 30,
-            bottomPadding: 20,
-            footer: ExpandedButton(
-              text: isOtpSent ? 'Sign Up' : "Send Otp",
-              onPressed: () {
-                if (isOtpSent) {
-                  _signUpPress();
-                } else {
-                  _onSendOtp(state);
-                }
-              },
-            ),
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKeySignUpPage,
-                child: SpacedColumn(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  verticalSpace: 21,
-                  children: [
-                    SizedText(
-                        text: 'Sign Up',
-                        textStyle: latoB45.copyWith(color: Colors.white)),
-                    if (!isOtpSent) SizedBox(height: 20.h),
-                    SpacedColumn(verticalSpace: 25, children: [
-                      BasicInput(
-                        validator: Validator.validateName,
-                        hintText: "Name",
-                        controller: nameController,
-                      ),
-                      BasicInput(
-                        hintText: "Password",
-                        controller: passController,
-                        validator: Validator.validatePassword,
-                        isObscured: true,
-                      ),
-                      BasicInput(
-                        hintText: "Confirm Password",
-                        controller: confirmPassController,
-                        validator: Validator.validatePassword,
-                        isObscured: true,
-                      ),
-                      BasicInput(
-                        validator: Validator.validatePhoneNumber,
-                        hintText: "Phone Number",
-                        readOnly: isOtpCorrect,
-                        keyboardType: TextInputType.number,
-                        icon: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            SizedText(text: '+82'),
-                          ],
-                        ),
-                        controller: phoneNumberController,
-                      ),
-                      if (isOtpSent)
+    return WillPopScope(
+      onWillPop: () {
+        showBodyDialog(
+          context,
+          text: 'Are you sure?',
+          onMainButtonText: 'Go Back',
+          onPress: () {
+            appStore.dispatch(NavigateToAction(to: "up"));
+          },
+        );
+        return Future.value(false);
+      },
+      child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          onDidChange: (previousViewModel, viewModel) {
+            if (viewModel.apiState.selectedUni.isNotEmpty) {
+              setState(() {
+                uniNameController =
+                    TextEditingController(text: viewModel.apiState.selectedUni);
+              });
+            }
+          },
+          builder: (context, state) {
+            return DefaultBody(
+              withNavigationBar: false,
+              withTopBanner: false,
+              showAppBar: false,
+              topPadding: 30,
+              bottomPadding: 20,
+              footer: ExpandedButton(
+                text: isOtpSent ? 'Sign Up' : buttonText,
+                onPressed: () {
+                  if (isOtpSent) {
+                    _signUpPress();
+                  } else {
+                    _onSendOtp(state);
+                  }
+                },
+              ),
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKeySignUpPage,
+                  child: SpacedColumn(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    verticalSpace: 21,
+                    children: [
+                      SizedText(
+                          text: 'Sign Up',
+                          textStyle: latoB45.copyWith(color: Colors.white)),
+                      if (!isOtpSent) SizedBox(height: 20.h),
+                      SpacedColumn(verticalSpace: 25, children: [
                         BasicInput(
-                          hintText: "OTP",
-                          readOnly: isOtpCorrect,
-                          controller: otpController,
-                          onChanged: _enteringSmsCode,
-                          validator: Validator.validateOtp,
-                          keyboardType: TextInputType.number,
-                          suffixIcon: IconButton(
-                            onPressed: null,
-                            icon: Icon(
-                              Ionicons.checkmark_done_sharp,
-                              color: isOtpCorrect
-                                  ? Colors.blueAccent
-                                  : ThemeColors.transparent,
-                            ),
-                          ),
-                        ),
-                      if (isOtpCorrect)
-                        BasicInput(
-                          hintText: "University Name",
-                          textInputAction: TextInputAction.done,
-                          controller: uniNameController,
                           validator: Validator.validateName,
-                          suffixIcon: IconButton(
-                            onPressed: _onSearchUniPress,
-                            icon: const Icon(
-                              Ionicons.search,
-                              color: ThemeColors.componentBgDark,
+                          hintText: "Name",
+                          controller: nameController,
+                        ),
+                        BasicInput(
+                          hintText: "Password",
+                          controller: passController,
+                          validator: Validator.validatePassword,
+                          isObscured: true,
+                        ),
+                        BasicInput(
+                          hintText: "Confirm Password",
+                          controller: confirmPassController,
+                          isObscured: true,
+                        ),
+                        BasicInput(
+                          validator: Validator.validatePhoneNumber,
+                          hintText: "Phone Number",
+                          readOnly: isOtpCorrect,
+                          keyboardType: TextInputType.number,
+                          icon: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              SizedText(text: '+82'),
+                            ],
+                          ),
+                          controller: phoneNumberController,
+                        ),
+                        if (isOtpSent)
+                          BasicInput(
+                            hintText: "OTP",
+                            readOnly: isOtpCorrect,
+                            controller: otpController,
+                            onChanged: _enteringSmsCode,
+                            validator: Validator.validateOtp,
+                            keyboardType: TextInputType.number,
+                            suffixIcon: IconButton(
+                              onPressed: null,
+                              icon: Icon(
+                                Ionicons.checkmark_done_sharp,
+                                color: isOtpCorrect
+                                    ? Colors.blueAccent
+                                    : ThemeColors.transparent,
+                              ),
                             ),
                           ),
-                          onTap: _onSearchUniPress,
-                          readOnly: true,
-                        ),
-                      if (errorText.isNotEmpty)
-                        SizedText(
-                          text: errorText,
-                          textStyle: latoM16.copyWith(color: ThemeColors.red),
-                        ),
-                    ]),
-                  ],
+                        if (isOtpCorrect)
+                          BasicInput(
+                            hintText: "University Name",
+                            textInputAction: TextInputAction.done,
+                            controller: uniNameController,
+                            validator: Validator.validateName,
+                            suffixIcon: IconButton(
+                              onPressed: _onSearchUniPress,
+                              icon: const Icon(
+                                Ionicons.search,
+                                color: ThemeColors.componentBgDark,
+                              ),
+                            ),
+                            onTap: _onSearchUniPress,
+                            readOnly: true,
+                          ),
+                        if (errorText.isNotEmpty)
+                          SizedText(
+                            text: errorText,
+                            textStyle: latoM16.copyWith(color: ThemeColors.red),
+                          ),
+                      ]),
+                      SizedBox(
+                        height: 50.h,
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        });
+            );
+          }),
+    );
   }
 
   _enteringSmsCode(value) async {
@@ -201,7 +218,8 @@ class _SignUpPageState extends State<SignUpPage> {
       context: context,
       backgroundColor: ThemeColors.transparent,
       builder: (context) {
-        return UniversitiesWidget();
+        return SizedBox(
+            child: SingleChildScrollView(child: UniversitiesWidget()));
       },
     );
   }
@@ -217,44 +235,53 @@ class _SignUpPageState extends State<SignUpPage> {
         phoneNumberController.text.isNotEmpty &&
         phoneNumberController.text.length > 9) {
       if (!userExists) {
-        showLoading();
         setState(() {
           errorText = "";
         });
-        try {
-          await FirebaseAuth.instance.verifyPhoneNumber(
-            phoneNumber: "+82" + phNum,
-            verificationCompleted: (PhoneAuthCredential credential) async {
-              // await FirebaseAuth.instance.signInWithCredential(credential);
-            },
-            verificationFailed: (FirebaseAuthException e) {
-              closeLoading();
-              showAlertDialog(context, text: e.message.toString());
-              setState(() {
-                isOtpSent = false;
-              });
-            },
-            forceResendingToken: sentOtp,
-            timeout: const Duration(milliseconds: 20000),
-            codeSent: (String verificationId, int? resendToken) async {
-              closeLoading();
-              setState(() {
-                isOtpSent = true;
-                sentOtp = resendToken;
-                verId = verificationId;
-              });
-            },
-            codeAutoRetrievalTimeout: (String verificationId) {
-              closeLoading();
-              setState(() {
-                verId = verificationId;
-              });
-            },
-          );
-        } catch (e) {
-          closeLoading();
+        if (passController.text == confirmPassController.text) {
           setState(() {
-            isOtpSent = false;
+            errorText = "";
+            buttonText = "Wait. . .";
+          });
+          try {
+            await FirebaseAuth.instance.verifyPhoneNumber(
+              phoneNumber: "+82" + phNum,
+              verificationCompleted: (PhoneAuthCredential credential) async {
+                // await FirebaseAuth.instance.signInWithCredential(credential);
+              },
+              verificationFailed: (FirebaseAuthException e) {
+                closeLoading();
+                showAlertDialog(context, text: e.message.toString());
+                setState(() {
+                  isOtpSent = false;
+                });
+              },
+              forceResendingToken: sentOtp,
+              timeout: const Duration(milliseconds: 20000),
+              codeSent: (String verificationId, int? resendToken) async {
+                closeLoading();
+                setState(() {
+                  isOtpSent = true;
+                  sentOtp = resendToken;
+                  verId = verificationId;
+                });
+              },
+              codeAutoRetrievalTimeout: (String verificationId) {
+                closeLoading();
+                setState(() {
+                  verId = verificationId;
+                });
+              },
+            );
+          } catch (e) {
+            closeLoading();
+            setState(() {
+              isOtpSent = false;
+            });
+          }
+        } else {
+          setState(() {
+            errorText = "Password did not match";
           });
         }
       } else {
@@ -290,7 +317,7 @@ class _SignUpPageState extends State<SignUpPage> {
         }
       } else {
         setState(() {
-          errorText = "Passwords do not match!";
+          errorText = "Passwords did not match!";
         });
       }
     }
