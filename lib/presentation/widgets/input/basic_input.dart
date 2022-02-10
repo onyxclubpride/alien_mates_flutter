@@ -18,6 +18,7 @@ class BasicInput extends StatelessWidget {
   bool? isFocusBorderEnabled;
   RegExp? regexPattern;
   Widget? icon;
+  void Function(String)? onFieldSubmitted;
 
   BasicInput(
       {this.hintText,
@@ -34,7 +35,8 @@ class BasicInput extends StatelessWidget {
       this.isObscured = false,
       this.regexPattern,
       this.onChanged,
-      this.isFocusBorderEnabled = true});
+      this.isFocusBorderEnabled = true,
+      this.onFieldSubmitted});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,7 @@ class BasicInput extends StatelessWidget {
         readOnly: readOnly!,
         initialValue: initVal,
         onChanged: onChanged,
+        onFieldSubmitted: onFieldSubmitted,
         textInputAction: textInputAction,
         decoration: InputDecoration(
           filled: true,

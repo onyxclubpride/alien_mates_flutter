@@ -52,6 +52,23 @@ class _SignUpPageState extends State<SignUpPage> {
     appStore.dispatch(GetSearchUniversityAction());
   }
 
+  // Initially password is obscure
+  bool _obscurePass = true;
+  bool _obscureConfirmPass = true;
+
+  // Toggles the password show status
+  void _togglePass() {
+    setState(() {
+      _obscurePass = !_obscurePass;
+    });
+  }
+
+  void _toggleConfirmPass() {
+    setState(() {
+      _obscureConfirmPass = !_obscureConfirmPass;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -93,91 +110,110 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 },
               ),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: _formKeySignUpPage,
-                  child: SpacedColumn(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    verticalSpace: 21,
-                    children: [
-                      SizedText(
-                          text: 'Sign Up',
-                          textStyle: latoB45.copyWith(color: Colors.white)),
-                      if (!isOtpSent) SizedBox(height: 20.h),
-                      SpacedColumn(verticalSpace: 25, children: [
-                        BasicInput(
-                          validator: Validator.validateName,
-                          hintText: "Name",
-                          controller: nameController,
-                        ),
-                        BasicInput(
-                          hintText: "Password",
-                          controller: passController,
-                          validator: Validator.validatePassword,
-                          isObscured: true,
-                        ),
-                        BasicInput(
-                          hintText: "Confirm Password",
-                          controller: confirmPassController,
-                          isObscured: true,
-                        ),
-                        BasicInput(
-                          validator: Validator.validatePhoneNumber,
-                          hintText: "Phone Number",
-                          readOnly: isOtpCorrect,
-                          keyboardType: TextInputType.number,
-                          icon: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              SizedText(text: '+82'),
-                            ],
-                          ),
-                          controller: phoneNumberController,
-                        ),
-                        if (isOtpSent)
+              child: Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKeySignUpPage,
+                    child: SpacedColumn(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      verticalSpace: 21,
+                      children: [
+                        SizedText(
+                            text: 'Sign Up',
+                            textStyle: latoB45.copyWith(color: Colors.white)),
+                        if (!isOtpSent) SizedBox(height: 20.h),
+                        SpacedColumn(verticalSpace: 25, children: [
                           BasicInput(
-                            hintText: "OTP",
-                            readOnly: isOtpCorrect,
-                            controller: otpController,
-                            onChanged: _enteringSmsCode,
-                            validator: Validator.validateOtp,
-                            keyboardType: TextInputType.number,
-                            suffixIcon: IconButton(
-                              onPressed: null,
-                              icon: Icon(
-                                Ionicons.checkmark_done_sharp,
-                                color: isOtpCorrect
-                                    ? Colors.blueAccent
-                                    : ThemeColors.transparent,
-                              ),
-                            ),
-                          ),
-                        if (isOtpCorrect)
-                          BasicInput(
-                            hintText: "University Name",
-                            textInputAction: TextInputAction.done,
-                            controller: uniNameController,
                             validator: Validator.validateName,
+                            hintText: "Name",
+                            controller: nameController,
+                          ),
+                          BasicInput(
+                            hintText: "Password",
+                            controller: passController,
+                            validator: Validator.validatePassword,
+                            isObscured: _obscurePass,
                             suffixIcon: IconButton(
-                              onPressed: _onSearchUniPress,
-                              icon: const Icon(
-                                Ionicons.search,
-                                color: ThemeColors.componentBgDark,
+                              icon: _obscurePass
+                                  ? const Icon(Ionicons.eye)
+                                  : const Icon(Ionicons.eye_off_outline),
+                              onPressed: _togglePass,
+                            ),
+                          ),
+                          BasicInput(
+                            hintText: "Confirm Password",
+                            controller: confirmPassController,
+                            isObscured: _obscureConfirmPass,
+                            suffixIcon: IconButton(
+                              icon: _obscureConfirmPass
+                                  ? const Icon(Ionicons.eye)
+                                  : const Icon(Ionicons.eye_off_outline),
+                              onPressed: _toggleConfirmPass,
+                            ),
+                          ),
+                          BasicInput(
+                            validator: Validator.validatePhoneNumber,
+                            hintText: "Phone Number",
+                            textInputAction: TextInputAction.done,
+                            readOnly: isOtpCorrect,
+                            keyboardType: TextInputType.number,
+                            icon: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                SizedText(text: '+82'),
+                              ],
+                            ),
+                            controller: phoneNumberController,
+                          ),
+                          if (isOtpSent)
+                            BasicInput(
+                              hintText: "OTP",
+                              readOnly: isOtpCorrect,
+                              controller: otpController,
+                              onChanged: _enteringSmsCode,
+                              validator: Validator.validateOtp,
+                              keyboardType: TextInputType.number,
+                              suffixIcon: IconButton(
+                                onPressed: null,
+                                icon: Icon(
+                                  Ionicons.checkmark_done_sharp,
+                                  color: isOtpCorrect
+                                      ? Colors.blueAccent
+                                      : ThemeColors.transparent,
+                                ),
                               ),
                             ),
-                            onTap: _onSearchUniPress,
-                            readOnly: true,
-                          ),
-                        if (errorText.isNotEmpty)
-                          SizedText(
-                            text: errorText,
-                            textStyle: latoM16.copyWith(color: ThemeColors.red),
-                          ),
-                      ]),
-                      SizedBox(
-                        height: 50.h,
-                      )
-                    ],
+                          if (isOtpCorrect)
+                            GestureDetector(
+                              onTap: _onSearchUniPress,
+                              child: BasicInput(
+                                hintText: "University Name",
+                                textInputAction: TextInputAction.done,
+                                controller: uniNameController,
+                                validator: Validator.validateName,
+                                suffixIcon: IconButton(
+                                  onPressed: _onSearchUniPress,
+                                  icon: const Icon(
+                                    Ionicons.search,
+                                    color: ThemeColors.componentBgDark,
+                                  ),
+                                ),
+                                onTap: _onSearchUniPress,
+                                readOnly: true,
+                              ),
+                            ),
+                          if (errorText.isNotEmpty)
+                            SizedText(
+                              text: errorText,
+                              textStyle:
+                                  latoM16.copyWith(color: ThemeColors.red),
+                            ),
+                        ]),
+                        SizedBox(
+                          height: 50.h,
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -376,6 +412,9 @@ class _UniversitiesWidgetState extends State<UniversitiesWidget> {
                     textInputAction: TextInputAction.done,
                     controller: uniNameController,
                     validator: Validator.validateName,
+                    onFieldSubmitted: (p0) {
+                      func();
+                    },
                     suffixIcon: IconButton(
                       onPressed: () async {
                         showLoading();
@@ -395,7 +434,7 @@ class _UniversitiesWidgetState extends State<UniversitiesWidget> {
                       ),
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     height: 280.h,
                     child: SingleChildScrollView(
                       child: SpacedColumn(
@@ -427,5 +466,15 @@ class _UniversitiesWidgetState extends State<UniversitiesWidget> {
     }
 
     return list;
+  }
+
+  func() async {
+    List<UnivModelRes>? _univs = await appStore
+        .dispatch(GetSearchUniversityAction(name: uniNameController.text));
+    if (_univs != null) {
+      setState(() {
+        univs = _univs;
+      });
+    }
   }
 }
