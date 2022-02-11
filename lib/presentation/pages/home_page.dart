@@ -69,7 +69,9 @@ class _HomePageState extends State<HomePage> {
                     _item.likedUserIds!.contains(state.initState.userId)
                         ? Ionicons.heart_circle
                         : Ionicons.heart_circle_outline,
-                    color: ThemeColors.white,
+                    color: _item.likedUserIds!.contains(state.initState.userId)
+                        ? ThemeColors.red400
+                        : ThemeColors.white,
                     size: 15.h)
               ],
             ),
