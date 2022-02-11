@@ -135,41 +135,38 @@ class _EventsPageState extends State<EventsPage> {
       int index, AppState state) {
     final _item = _getPostModel(snapshots[index]);
     final _userId = state.apiState.userMe.userId;
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        PostItemBanner(
-            onTap: () {
-              _singleEventDetails(_item.postId, _item.userId);
-            },
-            leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
-                ? SizedText(
-                    text: 'YAY! \u200D🥳',
-                    textStyle: latoB14.copyWith(color: ThemeColors.white),
-                  )
-                : SizedText(
-                    text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
-                    textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
-            rightWidget: InkWell(
-              onTap: () {
-                _item.joinedUserIds!.contains(_userId)
-                    ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId)
-                    : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                        _item.joinLimit!, _userId);
-              },
-              child: SizedText(
-                text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+    return PostItemBanner(
+        onTap: () {
+          _singleEventDetails(_item.postId, _item.userId);
+        },
+        leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
+            ? SizedText(
+                text: 'YAY! \u200D🥳',
                 textStyle: latoB14.copyWith(color: ThemeColors.white),
-              ),
-            ),
+              )
+            : SizedText(
+                text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
+                textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
+        rightWidget: TextButton(
+          onPressed: () {
+            _item.joinedUserIds!.contains(_userId)
+                ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                    _item.joinLimit!, _userId)
+                : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                    _item.joinLimit!, _userId);
+          },
+          onLongPress: () {},
+          child: SizedText(
+            textAlign: TextAlign.center,
+            text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+            textStyle: latoB14.copyWith(color: ThemeColors.white),
+          ),
+        ),
+        imageUrl: _item.imageUrl,
+        desc: _item.description,
+        child: CachedImageOrTextImageWidget(
+            title: _item.title,
             imageUrl: _item.imageUrl,
-            desc: _item.description,
-            child: CachedImageOrTextImageWidget(
-                title: _item.title,
-                imageUrl: _item.imageUrl,
-                description: _item.description))
-      ],
-    );
+            description: _item.description));
   }
 }

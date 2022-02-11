@@ -13,8 +13,9 @@ class PostButton extends StatelessWidget {
         Expanded(
           child: Container(
               height: 25.h,
+              width: double.infinity,
               alignment: Alignment.center,
-              child: _buildChild(),
+              child: _buildChild(context),
               decoration: BoxDecoration(
                 color: ThemeColors.yellow.withOpacity(.4),
                 borderRadius: BorderRadius.only(
@@ -26,19 +27,26 @@ class PostButton extends StatelessWidget {
     );
   }
 
-  Widget _buildChild() {
+  Widget _buildChild(context) {
     if (rightChild != null) {
-      return Row(mainAxisAlignment: MainAxisAlignment.spaceEvenly, children: [
-        SizedBox(width: 60.w, child: leftChild),
-        Container(
-            height: 25.h,
-            width: 2.w,
-            decoration: BoxDecoration(
-              color: ThemeColors.bgDark,
-              borderRadius: BorderRadius.circular(10000),
-            )),
-        SizedBox(width: 50.w, child: rightChild!),
-      ]);
+      return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 2.w - 30,
+                child: leftChild),
+            Container(
+                height: 25.h,
+                width: 2.w,
+                decoration: BoxDecoration(
+                  color: ThemeColors.bgDark,
+                  borderRadius: BorderRadius.circular(10000),
+                )),
+            SizedBox(
+                width: MediaQuery.of(context).size.width / 2.w - 30,
+                child: rightChild!),
+          ]);
     } else {
       return leftChild;
     }

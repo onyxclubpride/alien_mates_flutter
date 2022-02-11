@@ -54,15 +54,23 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                if (!startLiking && likingpostid != _item.postId)
-                  SizedText(
-                    text: _item.likedUserIds!.length.toString(),
-                    textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
-                  )
-                else
-                  SpinKitSpinningLines(size: 15.h, color: Colors.white),
-                Icon(Ionicons.heart_circle,
-                    color: ThemeColors.white, size: 15.h)
+                // if (!startLiking && likingpostid != _item.postId)
+                //   SizedText(
+                //     text: _item.likedUserIds!.length.toString(),
+                //     textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
+                //   ),
+                // else
+                //   SpinKitSpinningLines(size: 35.h, color: Colors.white),
+                SizedText(
+                  text: _item.likedUserIds!.length.toString(),
+                  textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
+                ),
+                Icon(
+                    _item.likedUserIds!.contains(state.initState.userId)
+                        ? Ionicons.heart_circle
+                        : Ionicons.heart_circle_outline,
+                    color: ThemeColors.white,
+                    size: 15.h)
               ],
             ),
             child: CachedImageOrTextImageWidget(
@@ -71,14 +79,11 @@ class _HomePageState extends State<HomePage> {
             ? Visibility(
                 visible: isliking,
                 child: SizedBox(
-                  height: 100.w,
-                  width: 150.w,
-                  child: LottieBuilder.asset(
-                    !_item.likedUserIds!.contains(_userId)
-                        ? 'assets/lotties/haha_lottie.json'
-                        : 'assets/lotties/unlike_lottie.json',
-                  ),
-                ),
+                    height: 120.w,
+                    width: 150.w,
+                    child: !_item.likedUserIds!.contains(_userId)
+                        ? LottieBuilder.asset('assets/lotties/like_lottie.json')
+                        : null),
               )
             : Container()
       ],
@@ -111,7 +116,7 @@ class _HomePageState extends State<HomePage> {
       isliking = true;
       likingpostid = postId;
     });
-    await Future.delayed(const Duration(milliseconds: 1500));
+    await Future.delayed(const Duration(milliseconds: 1000));
     setState(() {
       isliking = false;
     });
@@ -125,14 +130,15 @@ class _HomePageState extends State<HomePage> {
           postId: postId,
           likedUserIds: _list));
     } else {
-      List _list = userIds;
-      _list.remove(userId);
-      await appStore.dispatch(GetUpdatePostAction(
-          islikeact: true,
-          showloading: false,
-          listPostModelRes: item,
-          postId: postId,
-          likedUserIds: _list));
+      // List _list = userIds;
+      // _list.remove(userId);
+      // await appStore.dispatch(GetUpdatePostAction(
+      //     islikeact: true,
+      //     showloading: false,
+      //     listPostModelRes: item,
+      //     postId: postId,
+      //     likedUserIds: _list));
+      return null;
     }
     setState(() {
       likingpostid = "";
