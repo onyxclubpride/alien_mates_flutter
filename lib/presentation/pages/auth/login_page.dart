@@ -83,6 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                                       color: ThemeColors.fontWhite),
                                 ),
                               ExpandedButton(
+                                width: MediaQuery.of(context).size.width - 65,
                                 text: 'LOGIN',
                                 onPressed: _onLoginPress,
                               )

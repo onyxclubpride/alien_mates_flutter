@@ -1,5 +1,6 @@
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -50,72 +51,96 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
             showAppBar: false,
             topPadding: 30,
             bottomPadding: 20,
-            child: SingleChildScrollView(
-              child: Form(
-                key: _formKeyForgotPasswordPage,
-                child: SpacedColumn(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  verticalSpace: 21,
-                  children: [
-                    SizedText(
-                        text: 'Reset Password',
-                        textStyle: latoB45.copyWith(color: Colors.white)),
-                    if (!isOtpSent) SizedBox(height: 20.h),
-                    SpacedColumn(verticalSpace: 25, children: [
-                      BasicInput(
-                        validator: Validator.validatePhoneNumber,
-                        hintText: "Phone Number",
-                        readOnly: isOtpCorrect,
-                        keyboardType: TextInputType.number,
-                        icon: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [SizedText(text: '+82')],
-                        ),
-                        controller: phoneNumberController,
-                      ),
-                      if (isPhoneNumberAvailable)
-                        if (isOtpSent)
-                          BasicInput(
-                            hintText: "OTP",
-                            readOnly: isOtpCorrect,
-                            controller: otpController,
-                            onChanged: _enteringSmsCode,
-                            validator: Validator.validateOtp,
-                            keyboardType: TextInputType.number,
-                            suffixIcon: IconButton(
-                              onPressed: null,
-                              icon: Icon(
-                                Ionicons.checkmark_done_sharp,
-                                color: isOtpCorrect
-                                    ? Colors.blueAccent
-                                    : ThemeColors.transparent,
-                              ),
-                            ),
-                          ),
-                      if (isOtpCorrect)
-                        BasicInput(
-                          hintText: "Password",
-                          controller: passController,
-                          validator: Validator.validatePassword,
-                          isObscured: true,
-                        ),
-                      if (isOtpCorrect)
-                        BasicInput(
-                          hintText: "Confirm Password",
-                          validator: Validator.validatePassword,
-                          isObscured: true,
-                          controller: confirmPassController,
-                        ),
-                      if (errorText.isNotEmpty)
+            child: SpacedColumn(children: [
+              Align(
+                alignment: Alignment.topLeft,
+                child: IconButton(
+                    onPressed: () {
+                      showBodyDialog(
+                        context,
+                        text: 'Are you sure?',
+                        onMainButtonText: 'Yes',
+                        onPress: () {
+                          appStore.dispatch(NavigateToAction(to: "up"));
+                        },
+                      );
+                    },
+                    icon: Icon(
+                      Ionicons.chevron_back_outline,
+                      color: Colors.white,
+                      size: 30.h,
+                    )),
+              ),
+              Center(
+                child: SingleChildScrollView(
+                  child: Form(
+                    key: _formKeyForgotPasswordPage,
+                    child: SpacedColumn(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        SizedBox(height: 20.h),
                         SizedText(
-                          text: errorText,
-                          textStyle: latoM16.copyWith(color: ThemeColors.red),
-                        ),
-                    ]),
-                  ],
+                            text: 'Reset Password',
+                            textStyle: latoB45.copyWith(color: Colors.white)),
+                        if (!isOtpSent) SizedBox(height: 20.h),
+                        SpacedColumn(verticalSpace: 25, children: [
+                          BasicInput(
+                            validator: Validator.validatePhoneNumber,
+                            hintText: "Phone Number",
+                            readOnly: isOtpCorrect,
+                            keyboardType: TextInputType.number,
+                            icon: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [SizedText(text: '+82')],
+                            ),
+                            controller: phoneNumberController,
+                          ),
+                          if (isPhoneNumberAvailable)
+                            if (isOtpSent)
+                              BasicInput(
+                                hintText: "OTP",
+                                readOnly: isOtpCorrect,
+                                controller: otpController,
+                                onChanged: _enteringSmsCode,
+                                validator: Validator.validateOtp,
+                                keyboardType: TextInputType.number,
+                                suffixIcon: IconButton(
+                                  onPressed: null,
+                                  icon: Icon(
+                                    Ionicons.checkmark_done_sharp,
+                                    color: isOtpCorrect
+                                        ? Colors.blueAccent
+                                        : ThemeColors.transparent,
+                                  ),
+                                ),
+                              ),
+                          if (isOtpCorrect)
+                            BasicInput(
+                              hintText: "Password",
+                              controller: passController,
+                              validator: Validator.validatePassword,
+                              isObscured: true,
+                            ),
+                          if (isOtpCorrect)
+                            BasicInput(
+                              hintText: "Confirm Password",
+                              validator: Validator.validatePassword,
+                              isObscured: true,
+                              controller: confirmPassController,
+                            ),
+                          if (errorText.isNotEmpty)
+                            SizedText(
+                              text: errorText,
+                              textStyle:
+                                  latoM16.copyWith(color: ThemeColors.red),
+                            ),
+                        ]),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-            ),
+            ]),
             footer: !isButtonDisable
                 ? ExpandedButton(
                     text:
