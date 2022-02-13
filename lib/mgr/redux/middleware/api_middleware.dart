@@ -805,23 +805,23 @@ _getBannerPostsAction(
       .where('isHelp', isEqualTo: true)
       .orderBy('createdDate', descending: true)
       .get();
-  final _helpDetail = _querySnapshot.docs.first;
-  ListPostModelRes helpRes = _getPostModel(_helpDetail);
-  posts.add(helpRes);
-  QuerySnapshot _querySnapshot1 = await postsCollection
-      .where('isEvent', isEqualTo: true)
-      .orderBy('createdDate', descending: true)
-      .get();
-  final _eventDetail = _querySnapshot1.docs.first;
-  ListPostModelRes eventRes = _getPostModel(_eventDetail);
-  posts.add(eventRes);
-  QuerySnapshot _querySnapshot2 = await postsCollection
-      .where('isNotice', isEqualTo: true)
-      .orderBy('createdDate', descending: true)
-      .get();
-  final _noticeDetail = _querySnapshot2.docs.first;
-  ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
-  posts.add(noticeRes);
+  // final _helpDetail = _querySnapshot.docs.first;
+  // ListPostModelRes helpRes = _getPostModel(_helpDetail);
+  // posts.add(helpRes);
+  // QuerySnapshot _querySnapshot1 = await postsCollection
+  //     .where('isEvent', isEqualTo: true)
+  //     .orderBy('createdDate', descending: true)
+  //     .get();
+  // final _eventDetail = _querySnapshot1.docs.first;
+  // ListPostModelRes eventRes = _getPostModel(_eventDetail);
+  // posts.add(eventRes);
+  // QuerySnapshot _querySnapshot2 = await postsCollection
+  //     .where('isNotice', isEqualTo: true)
+  //     .orderBy('createdDate', descending: true)
+  //     .get();
+  // final _noticeDetail = _querySnapshot2.docs.first;
+  // ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
+  // posts.add(noticeRes);
 
   next(UpdateApiStateAction(bannerPosts: posts));
 }
