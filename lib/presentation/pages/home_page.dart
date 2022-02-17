@@ -1,13 +1,11 @@
 import 'package:alien_mates/presentation/layout/post_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
-import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
 import 'package:alien_mates/mgr/redux/action.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
 
@@ -95,7 +93,7 @@ class _HomePageState extends State<HomePage> {
   ListPostModelRes _getPostModel(snapshot) {
     final _postDetail = snapshot;
     ListPostModelRes _postModelRes = ListPostModelRes(
-        createdDate: _postDetail['createdDate'],
+        createdDate: _postDetail['createdDate'].toString(),
         postId: _postDetail['postId'],
         isNotice: _postDetail['isNotice'],
         isPost: _postDetail['isPost'],

@@ -298,7 +298,7 @@ Future<bool> _getCreatePostAction(
       "likedUserIds": [],
       "joinedUserIds": null,
       "joinLimit": null,
-      "createdDate": currentDateAndTime
+      "createdDate": DateTime.now()
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
@@ -336,7 +336,7 @@ Future<bool> _getCreateNoticeAction(
       "likedUserIds": null,
       "joinedUserIds": null,
       "joinLimit": null,
-      "createdDate": currentDateAndTime
+      "createdDate": DateTime.now()
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
@@ -374,7 +374,7 @@ Future<bool> _getCreateEventAction(
       "likedUserIds": null,
       "joinedUserIds": [],
       "joinLimit": action.joinLimit ?? 0,
-      "createdDate": currentDateAndTime
+      "createdDate": DateTime.now()
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
@@ -412,7 +412,7 @@ Future<bool> _getCreateHelpAction(
       "likedUserIds": null,
       "joinedUserIds": null,
       "joinLimit": null,
-      "createdDate": currentDateAndTime
+      "createdDate": DateTime.now()
     });
     await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();

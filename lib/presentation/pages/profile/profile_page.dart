@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
   PostModelRes _getPostModel(snapshot) {
     final _postDetail = snapshot;
     PostModelRes _postModelRes = PostModelRes(
-        createdDate: _postDetail['createdDate'],
+        createdDate: _postDetail['createdDate'].toString(),
         postId: _postDetail['postId'],
         isNotice: _postDetail['isNotice'],
         isPost: _postDetail['isPost'],

@@ -122,7 +122,7 @@ class _ProfileLayoutState extends State<ProfileLayout> {
 
   _getQuery(AppState state) {
     return postsCollection
-        .orderBy('createdDate', descending: true)
+        .orderBy('createdDate', descending: false)
         .where("userId", isEqualTo: state.apiState.userMe.userId)
         .limit(10);
   }

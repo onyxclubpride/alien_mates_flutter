@@ -19,6 +19,7 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
     if (imageUrl != null) {
       if (gradientBottom) {
         return Container(
+          alignment: Alignment.center,
           foregroundDecoration: const BoxDecoration(
             gradient: LinearGradient(
               colors: [
@@ -33,6 +34,10 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
             ),
           ),
           child: CachedNetworkImage(
+            progressIndicatorBuilder: (context, url, progress) {
+              return SizedBox(
+                  width: 100.w, child: const LinearProgressIndicator());
+            },
             imageUrl: imageUrl!,
             fit: BoxFit.cover,
           ),
