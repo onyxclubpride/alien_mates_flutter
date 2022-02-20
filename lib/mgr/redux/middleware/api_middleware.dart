@@ -1016,12 +1016,12 @@ _getFeedbackPostAction(
     AppState state, GetFeedbackPostAction action, NextDispatcher next) async {
   try {
     showLoading();
-    logger("UDPDDD");
     await feedbackCollection.doc().set({
       "email": action.email,
       "userId": state.initState.userId,
       "name": state.apiState.userMe.name,
-      "feedback": action.feedback
+      "feedback": action.feedback,
+      "createdDate": DateTime.now(),
     });
     return true;
   } catch (e) {

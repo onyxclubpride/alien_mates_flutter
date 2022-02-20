@@ -1,14 +1,12 @@
 class Validator {
   static String? validatePassword(String? value) {
-    RegExp regex = RegExp(
-        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,13}$');
+    RegExp regex = RegExp(r'^(?=.*?[a-z,A-Z])(?=.*?[0-9]).{8,}$');
     if (value != null) {
       if (value.isEmpty) {
         return 'Password must not be empty';
       }
       if (!regex.hasMatch(value)) {
-        //Use a mix of letters, numbers, and symbols to create a stronger password
-        return "Password must be 8-13 letters with (a-z),(A-Z),(1-9),(!@#&).";
+        return "Password must be more than 8 characters and contain number and letter!";
       }
     } else {
       return null;

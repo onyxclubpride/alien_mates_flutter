@@ -42,128 +42,133 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   @override
   Widget build(BuildContext context) {
-    return StoreConnector<AppState, AppState>(
-        converter: (store) => store.state,
-        builder: (context, state) {
-          return DefaultBody(
-            withNavigationBar: false,
-            withTopBanner: false,
-            showAppBar: false,
-            topPadding: 30,
-            bottomPadding: 20,
-            child: SpacedColumn(children: [
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                    onPressed: () {
-                      showBodyDialog(
-                        context,
-                        text: 'Are you sure?',
-                        onMainButtonText: 'Yes',
-                        onPress: () {
-                          appStore.dispatch(NavigateToAction(to: "up"));
-                        },
-                      );
-                    },
-                    icon: Icon(
-                      Ionicons.chevron_back_outline,
-                      color: Colors.white,
-                      size: 30.h,
-                    )),
-              ),
-              Center(
-                child: SingleChildScrollView(
-                  child: Form(
-                    key: _formKeyForgotPasswordPage,
-                    child: SpacedColumn(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        SizedBox(height: 20.h),
-                        SizedText(
-                            text: 'Reset Password',
-                            textStyle: latoB45.copyWith(color: Colors.white)),
-                        if (!isOtpSent) SizedBox(height: 20.h),
-                        SpacedColumn(verticalSpace: 25, children: [
-                          BasicInput(
-                            validator: Validator.validatePhoneNumber,
-                            hintText: "Phone Number",
-                            readOnly: isOtpCorrect,
-                            keyboardType: TextInputType.number,
-                            icon: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [SizedText(text: '+82')],
-                            ),
-                            controller: phoneNumberController,
+    return WillPopScope(
+      onWillPop: () async {
+        return await showBodyDialog(
+          context,
+          text: 'Do you want to go back?',
+          onMainButtonText: 'Yes',
+          onPress: () async {
+            appStore.dispatch(NavigateToAction(to: "up"));
+          },
+        );
+      },
+      child: StoreConnector<AppState, AppState>(
+          converter: (store) => store.state,
+          builder: (context, state) {
+            return DefaultBody(
+              withNavigationBar: false,
+              withTopBanner: false,
+              showAppBar: false,
+              topPadding: 30,
+              leftButton: IconButton(
+                  onPressed: () {
+                    showBodyDialog(
+                      context,
+                      text: 'Do you want to go back?',
+                      onMainButtonText: 'Yes',
+                      onPress: () {
+                        appStore.dispatch(NavigateToAction(to: "up"));
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Ionicons.chevron_back_outline,
+                    color: Colors.white,
+                    size: 30.h,
+                  )),
+              bottomPadding: 20,
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKeyForgotPasswordPage,
+                  child: SpacedColumn(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(height: 20.h),
+                      SizedText(
+                          text: 'Reset Password',
+                          textStyle: latoB45.copyWith(color: Colors.white)),
+                      SizedBox(height: 20.h),
+                      SpacedColumn(verticalSpace: 25, children: [
+                        BasicInput(
+                          validator: Validator.validatePhoneNumber,
+                          hintText: "Phone Number",
+                          readOnly: isOtpCorrect,
+                          keyboardType: TextInputType.number,
+                          icon: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [SizedText(text: '+82')],
                           ),
-                          if (isPhoneNumberAvailable)
-                            if (isOtpSent)
-                              BasicInput(
-                                hintText: "OTP",
-                                readOnly: isOtpCorrect,
-                                controller: otpController,
-                                onChanged: _enteringSmsCode,
-                                validator: Validator.validateOtp,
-                                keyboardType: TextInputType.number,
-                                suffixIcon: IconButton(
-                                  onPressed: null,
-                                  icon: Icon(
-                                    Ionicons.checkmark_done_sharp,
-                                    color: isOtpCorrect
-                                        ? Colors.blueAccent
-                                        : ThemeColors.transparent,
-                                  ),
+                          controller: phoneNumberController,
+                        ),
+                        if (isPhoneNumberAvailable)
+                          if (isOtpSent)
+                            BasicInput(
+                              hintText: "OTP",
+                              readOnly: isOtpCorrect,
+                              controller: otpController,
+                              onChanged: _enteringSmsCode,
+                              validator: Validator.validateOtp,
+                              keyboardType: TextInputType.number,
+                              suffixIcon: IconButton(
+                                onPressed: null,
+                                icon: Icon(
+                                  Ionicons.checkmark_done_sharp,
+                                  color: isOtpCorrect
+                                      ? Colors.blueAccent
+                                      : ThemeColors.transparent,
                                 ),
                               ),
-                          if (isOtpCorrect)
-                            BasicInput(
-                              hintText: "Password",
-                              controller: passController,
-                              validator: Validator.validatePassword,
-                              isObscured: true,
                             ),
-                          if (isOtpCorrect)
-                            BasicInput(
-                              hintText: "Confirm Password",
-                              validator: Validator.validatePassword,
-                              isObscured: true,
-                              controller: confirmPassController,
-                            ),
-                          if (errorText.isNotEmpty)
-                            SizedText(
-                              text: errorText,
-                              textStyle:
-                                  latoM16.copyWith(color: ThemeColors.red),
-                            ),
-                        ]),
-                      ],
-                    ),
+                        if (isOtpCorrect)
+                          BasicInput(
+                            hintText: "Password",
+                            controller: passController,
+                            validator: Validator.validatePassword,
+                            isObscured: true,
+                          ),
+                        if (isOtpCorrect)
+                          BasicInput(
+                            hintText: "Confirm Password",
+                            validator: Validator.validatePassword,
+                            isObscured: true,
+                            controller: confirmPassController,
+                          ),
+                        if (errorText.isNotEmpty)
+                          SizedText(
+                            text: errorText,
+                            textStyle: latoM16.copyWith(color: ThemeColors.red),
+                          ),
+                      ]),
+                    ],
                   ),
                 ),
               ),
-            ]),
-            footer: !isButtonDisable
-                ? ExpandedButton(
-                    text:
-                        isPhoneNumberAvailable ? 'Change Password' : "Send OTP",
-                    onPressed: () {
-                      if (!isPhoneNumberAvailable) {
-                        _checkPhoneNumberPress(state);
-                      } else if (isOtpSent) {
-                        // update backend
-                        setState(() {
-                          isButtonDisable = false;
-                        });
-                        _onChangePasswordPress();
-                      } else {
-                        setState(() {
-                          isButtonDisable = false;
-                        });
-                      }
-                    },
-                  )
-                : null,
-          );
-        });
+              footer: !isButtonDisable
+                  ? ExpandedButton(
+                      text: isPhoneNumberAvailable
+                          ? 'Change Password'
+                          : "Send OTP",
+                      onPressed: () {
+                        if (!isPhoneNumberAvailable) {
+                          _checkPhoneNumberPress(state);
+                        } else if (isOtpSent) {
+                          // update backend
+                          setState(() {
+                            isButtonDisable = false;
+                          });
+                          _onChangePasswordPress();
+                        } else {
+                          setState(() {
+                            isButtonDisable = false;
+                          });
+                        }
+                      },
+                    )
+                  : null,
+            );
+          }),
+    );
   }
 
   _enteringSmsCode(value) async {
