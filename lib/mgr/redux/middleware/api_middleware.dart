@@ -564,7 +564,7 @@ Future<PostModelRes?> _getPostByIdAction(
     if (action.showloading) showLoading();
     final _postDetail = await postsCollection.doc(action.postId).get();
     PostModelRes _postModelRes = PostModelRes(
-        createdDate: _postDetail['createdDate'],
+        createdDate: _postDetail['createdDate'].toString(),
         postId: _postDetail['postId'],
         isNotice: _postDetail['isNotice'],
         isPost: _postDetail['isPost'],

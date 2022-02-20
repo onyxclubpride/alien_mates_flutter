@@ -1,5 +1,6 @@
 import 'package:alien_mates/presentation/layout/post_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -33,6 +34,7 @@ class _HomePageState extends State<HomePage> {
       int index, AppState state) {
     final _item = _getPostModel(snapshots[index]);
     final _userId = state.apiState.userMe.userId;
+    final _user = state.apiState.userMe;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -45,6 +47,18 @@ class _HomePageState extends State<HomePage> {
                     }
                   }
                 : null,
+            onTap: _user.isAdmin
+                ? () {
+                    showBodyDialog(
+                      context,
+                      text: 'Do you want to delete?',
+                      onMainButtonText: 'Yes',
+                      onPress: () {
+                        appStore.dispatch(GetDeletePostAction(_item.postId));
+                      },
+                    );
+                  }
+                : null,
             imageUrl: _item.imageUrl,
             desc: _item.description,
             leftWidget: SpacedRow(
@@ -52,25 +66,22 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                // if (!startLiking && likingpostid != _item.postId)
-                //   SizedText(
-                //     text: _item.likedUserIds!.length.toString(),
-                //     textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
-                //   ),
-                // else
-                //   SpinKitSpinningLines(size: 35.h, color: Colors.white),
                 SizedText(
                   text: _item.likedUserIds!.length.toString(),
                   textStyle: latoM14.copyWith(color: ThemeColors.fontWhite),
                 ),
-                Icon(
-                    _item.likedUserIds!.contains(state.initState.userId)
-                        ? Ionicons.heart_circle
-                        : Ionicons.heart_circle_outline,
-                    color: _item.likedUserIds!.contains(state.initState.userId)
-                        ? ThemeColors.red400
-                        : ThemeColors.white,
-                    size: 15.h)
+                if (_user.isAdmin)
+                  Icon(Ionicons.trash, color: ThemeColors.white, size: 15.h)
+                else
+                  Icon(
+                      _item.likedUserIds!.contains(state.initState.userId)
+                          ? Ionicons.heart_circle
+                          : Ionicons.heart_circle_outline,
+                      color:
+                          _item.likedUserIds!.contains(state.initState.userId)
+                              ? ThemeColors.red400
+                              : ThemeColors.white,
+                      size: 15.h)
               ],
             ),
             child: CachedImageOrTextImageWidget(

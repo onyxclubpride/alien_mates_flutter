@@ -71,6 +71,7 @@ class _CreateHelpPageState extends State<CreateHelpPage> {
                               controller: titleController,
                               validator: Validator.validateTitle,
                             ),
+                            SizedBox(height: 10.h),
                             InputLabel(label: 'Description'),
                             PostCreateInput(
                               hintText: 'Add description about support!',

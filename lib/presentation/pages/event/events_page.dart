@@ -2,6 +2,7 @@ import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/layout/post_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
 import 'package:alien_mates/presentation/widgets/show_alert_dialog.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -40,51 +41,6 @@ class _EventsPageState extends State<EventsPage> {
             buildWidget: _buildWigdet, postType: PostTypeEnum.EVENT));
   }
 
-  // Widget _buildPostsWidgetList(AppState state) {
-  //   List<Widget> _list = [];
-  //   List<ListPostModelRes> postsList = state.apiState.posts;
-  //   String _userId = state.apiState.userMe.userId;
-  //
-  //   for (int i = 0; i < postsList.length; i++) {
-  //     ListPostModelRes _item = postsList[i];
-  //     if (_item.isEvent) {
-  //       _list.add(PostItemBanner(
-  //           onTap: () {
-  //             _singleEventDetails(_item.postId, _item.userId);
-  //           },
-  //           leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
-  //               ? SizedText(
-  //                   text: 'YAY! \u200D🥳',
-  //                   textStyle: latoB14.copyWith(color: ThemeColors.white),
-  //                 )
-  //               : SizedText(
-  //                   text: '${_item.joinedUserIds!.length}/${_item.joinLimit!}',
-  //                   textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
-  //           rightWidget: InkWell(
-  //             onTap: () {
-  //               _item.joinedUserIds!.contains(_userId)
-  //                   ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-  //                       _item.joinLimit!, _userId)
-  //                   : _onJoinTap(_item.postId, _item.joinedUserIds!,
-  //                       _item.joinLimit!, _userId);
-  //             },
-  //             child: SizedText(
-  //               text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
-  //               textStyle: latoB14.copyWith(color: ThemeColors.white),
-  //             ),
-  //           ),
-  //           imageUrl: _item.imageUrl,
-  //           desc: _item.description,
-  //           child: CachedImageOrTextImageWidget(
-  //               title: _item.title,
-  //               imageUrl: _item.imageUrl,
-  //               description: _item.description)));
-  //       _list.add(SizedBox(height: 20.h));
-  //     }
-  //   }
-  //   return Column(children: _list);
-  // }
-
   _singleEventDetails(eventId, userId) async {
     await appStore.dispatch(GetUserByIdAction(userId));
     await appStore.dispatch(GetPostByIdAction(eventId));
@@ -114,7 +70,7 @@ class _EventsPageState extends State<EventsPage> {
   PostModelRes _getPostModel(snapshot) {
     final _postDetail = snapshot;
     PostModelRes _postModelRes = PostModelRes(
-        createdDate: _postDetail['createdDate'],
+        createdDate: _postDetail['createdDate'].toString(),
         postId: _postDetail['postId'],
         isNotice: _postDetail['isNotice'],
         isPost: _postDetail['isPost'],
@@ -135,6 +91,7 @@ class _EventsPageState extends State<EventsPage> {
       int index, AppState state) {
     final _item = _getPostModel(snapshots[index]);
     final _userId = state.apiState.userMe.userId;
+    final _user = state.apiState.userMe;
     return PostItemBanner(
         onTap: () {
           _singleEventDetails(_item.postId, _item.userId);
@@ -149,16 +106,31 @@ class _EventsPageState extends State<EventsPage> {
                 textStyle: latoB14.copyWith(color: ThemeColors.fontWhite)),
         rightWidget: TextButton(
           onPressed: () {
-            _item.joinedUserIds!.contains(_userId)
-                ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
-                    _item.joinLimit!, _userId)
-                : _onJoinTap(_item.postId, _item.joinedUserIds!,
-                    _item.joinLimit!, _userId);
+            if (_user.isAdmin) {
+              showBodyDialog(
+                context,
+                text: 'Do you want to delete?',
+                onMainButtonText: 'Yes',
+                onPress: () {
+                  appStore.dispatch(GetDeletePostAction(_item.postId));
+                },
+              );
+            } else {
+              _item.joinedUserIds!.contains(_userId)
+                  ? _onUnJoinTap(_item.postId, _item.joinedUserIds!,
+                      _item.joinLimit!, _userId)
+                  : _onJoinTap(_item.postId, _item.joinedUserIds!,
+                      _item.joinLimit!, _userId);
+            }
           },
           onLongPress: () {},
           child: SizedText(
             textAlign: TextAlign.center,
-            text: _item.joinedUserIds!.contains(_userId) ? "UNDO" : 'JOIN',
+            text: _user.isAdmin
+                ? "DELETE"
+                : _item.joinedUserIds!.contains(_userId)
+                    ? "UNDO"
+                    : 'JOIN',
             textStyle: latoB14.copyWith(color: ThemeColors.white),
           ),
         ),

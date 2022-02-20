@@ -1,6 +1,7 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/layout/post_layout.dart';
 import 'package:alien_mates/presentation/widgets/cached_image_or_text_widget.dart';
+import 'package:alien_mates/presentation/widgets/show_body_dialog.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:alien_mates/mgr/models/model_exporter.dart';
@@ -58,7 +59,7 @@ class _HelpPageState extends State<HelpPage> {
   PostModelRes _getPostModel(snapshot) {
     final _postDetail = snapshot;
     PostModelRes _postModelRes = PostModelRes(
-        createdDate: _postDetail['createdDate'],
+        createdDate: _postDetail['createdDate'].toString(),
         postId: _postDetail['postId'],
         isNotice: _postDetail['isNotice'],
         isPost: _postDetail['isPost'],
@@ -78,7 +79,7 @@ class _HelpPageState extends State<HelpPage> {
   Widget _buildWigdet(BuildContext ctx, List<DocumentSnapshot> snapshots,
       int index, AppState state) {
     final _item = _getPostModel(snapshots[index]);
-    final _userId = state.apiState.userMe.userId;
+    final _user = state.apiState.userMe;
     return Stack(
       alignment: Alignment.center,
       children: [
@@ -88,6 +89,29 @@ class _HelpPageState extends State<HelpPage> {
             desc: _item.description,
             height: 160.h,
             bgColor: ThemeColors.bgDark,
+            leftWidget: _user.isAdmin
+                ? TextButton(
+                    onPressed: () {
+                      if (_user.isAdmin) {
+                        showBodyDialog(
+                          context,
+                          text: 'Do you want to delete?',
+                          onMainButtonText: 'Yes',
+                          onPress: () {
+                            appStore
+                                .dispatch(GetDeletePostAction(_item.postId));
+                          },
+                        );
+                      }
+                    },
+                    onLongPress: () {},
+                    child: SizedText(
+                      textAlign: TextAlign.center,
+                      text: "DELETE",
+                      textStyle: latoB14.copyWith(color: ThemeColors.white),
+                    ),
+                  )
+                : null,
             child: GestureDetector(
               onTap: () {
                 _singlePostDetail(_item.postId);

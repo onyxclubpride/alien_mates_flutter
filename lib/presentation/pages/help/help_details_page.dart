@@ -1,3 +1,4 @@
+import 'package:alien_mates/utils/common/log_tester.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
@@ -15,6 +16,7 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
     return StoreConnector<AppState, AppState>(
         converter: (store) => store.state,
         builder: (context, state) {
+          logger(state.apiState.postDetail.imageUrl);
           return DefaultBody(
             withTopBanner: false,
             withNavigationBar: false,
