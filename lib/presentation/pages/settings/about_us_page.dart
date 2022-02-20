@@ -21,21 +21,23 @@ class AboutUsPage extends StatelessWidget {
               textStyle: latoM20,
             ),
             rightIcon: null,
-            child: SpacedColumn(
-              verticalSpace: 20,
-              children: [
-                const SizedBox(),
-                SizedText(
-                  text: 'About Us',
-                  textStyle: latoB25.copyWith(color: ThemeColors.coolgray50),
-                ),
-                SizedText(
-                  text: state.apiState.aboutUs,
-                  textStyle: latoM16.copyWith(color: ThemeColors.coolgray50),
-                  textAlign: TextAlign.justify,
-                  overflow: TextOverflow.visible,
-                ),
-              ],
+            child: SingleChildScrollView(
+              child: SpacedColumn(
+                verticalSpace: 20,
+                children: [
+                  const SizedBox(),
+                  SizedText(
+                    text: 'About Us',
+                    textStyle: latoB25.copyWith(color: ThemeColors.coolgray50),
+                  ),
+                  SizedText(
+                    text: state.apiState.aboutUs,
+                    textStyle: latoB20.copyWith(color: ThemeColors.coolgray50),
+                    textAlign: TextAlign.justify,
+                    overflow: TextOverflow.visible,
+                  ),
+                ],
+              ),
             )));
   }
 

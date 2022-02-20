@@ -76,10 +76,13 @@ class _CreateNoticePageState extends State<CreateNoticePage> {
                               controller: titleController,
                               validator: Validator.validateText,
                             ),
+                            SizedBox(height: 20.h),
                             InputLabel(label: 'Description'),
                             PostCreateInput(
                               hintText: 'Add description about notice!',
                               maxlines: 10,
+                              keyboardType: TextInputType.multiline,
+                              textInputAction: TextInputAction.newline,
                               validator: Validator.validateDescription,
                               controller: descriptionController,
                             ),

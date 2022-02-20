@@ -12,7 +12,7 @@ class CachedImageOrTextImageWidget extends StatelessWidget {
       this.title,
       this.imageUrl,
       this.maxLines = 5,
-      this.gradientBottom = true});
+      this.gradientBottom = false});
 
   @override
   Widget build(BuildContext context) {

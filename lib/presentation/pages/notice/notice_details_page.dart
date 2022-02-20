@@ -21,38 +21,35 @@ class NoticeDetailsPage extends StatelessWidget {
             titleText: SizedText(text: 'Back', textStyle: latoM20),
             child: SingleChildScrollView(
               padding: EdgeInsets.only(bottom: 50.h),
-              child: Column(mainAxisSize: MainAxisSize.min, children: [
-                SpacedColumn(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  verticalSpace: 21,
-                  children: [
-                    if (state.apiState.postDetail.imageUrl != null)
-                      PostItemBanner(
-                          height: 200.h,
-                          child: CachedNetworkImage(
-                            imageUrl: state.apiState.postDetail.imageUrl!,
-                            fit: BoxFit.cover,
-                          )),
-                    SpacedColumn(verticalSpace: 25, children: [
-                      Column(
-                        children: [
-                          SizedBox(height: 20.h),
-                          SizedText(
-                              text: state.apiState.postDetail.title,
-                              textStyle: latoB25.copyWith(color: Colors.white)),
-                          SizedBox(height: 20.h),
-                          SizedText(
-                            text: state.apiState.postDetail.description,
-                            textStyle: latoR16.copyWith(color: Colors.white),
-                            textAlign: TextAlign.left,
-                          ),
-                          SizedBox(height: 20.h),
-                        ],
+              child: SpacedColumn(
+                verticalSpace: 21,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (state.apiState.postDetail.imageUrl != null)
+                    PostItemBanner(
+                        height: 200.h,
+                        child: CachedNetworkImage(
+                          imageUrl: state.apiState.postDetail.imageUrl!,
+                          fit: BoxFit.cover,
+                        )),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 20.h),
+                      SizedText(
+                          text: state.apiState.postDetail.title,
+                          textStyle: latoB25.copyWith(color: Colors.white)),
+                      SizedBox(height: 20.h),
+                      SizedText(
+                        text: state.apiState.postDetail.description,
+                        textStyle: latoR16.copyWith(color: Colors.white),
+                        textAlign: TextAlign.left,
                       ),
-                    ]),
-                  ],
-                ),
-              ]),
+                      SizedBox(height: 20.h),
+                    ],
+                  ),
+                ],
+              ),
             ),
           );
         });

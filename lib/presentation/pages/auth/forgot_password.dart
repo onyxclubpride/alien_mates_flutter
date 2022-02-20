@@ -103,22 +103,34 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                         ),
                         if (isPhoneNumberAvailable)
                           if (isOtpSent)
-                            BasicInput(
-                              hintText: "OTP",
-                              readOnly: isOtpCorrect,
-                              controller: otpController,
-                              onChanged: _enteringSmsCode,
-                              validator: Validator.validateOtp,
-                              keyboardType: TextInputType.number,
-                              suffixIcon: IconButton(
-                                onPressed: null,
-                                icon: Icon(
-                                  Ionicons.checkmark_done_sharp,
-                                  color: isOtpCorrect
-                                      ? Colors.blueAccent
-                                      : ThemeColors.transparent,
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                BasicInput(
+                                  hintText: "OTP",
+                                  readOnly: isOtpCorrect,
+                                  controller: otpController,
+                                  onChanged: _enteringSmsCode,
+                                  validator: Validator.validateOtp,
+                                  keyboardType: TextInputType.number,
+                                  suffixIcon: IconButton(
+                                    onPressed: null,
+                                    icon: Icon(
+                                      Ionicons.checkmark_done_sharp,
+                                      color: isOtpCorrect
+                                          ? Colors.blueAccent
+                                          : ThemeColors.transparent,
+                                    ),
+                                  ),
                                 ),
-                              ),
+                                SizedText(
+                                  text:
+                                      'Validation is automatic, after entering 6 digits.\nPlease wait!',
+                                  textAlign: TextAlign.left,
+                                  textStyle: latoM16.copyWith(
+                                      color: ThemeColors.white),
+                                ),
+                              ],
                             ),
                         if (isOtpCorrect)
                           BasicInput(

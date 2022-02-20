@@ -166,13 +166,12 @@ class _PostLayoutState extends State<PostLayout> with TickerProviderStateMixin {
       case 0:
         await appStore.dispatch(GetPostByIdAction(
             appStore.state.apiState.bannerPosts[index].postId));
-        appStore.dispatch(NavigateToAction(to: AppRoutes.helpDetailsPageRoute));
+        appStore.dispatch(NavigateToAction(to: AppRoutes.noticeDetailsRoute));
         break;
       case 1:
         await appStore.dispatch(GetPostByIdAction(
             appStore.state.apiState.bannerPosts[index].postId));
-        appStore
-            .dispatch(NavigateToAction(to: AppRoutes.eventDetailsPageRoute));
+        appStore.dispatch(NavigateToAction(to: AppRoutes.noticeDetailsRoute));
         break;
       case 2:
         await appStore.dispatch(GetPostByIdAction(

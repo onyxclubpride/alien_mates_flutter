@@ -58,15 +58,15 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
                 ),
               ]),
             ),
-            footer: Container(
-              margin: EdgeInsets.only(bottom: 25.h),
-              child: ExpandedButton(
-                text: 'OKAY',
-                onPressed: () {
-                  appStore.dispatch(NavigateToAction(to: 'up'));
-                },
-              ),
-            ),
+            // footer: Container(
+            //   margin: EdgeInsets.only(bottom: 25.h),
+            //   child: ExpandedButton(
+            //     text: 'OKAY',
+            //     onPressed: () {
+            //       appStore.dispatch(NavigateToAction(to: 'up'));
+            //     },
+            //   ),
+            // ),
           );
         });
   }

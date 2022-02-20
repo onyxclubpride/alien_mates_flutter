@@ -98,7 +98,7 @@ class _EventsPageState extends State<EventsPage> {
         },
         leftWidget: _item.joinedUserIds!.length == _item.joinLimit!
             ? SizedText(
-                text: 'YAY! \u200D🥳',
+                text: 'YAY!',
                 textStyle: latoB14.copyWith(color: ThemeColors.white),
               )
             : SizedText(

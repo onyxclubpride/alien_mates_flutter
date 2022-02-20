@@ -802,33 +802,33 @@ _getBannerPostsAction(
     AppState state, GetBannerPostsAction action, NextDispatcher next) async {
   List<ListPostModelRes> posts = [];
   QuerySnapshot _querySnapshot = await postsCollection
-      .where('isHelp', isEqualTo: true)
+      .where('isNotice', isEqualTo: true)
       .orderBy('createdDate', descending: true)
       .get();
-  // final _helpDetail = _querySnapshot.docs.first;
-  // ListPostModelRes helpRes = _getPostModel(_helpDetail);
-  // posts.add(helpRes);
-  // QuerySnapshot _querySnapshot1 = await postsCollection
-  //     .where('isEvent', isEqualTo: true)
-  //     .orderBy('createdDate', descending: true)
-  //     .get();
-  // final _eventDetail = _querySnapshot1.docs.first;
-  // ListPostModelRes eventRes = _getPostModel(_eventDetail);
-  // posts.add(eventRes);
-  // QuerySnapshot _querySnapshot2 = await postsCollection
-  //     .where('isNotice', isEqualTo: true)
-  //     .orderBy('createdDate', descending: true)
-  //     .get();
-  // final _noticeDetail = _querySnapshot2.docs.first;
-  // ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
-  // posts.add(noticeRes);
+  final _helpDetail = _querySnapshot.docs.first;
+  ListPostModelRes helpRes = _getPostModel(_helpDetail);
+  posts.add(helpRes);
+  QuerySnapshot _querySnapshot1 = await postsCollection
+      .where('isNotice', isEqualTo: true)
+      .orderBy('createdDate', descending: true)
+      .get();
+  final _eventDetail = _querySnapshot1.docs[1];
+  ListPostModelRes eventRes = _getPostModel(_eventDetail);
+  posts.add(eventRes);
+  QuerySnapshot _querySnapshot2 = await postsCollection
+      .where('isNotice', isEqualTo: true)
+      .orderBy('createdDate', descending: true)
+      .get();
+  final _noticeDetail = _querySnapshot2.docs[2];
+  ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
+  posts.add(noticeRes);
 
   next(UpdateApiStateAction(bannerPosts: posts));
 }
 
 ListPostModelRes _getPostModel(_postDetail) {
   ListPostModelRes _postModelRes = ListPostModelRes(
-      createdDate: _postDetail['createdDate'],
+      createdDate: _postDetail['createdDate'].toString(),
       postId: _postDetail['postId'],
       isNotice: _postDetail['isNotice'],
       isPost: _postDetail['isPost'],

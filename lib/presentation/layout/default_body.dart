@@ -106,7 +106,11 @@ class _DefaultBodyState extends State<DefaultBody> {
                       onRightButtonClick: widget.onRightButtonClick,
                       rightIcon: widget.rightIcon,
                     )
-                  : null,
+                  : widget.leftButton != null
+                      ? DefaultHeader(
+                          leftButton: widget.leftButton,
+                          titleText: const SizedText(text: ''))
+                      : null,
               bottomSheet: widget.footer != null
                   ? showFab
                       ? Padding(

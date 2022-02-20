@@ -100,6 +100,22 @@ class _SignUpPageState extends State<SignUpPage> {
               showAppBar: false,
               topPadding: 30,
               bottomPadding: 20,
+              leftButton: IconButton(
+                  onPressed: () {
+                    showBodyDialog(
+                      context,
+                      text: 'Are you sure?',
+                      onMainButtonText: 'Yes',
+                      onPress: () {
+                        appStore.dispatch(NavigateToAction(to: "up"));
+                      },
+                    );
+                  },
+                  icon: Icon(
+                    Ionicons.chevron_back_outline,
+                    color: Colors.white,
+                    size: 30.h,
+                  )),
               footer: ExpandedButton(
                 text: isOtpSent ? 'Sign Up' : buttonText,
                 onPressed: () {
@@ -110,82 +126,64 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 },
               ),
-              child: SpacedColumn(children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: IconButton(
-                      onPressed: () {
-                        showBodyDialog(
-                          context,
-                          text: 'Are you sure?',
-                          onMainButtonText: 'Yes',
-                          onPress: () {
-                            appStore.dispatch(NavigateToAction(to: "up"));
-                          },
-                        );
-                      },
-                      icon: Icon(
-                        Ionicons.chevron_back_outline,
-                        color: Colors.white,
-                        size: 30.h,
-                      )),
-                ),
-                Center(
-                  child: SingleChildScrollView(
-                    child: Form(
-                      key: _formKeySignUpPage,
-                      child: SpacedColumn(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        verticalSpace: 21,
-                        children: [
-                          SizedText(
-                              text: 'Sign Up',
-                              textStyle: latoB45.copyWith(color: Colors.white)),
-                          if (!isOtpSent) SizedBox(height: 20.h),
-                          SpacedColumn(verticalSpace: 25, children: [
-                            BasicInput(
-                              validator: Validator.validateName,
-                              hintText: "Name",
-                              controller: nameController,
-                            ),
-                            BasicInput(
-                              hintText: "Password",
-                              controller: passController,
-                              validator: Validator.validatePassword,
-                              isObscured: _obscurePass,
-                              suffixIcon: IconButton(
-                                icon: _obscurePass
-                                    ? const Icon(Ionicons.eye)
-                                    : const Icon(Ionicons.eye_off_outline),
-                                onPressed: _togglePass,
-                              ),
-                            ),
-                            BasicInput(
-                              hintText: "Confirm Password",
-                              controller: confirmPassController,
-                              isObscured: _obscureConfirmPass,
-                              suffixIcon: IconButton(
-                                icon: _obscureConfirmPass
-                                    ? const Icon(Ionicons.eye)
-                                    : const Icon(Ionicons.eye_off_outline),
-                                onPressed: _toggleConfirmPass,
-                              ),
-                            ),
-                            BasicInput(
-                              validator: Validator.validatePhoneNumber,
-                              hintText: "Phone Number",
-                              textInputAction: TextInputAction.done,
-                              readOnly: isOtpCorrect,
-                              keyboardType: TextInputType.number,
-                              icon: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  SizedText(text: '+82'),
-                                ],
-                              ),
-                              controller: phoneNumberController,
-                            ),
-                            if (isOtpSent)
+              child: SingleChildScrollView(
+                child: Form(
+                  key: _formKeySignUpPage,
+                  child: SpacedColumn(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    verticalSpace: 21,
+                    children: [
+                      SizedText(
+                          text: 'Sign Up',
+                          textStyle: latoB45.copyWith(color: Colors.white)),
+                      if (!isOtpSent) SizedBox(height: 20.h),
+                      SpacedColumn(verticalSpace: 25, children: [
+                        BasicInput(
+                          validator: Validator.validateName,
+                          hintText: "Name",
+                          controller: nameController,
+                        ),
+                        BasicInput(
+                          hintText: "Password",
+                          controller: passController,
+                          validator: Validator.validatePassword,
+                          isObscured: _obscurePass,
+                          suffixIcon: IconButton(
+                            icon: _obscurePass
+                                ? const Icon(Ionicons.eye)
+                                : const Icon(Ionicons.eye_off_outline),
+                            onPressed: _togglePass,
+                          ),
+                        ),
+                        BasicInput(
+                          hintText: "Confirm Password",
+                          controller: confirmPassController,
+                          isObscured: _obscureConfirmPass,
+                          suffixIcon: IconButton(
+                            icon: _obscureConfirmPass
+                                ? const Icon(Ionicons.eye)
+                                : const Icon(Ionicons.eye_off_outline),
+                            onPressed: _toggleConfirmPass,
+                          ),
+                        ),
+                        BasicInput(
+                          validator: Validator.validatePhoneNumber,
+                          hintText: "Phone Number",
+                          textInputAction: TextInputAction.done,
+                          readOnly: isOtpCorrect,
+                          keyboardType: TextInputType.number,
+                          icon: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              SizedText(text: '+82'),
+                            ],
+                          ),
+                          controller: phoneNumberController,
+                        ),
+                        if (isOtpSent)
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
                               BasicInput(
                                 hintText: "OTP",
                                 readOnly: isOtpCorrect,
@@ -203,41 +201,47 @@ class _SignUpPageState extends State<SignUpPage> {
                                   ),
                                 ),
                               ),
-                            if (isOtpCorrect)
-                              GestureDetector(
-                                onTap: _onSearchUniPress,
-                                child: BasicInput(
-                                  hintText: "University Name",
-                                  textInputAction: TextInputAction.done,
-                                  controller: uniNameController,
-                                  validator: Validator.validateName,
-                                  suffixIcon: IconButton(
-                                    onPressed: _onSearchUniPress,
-                                    icon: const Icon(
-                                      Ionicons.search,
-                                      color: ThemeColors.componentBgDark,
-                                    ),
-                                  ),
-                                  onTap: _onSearchUniPress,
-                                  readOnly: true,
+                              SizedText(
+                                text:
+                                    'Validation is automatic, after entering 6 digits.\nPlease wait!',
+                                textAlign: TextAlign.left,
+                                textStyle:
+                                    latoM16.copyWith(color: ThemeColors.white),
+                              ),
+                            ],
+                          ),
+                        if (isOtpCorrect)
+                          GestureDetector(
+                            onTap: _onSearchUniPress,
+                            child: BasicInput(
+                              hintText: "University Name",
+                              textInputAction: TextInputAction.done,
+                              controller: uniNameController,
+                              validator: Validator.validateName,
+                              suffixIcon: IconButton(
+                                onPressed: _onSearchUniPress,
+                                icon: const Icon(
+                                  Ionicons.search,
+                                  color: ThemeColors.componentBgDark,
                                 ),
                               ),
-                            if (errorText.isNotEmpty)
-                              SizedText(
-                                text: errorText,
-                                textStyle:
-                                    latoM16.copyWith(color: ThemeColors.red),
-                              ),
-                          ]),
-                          SizedBox(
-                            height: 50.h,
-                          )
-                        ],
-                      ),
-                    ),
+                              onTap: _onSearchUniPress,
+                              readOnly: true,
+                            ),
+                          ),
+                        if (errorText.isNotEmpty)
+                          SizedText(
+                            text: errorText,
+                            textStyle: latoM16.copyWith(color: ThemeColors.red),
+                          ),
+                      ]),
+                      SizedBox(
+                        height: 50.h,
+                      )
+                    ],
                   ),
                 ),
-              ]),
+              ),
             );
           }),
     );

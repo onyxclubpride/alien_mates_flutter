@@ -17,7 +17,7 @@ class PostButton extends StatelessWidget {
               alignment: Alignment.center,
               child: _buildChild(context),
               decoration: BoxDecoration(
-                color: ThemeColors.yellow.withOpacity(.4),
+                color: ThemeColors.yellow.withOpacity(1),
                 borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(10.r),
                     bottomRight: Radius.circular(10.r)),
