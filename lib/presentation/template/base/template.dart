@@ -60,6 +60,7 @@ export '../../widgets/spaced_column.dart';
 export '../../widgets/spaced_row.dart';
 export '../../widgets/show_loading.dart';
 export '../../widgets/show_alert_dialog.dart';
+export '../../widgets/input/description_input.dart';
 
 //button widgets
 export '../../widgets/button/expanded_btn.dart';

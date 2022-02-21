@@ -2,7 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/constants.dart';
 
-class PostCreateInput extends StatelessWidget {
+class DescriptionCreateInput extends StatelessWidget {
   String? hintText;
   String? Function(String?)? validator;
   TextEditingController? controller;
@@ -19,7 +19,7 @@ class PostCreateInput extends StatelessWidget {
   int? maxlines;
   double? height;
 
-  PostCreateInput({
+  DescriptionCreateInput({
     this.hintText,
     this.validator,
     this.onTap,
@@ -40,7 +40,6 @@ class PostCreateInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-        textCapitalization: TextCapitalization.sentences,
         style: latoR16.copyWith(color: ThemeColors.fontWhite),
         validator: validator,
         controller: controller,

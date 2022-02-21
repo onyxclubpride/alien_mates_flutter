@@ -32,7 +32,7 @@ class AboutUsPage extends StatelessWidget {
                   ),
                   SizedText(
                     text: state.apiState.aboutUs,
-                    textStyle: latoB20.copyWith(color: ThemeColors.coolgray50),
+                    textStyle: latoB20.copyWith(color: ThemeColors.coolgray300),
                     textAlign: TextAlign.justify,
                     overflow: TextOverflow.visible,
                   ),

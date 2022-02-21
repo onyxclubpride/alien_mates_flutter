@@ -43,11 +43,13 @@ class _HelpDetailsPageState extends State<HelpDetailsPage> {
                           SizedBox(height: 20.h),
                           SizedText(
                               text: state.apiState.postDetail.title,
-                              textStyle: latoB25.copyWith(color: Colors.white)),
+                              textStyle: latoB25.copyWith(
+                                  color: ThemeColors.coolgray100)),
                           SizedBox(height: 20.h),
                           SizedText(
                             text: state.apiState.postDetail.description,
-                            textStyle: latoR16.copyWith(color: Colors.white),
+                            textStyle: latoR16.copyWith(
+                                color: ThemeColors.coolgray400),
                             textAlign: TextAlign.left,
                           ),
                           SizedBox(height: 70.h),

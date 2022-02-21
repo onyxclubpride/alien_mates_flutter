@@ -82,10 +82,12 @@ class _LoginPageState extends State<LoginPage> {
                                   textStyle: latoM16.copyWith(
                                       color: ThemeColors.fontWhite),
                                 ),
-                              ExpandedButton(
-                                width: MediaQuery.of(context).size.width - 65,
-                                text: 'LOGIN',
-                                onPressed: _onLoginPress,
+                              Padding(
+                                padding: EdgeInsets.all(8.0.w),
+                                child: ExpandedButton(
+                                  text: 'LOGIN',
+                                  onPressed: _onLoginPress,
+                                ),
                               )
                             ]),
                           ],

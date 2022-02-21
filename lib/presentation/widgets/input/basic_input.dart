@@ -41,6 +41,7 @@ class BasicInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+        textCapitalization: TextCapitalization.sentences,
         style: latoR16,
         validator: validator,
         controller: controller,
