@@ -14,10 +14,8 @@ class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKeyLoginPage =
       GlobalKey<FormState>(debugLabel: '_formKeyLoginPage');
 
-  TextEditingController phoneNumController =
-      TextEditingController(text: '01027192101');
-  TextEditingController pwController =
-      TextEditingController(text: 'Nishat123!');
+  TextEditingController phoneNumController = TextEditingController();
+  TextEditingController pwController = TextEditingController();
   String errorText = "";
 
   DateTime timeBackPressed = DateTime.now();
