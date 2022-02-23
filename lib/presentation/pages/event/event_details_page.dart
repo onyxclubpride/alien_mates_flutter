@@ -161,23 +161,28 @@ class _EventDetailsPageState extends State<EventDetailsPage> {
               ]),
             ),
             bottomPadding: 15,
-            footer: ExpandedButton(
-              text: (postDetail.joinedUserIds!.contains(_userId) == true)
-                  ? 'UNDO'
-                  : 'JOIN',
-              onPressed: () {
-                //Change to update
-                postDetail.joinedUserIds!.contains(_userId)
-                    ? _onUnJoinTap(postDetail.postId, postDetail.joinedUserIds!,
-                        postDetail.joinLimit!, state.initState.userId)
-                    : _onJoinTap(
-                        postDetail.postId,
-                        postDetail.joinedUserIds!,
-                        postDetail.joinLimit!,
-                        state.initState.userId,
-                      );
-              },
-            ),
+            footer: state.apiState.postDetail.joinLimit != 0
+                ? ExpandedButton(
+                    text: (postDetail.joinedUserIds!.contains(_userId) == true)
+                        ? 'UNDO'
+                        : 'JOIN',
+                    onPressed: () {
+                      //Change to update
+                      postDetail.joinedUserIds!.contains(_userId)
+                          ? _onUnJoinTap(
+                              postDetail.postId,
+                              postDetail.joinedUserIds!,
+                              postDetail.joinLimit!,
+                              state.initState.userId)
+                          : _onJoinTap(
+                              postDetail.postId,
+                              postDetail.joinedUserIds!,
+                              postDetail.joinLimit!,
+                              state.initState.userId,
+                            );
+                    },
+                  )
+                : null,
           );
         });
   }

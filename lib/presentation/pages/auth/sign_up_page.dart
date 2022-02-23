@@ -211,23 +211,20 @@ class _SignUpPageState extends State<SignUpPage> {
                             ],
                           ),
                         if (isOtpCorrect)
-                          GestureDetector(
+                          BasicInput(
                             onTap: _onSearchUniPress,
-                            child: BasicInput(
-                              hintText: "University Name",
-                              textInputAction: TextInputAction.done,
-                              controller: uniNameController,
-                              validator: Validator.validateName,
-                              suffixIcon: IconButton(
-                                onPressed: _onSearchUniPress,
-                                icon: const Icon(
-                                  Ionicons.search,
-                                  color: ThemeColors.componentBgDark,
-                                ),
+                            hintText: "University Name",
+                            textInputAction: TextInputAction.done,
+                            controller: uniNameController,
+                            validator: Validator.validateName,
+                            suffixIcon: IconButton(
+                              onPressed: _onSearchUniPress,
+                              icon: const Icon(
+                                Ionicons.search,
+                                color: ThemeColors.componentBgDark,
                               ),
-                              onTap: _onSearchUniPress,
-                              readOnly: true,
                             ),
+                            readOnly: true,
                           ),
                         if (errorText.isNotEmpty)
                           SizedText(
@@ -302,7 +299,7 @@ class _SignUpPageState extends State<SignUpPage> {
         if (passController.text == confirmPassController.text) {
           setState(() {
             errorText = "";
-            buttonText = "Wait. . .";
+            buttonText = "Please Wait. . .";
           });
           try {
             await FirebaseAuth.instance.verifyPhoneNumber(
@@ -356,25 +353,27 @@ class _SignUpPageState extends State<SignUpPage> {
   _signUpPress() async {
     if (_formKeySignUpPage.currentState!.validate()) {
       if (_checkPwd()) {
-        setState(() {
-          errorText = "";
-        });
-        String phNum = phoneNumberController.text;
-        if (!phNum.startsWith('0')) {
-          phNum = "0${phoneNumberController.text}";
-        }
-        bool matched = await appStore.dispatch(GetCreateUserAction(
-            phoneNumber: phNum,
-            password: passController.text,
-            name: nameController.text,
-            uniName: uniNameController.text));
-        if (!matched) {
+        if (uniNameController.text.isNotEmpty) {
           setState(() {
-            errorText =
-                "There is something wrong. Please check your data again";
+            errorText = "";
           });
-        } else {
-          appStore.dispatch(NavigateToAction(to: 'up'));
+          String phNum = phoneNumberController.text;
+          if (!phNum.startsWith('0')) {
+            phNum = "0${phoneNumberController.text}";
+          }
+          bool matched = await appStore.dispatch(GetCreateUserAction(
+              phoneNumber: phNum,
+              password: passController.text,
+              name: nameController.text,
+              uniName: uniNameController.text));
+          if (!matched) {
+            setState(() {
+              errorText =
+                  "There is something wrong. Please check your data again";
+            });
+          } else {
+            appStore.dispatch(NavigateToAction(to: 'up'));
+          }
         }
       } else {
         setState(() {

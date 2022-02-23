@@ -300,7 +300,7 @@ Future<bool> _getCreatePostAction(
       "joinLimit": null,
       "createdDate": DateTime.now()
     });
-    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
+    // await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
     return true;
   } catch (e) {
@@ -338,7 +338,7 @@ Future<bool> _getCreateNoticeAction(
       "joinLimit": null,
       "createdDate": DateTime.now()
     });
-    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
+    // await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
     return true;
   } catch (e) {
@@ -376,7 +376,7 @@ Future<bool> _getCreateEventAction(
       "joinLimit": action.joinLimit ?? 0,
       "createdDate": DateTime.now()
     });
-    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
+    // await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
     return true;
   } catch (e) {
@@ -414,7 +414,7 @@ Future<bool> _getCreateHelpAction(
       "joinLimit": null,
       "createdDate": DateTime.now()
     });
-    await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
+    // await appStore.dispatch(GetUpdateUserAction(postId: _postUid));
     closeLoading();
     return true;
   } catch (e) {
@@ -805,7 +805,7 @@ _getBannerPostsAction(
       .where('isNotice', isEqualTo: true)
       .orderBy('createdDate', descending: true)
       .get();
-  final _helpDetail = _querySnapshot.docs.first;
+  final _helpDetail = _querySnapshot.docs[2];
   ListPostModelRes helpRes = _getPostModel(_helpDetail);
   posts.add(helpRes);
   QuerySnapshot _querySnapshot1 = await postsCollection
@@ -819,7 +819,7 @@ _getBannerPostsAction(
       .where('isNotice', isEqualTo: true)
       .orderBy('createdDate', descending: true)
       .get();
-  final _noticeDetail = _querySnapshot2.docs[2];
+  final _noticeDetail = _querySnapshot2.docs.first;
   ListPostModelRes noticeRes = _getPostModel(_noticeDetail);
   posts.add(noticeRes);
 
