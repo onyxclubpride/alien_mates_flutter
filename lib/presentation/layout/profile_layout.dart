@@ -25,6 +25,13 @@ class _ProfileLayoutState extends State<ProfileLayout> {
 
   TextEditingController descriptionController = TextEditingController();
   final ScrollController _controller = ScrollController();
+
+  @override
+  void dispose() {
+    descriptionController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return StoreConnector<AppState, AppState>(
@@ -392,6 +399,8 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         showAlertDialog(context,
             text:
                 'There was a problem while uploading to server! Please, try again!');
+      } else {
+        descriptionController.clear();
       }
     }
   }

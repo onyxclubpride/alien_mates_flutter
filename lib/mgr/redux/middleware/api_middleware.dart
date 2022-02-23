@@ -879,8 +879,22 @@ Future<void> _getDeletePostAction(
     AppState state, GetDeletePostAction action, NextDispatcher next) async {
   try {
     showLoading();
+    final postIds = state.apiState.userMe.postIds;
+    postIds!.remove(action.postId);
+    showLoading();
+    await _deleteFileFromFirebaseStorage(action.postId);
     await _deleteFileFromFirebaseStorage(action.postId);
     await postsCollection.doc(action.postId).delete();
+    await usersCollection.doc(state.initState.userId).update({
+      "name": state.apiState.userMe.name,
+      "userId": state.apiState.userMe.userId,
+      "createdDate": state.apiState.userMe.createdDate,
+      "isAdmin": state.apiState.userMe.isAdmin,
+      "password": state.apiState.userMe.password,
+      "phoneNumber": state.apiState.userMe.phoneNumber,
+      "uniName": state.apiState.userMe.uniName,
+      "postIds": postIds,
+    });
     final allPosts = state.apiState.posts;
     List<ListPostModelRes> newPosts = [];
     for (var element in allPosts) {
