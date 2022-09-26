@@ -55,6 +55,10 @@
     <key>NSPhotoLibraryUsageDescription</key>
     <string>Example usage description</string>
 
+    <key>NSCameraUsageDescription</key>
+    <string>---Reason----</string>
+    <key>NSMicrophoneUsageDescription</key>
+    <string>---Reason----</string>
 
 </dict>
 </plist>

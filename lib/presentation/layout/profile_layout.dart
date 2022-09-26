@@ -5,10 +5,14 @@ import 'package:alien_mates/mgr/redux/middleware/api_middleware.dart';
 import 'package:alien_mates/mgr/redux/states/api_state.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:deepar_flutter/deepar_flutter.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:lottie/lottie.dart';
 import 'package:paginate_firestore/paginate_firestore.dart';
+
+import '../../utils/common/constants.dart';
+import '../../utils/common/log_tester.dart';
 
 class ProfileLayout extends StatefulWidget {
   Widget Function(BuildContext ctx, List<DocumentSnapshot<Object?>>, int index,
@@ -25,6 +29,13 @@ class _ProfileLayoutState extends State<ProfileLayout> {
 
   TextEditingController descriptionController = TextEditingController();
   final ScrollController _controller = ScrollController();
+
+  final DeepArController _arController = DeepArController();
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -279,10 +290,9 @@ class _ProfileLayoutState extends State<ProfileLayout> {
         isScrollControlled: true,
         builder: (context) {
           return Container(
-            height: 150.h,
+            height: 220.h,
             margin: EdgeInsets.all(25.w),
-            child: SpacedColumn(children: [
-              SizedBox(height: 0.h),
+            child: SpacedColumn(verticalSpace: 20.h, children: [
               GestureDetector(
                 onTap: () {
                   appStore.dispatch(DismissPopupAction());
@@ -296,15 +306,20 @@ class _ProfileLayoutState extends State<ProfileLayout> {
                   ),
                 ),
               ),
-              SizedBox(height: 20.h),
               ExpandedButton(
                 text: 'Image only',
                 onPressed: _onImageOnlyPress,
               ),
-              SizedBox(height: 27.h),
               ExpandedButton(
                 text: 'Text only',
                 onPressed: _onTextOnlyPress,
+              ),
+              ExpandedButton(
+                text: ' AR Image',
+                onPressed: () {
+                  appStore.dispatch(
+                      NavigateToAction(to: AppRoutes.createArCamPageRoute));
+                },
               ),
             ]),
           );
