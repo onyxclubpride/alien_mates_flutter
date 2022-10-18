@@ -1,6 +1,5 @@
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/presentation/pages/intro_page.dart';
-import 'package:alien_mates/presentation/pages/profile/create_ar_cam_page.dart';
 import 'package:alien_mates/presentation/pages/profile/edit_post_page.dart';
 import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/settings/settings_page.dart';
@@ -22,8 +21,6 @@ class AppRouter {
           return CreateNoticePage();
         case (AppRoutes.createEventPageRoute):
           return CreateEventPage();
-        case (AppRoutes.createArCamPageRoute):
-          return CreateArCamPage();
         case (AppRoutes.editNoticePageRoute):
           return EditNoticePage();
         case (AppRoutes.profilePageRoute):

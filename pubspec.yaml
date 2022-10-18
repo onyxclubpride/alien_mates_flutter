@@ -41,9 +41,6 @@ dependencies:
   card_swiper: ^2.0.1
   animated_text_kit: ^4.2.1
   intro_slider: ^3.0.3
-  deepar_flutter: ^0.0.2
-  permission_handler: ^10.0.0
-  open_file: ^3.2.1
 
 
 
@@ -68,4 +65,3 @@ flutter:
     - assets/images/
     - assets/
     - assets/lotties/
-    - assets/effects/
