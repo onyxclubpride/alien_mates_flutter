@@ -4,6 +4,7 @@ import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/settings/settings_page.dart';
 import 'package:alien_mates/presentation/pages/auth/sign_up_page.dart';
 
+import '../../presentation/pages/profile/create_ar_cam_page.dart';
 import '../../presentation/template/base/template.dart';
 
 class AppRoutes {
@@ -35,6 +36,7 @@ class AppRoutes {
   static const feedbackPageRoute = "/feedbackPage";
 
   static const introPageRoute = "/introPage";
+  static const createArCamPageRoute = "/createArCam";
 
   static Map<String, WidgetBuilder> getRoutes() {
     Map<String, WidgetBuilder> base = {
@@ -69,7 +71,9 @@ class AppRoutes {
       AppRoutes.noticeDetailsRoute: (BuildContext context) =>
           NoticeDetailsPage(),
       AppRoutes.feedbackPageRoute: (BuildContext context) => FeedbackPage(),
-      AppRoutes.introPageRoute: (BuildContext context) => IntroPage()
+      AppRoutes.introPageRoute: (BuildContext context) => IntroPage(),
+      AppRoutes.createArCamPageRoute: (BuildContext context) =>
+          CreateArCamPage()
     };
 
     return base;

@@ -5,6 +5,8 @@ import 'package:alien_mates/presentation/pages/help/edit_help_page.dart';
 import 'package:alien_mates/presentation/pages/settings/settings_page.dart';
 import 'package:alien_mates/presentation/template/base/template.dart';
 
+import '../../presentation/pages/profile/create_ar_cam_page.dart';
+
 class AppRouter {
   static Widget getRoutes(String? to, {dynamic arguments}) {
     Widget _openRouteSwitch() {
@@ -21,6 +23,8 @@ class AppRouter {
           return CreateNoticePage();
         case (AppRoutes.createEventPageRoute):
           return CreateEventPage();
+        case (AppRoutes.createArCamPageRoute):
+          return CreateArCamPage();
         case (AppRoutes.editNoticePageRoute):
           return EditNoticePage();
         case (AppRoutes.profilePageRoute):
