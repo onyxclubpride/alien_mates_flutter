@@ -1,3 +1,4 @@
+import 'package:hive/hive.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/redux/action.dart';

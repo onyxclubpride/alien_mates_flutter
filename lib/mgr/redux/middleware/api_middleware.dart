@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:alien_mates/mgr/bio_controller.dart';
 import 'package:alien_mates/mgr/models/univ_model/univ_model.dart';
 import 'package:alien_mates/mgr/navigation/app_routes.dart';
 import 'package:alien_mates/mgr/rest/api_service_client.dart';
@@ -8,6 +9,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dio/dio.dart';
 import 'package:encrypt/encrypt.dart' as enc;
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:hive/hive.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:redux/redux.dart';
 import 'package:alien_mates/mgr/firebase/firebase_kit.dart';
@@ -508,8 +510,35 @@ Future<void> _getUserIdExistAction(
     next(UpdateApiStateAction(userMe: userModelRes));
     next(UpdateInitStateAction(userId: userModelRes.userId));
     logger(userModelRes.userId);
-    appStore
-        .dispatch(NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+    final authBox = Hive.box('auth');
+    if (authBox.get('fingerprint') != null &&
+        authBox.get('fingerprint') as bool) {
+      bool res = await BiometricsController.authenticateWithBio(onSuccess: () {
+        authBox.put('fingerprint', true);
+        appStore.dispatch(
+            NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+      }, onCancel: () {
+        authBox.put('fingerprint', false);
+        showError('Authentication cancelled\nRequire again?', onTap: () {
+          BiometricsController.authenticateWithBio(
+            onSuccess: () {
+              authBox.put('fingerprint', true);
+              appStore.dispatch(
+                  NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+            },
+            onCancel: () {
+              authBox.put('fingerprint', false);
+              appStore.dispatch(GetLogoutAction());
+            },
+          );
+        });
+      });
+    } else {
+      appStore.dispatch(
+          NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
+    }
+    //Require fingerprint
+
   } catch (e) {
     logger(e.toString(), hint: 'GET USER ID CATCH ERROR');
   }
@@ -543,6 +572,13 @@ Future<bool> _getLoginAction(
       await appStore.dispatch(GetBannerPostsAction());
       await appStore.dispatch((SetLocalUserIdAction(_userData.userId)));
 
+      final authBox = Hive.box('auth');
+      //Require fingerprint
+      await BiometricsController.authenticateWithBio(onSuccess: () {
+        authBox.put('fingerprint', true);
+      }, onCancel: () {
+        authBox.put('fingerprint', false);
+      });
       closeLoading();
       appStore.dispatch(
           NavigateToAction(to: AppRoutes.homePageRoute, replace: true));
@@ -1106,6 +1142,8 @@ Future<String?> _getSelectImageAction(
 }
 
 _getLogoutAction(AppState state, GetLogoutAction action, NextDispatcher next) {
+  final authBox = Hive.box('auth');
+  authBox.delete('fingerprint');
   appStore.dispatch(NavigateToAction(
       to: AppRoutes.loginPageRoute, removeUntilPage: AppRoutes.loginPageRoute));
   appStore.dispatch(RemoveLocalUserIdAction());

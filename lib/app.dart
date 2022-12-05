@@ -1,3 +1,9 @@
+import 'dart:developer';
+
+import 'dart:developer';
+
+import 'dart:developer';
+
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +14,7 @@ import 'package:alien_mates/presentation/template/base/template.dart';
 import 'package:alien_mates/utils/common/constants.dart';
 import 'package:alien_mates/utils/common/global_widgets.dart';
 import 'package:alien_mates/utils/localization/localizations.dart';
+import 'package:hive/hive.dart';
 
 class AlienMatesApp extends StatefulWidget {
   const AlienMatesApp({Key? key}) : super(key: key);
@@ -16,11 +23,52 @@ class AlienMatesApp extends StatefulWidget {
   _AlienMatesAppState createState() => _AlienMatesAppState();
 }
 
-// SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-//     statusBarColor: Colors.purple,
-//   ));
-class _AlienMatesAppState extends State<AlienMatesApp> {
+class _AlienMatesAppState extends State<AlienMatesApp>
+    with WidgetsBindingObserver {
   Locale? locale = Locale(AppLocalizations.languageCode.toString());
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addObserver(this);
+
+    super.initState();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) async {
+    super.didChangeAppLifecycleState(state);
+
+    final isClosed = state == AppLifecycleState.detached;
+    final isBackground = state == AppLifecycleState.paused;
+    final isForeground = state == AppLifecycleState.resumed;
+    print("isClosed: $isClosed");
+    print("isBackground: $isBackground");
+    print("isForeground: $isForeground");
+
+    final authBox = Hive.box('auth');
+    final user = authBox.get('fingerprint');
+    if (isBackground) {
+      if (user != null) {
+        //false
+        authBox.put("fingerprint", false);
+      }
+      log("App is in background");
+    }
+    if (isClosed) {
+      if (user != null) {
+        //false
+        authBox.put("fingerprint", false);
+      }
+      log("App is in closed");
+    }
+    if (isForeground) {
+      if (user != null) {
+        //true
+        authBox.put("fingerprint", true);
+      }
+      log("App is in foreground");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
